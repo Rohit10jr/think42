@@ -2,11 +2,14 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.utils.timezone import now
-from .models import User, OTP
+from .models import User, OTP, WorkExperience, Education, PortfolioLink, PersonalInformation
 import random
 from .utils import generate_otp, send_otp_via_email
-from .serializers import SignupSerializer, VerifyOTPSerializer
+from .serializers import SignupSerializer, VerifyOTPSerializer, UserDetailSerializer
+from rest_framework_simplejwt.tokens import RefreshToken
 
+from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 class RegisterView(APIView):
     def post(self, request):
@@ -82,7 +85,14 @@ class VerifyOTPView(APIView):
 
             otp.delete()
 
-            return Response({'message': 'OTP verified successfully. Redirecting...'}, status=status.HTTP_200_OK)
+            refresh = RefreshToken.for_user(user)
+            access_token = str(refresh.access_token)
+
+            return Response({
+                'message': 'OTP verified successfully. Redirecting...',
+                'access': access_token,
+                'refresh': str(refresh)
+            }, status=status.HTTP_200_OK)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -113,13 +123,51 @@ class VerifyOTPView(APIView):
 
 
 
-# from django.http import Http404
-# from django.shortcuts import render, redirect
-# from django.contrib.auth import authenticate, login, logout
-# from django.contrib.auth.decorators import login_required
-# from django.urls import reverse
-# from rest_framework import generics, status
-# from rest_framework.exceptions import ValidationError
-# from django.utils import timezone
-# import pyotp
-# from .models import User, OTP
+class UserDetailView(APIView):
+    """
+    API endpoint to handle User Details with nested Personal Information,
+    Educational Background, Work Experience, and Portfolio.
+    """
+    authentication_classes = [JWTAuthentication]  # Enable JWT Authentication
+    permission_classes = [IsAuthenticated]       # Require the user to be authenticated
+
+    def get(self, request, *args, **kwargs):
+        user = request.user  # Authenticated user
+
+        # Fetch the user's personal information
+        personal_information = PersonalInformation.objects.filter(user=user).first()
+
+        # Fetch related data
+        educational_background = Education.objects.filter(user=user)
+        work_experience = WorkExperience.objects.filter(user=user)
+        portfolio = PortfolioLink.objects.filter(user=user)
+
+        # Serialize the data
+        data = {
+            "personal_information": personal_information,
+            "educational_background": educational_background,
+            "work_experience": work_experience,
+            "portfolio": portfolio,
+        }
+        serializer = UserDetailSerializer(data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request, *args, **kwargs):
+        """
+        Create or update user details.
+        """
+        serializer = UserDetailSerializer(data=request.data, context={"user": request.user})
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"message": "User details saved successfully."}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def put(self, request, *args, **kwargs):
+        """
+        Update user details.
+        """
+        serializer = UserDetailSerializer(data=request.data, context={"user": request.user})
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"message": "User details updated successfully."}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

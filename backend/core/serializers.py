@@ -1,6 +1,7 @@
 from rest_framework import serializers
-from .models import User, OTP
+from .models import User, OTP, PersonalInformation, Education, WorkExperience, PortfolioLink
 from django.utils.timezone import now
+
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -72,3 +73,86 @@ class SignupSerializer(serializers.Serializer):
             raise serializers.ValidationError("Either email or mobile is required.")
 
         return attrs
+    
+
+
+class PersonalInformationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PersonalInformation
+        exclude = ["user"]  # User is handled separately
+    
+    def create(self, validated_data):
+        user = self.context['user']  # Set user from context
+        validated_data['user'] = user
+        return super().create(validated_data)
+
+
+class EducationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Education
+        exclude = ["user"]
+
+    def create(self, validated_data):
+        user = self.context['user']  
+        validated_data['user'] = user
+        return super().create(validated_data)
+
+
+class WorkExperienceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WorkExperience
+        exclude = ["user"]
+
+    def create(self, validated_data):
+        user = self.context['user']  
+        validated_data['user'] = user
+        return super().create(validated_data)
+
+
+class PortfolioSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PortfolioLink
+        exclude = ["user"]
+
+    def create(self, validated_data):
+        user = self.context['user']  # Set user from context
+        validated_data['user'] = user
+        return super().create(validated_data)
+    
+    # def validate_url(self, value):
+    #     if not value.startswith("http"):
+    #         raise serializers.ValidationError("Invalid URL. It must start with 'http'.")
+    #     return value
+
+
+class UserDetailSerializer(serializers.Serializer):
+    personal_information = PersonalInformationSerializer()
+    educational_background = EducationSerializer(many=True)
+    work_experience = WorkExperienceSerializer(many=True)
+    portfolio = PortfolioSerializer(many=True)
+
+    def create(self, validated_data):
+        user = self.context['user']
+
+        # Save personal information
+        personal_info_data = validated_data.pop('personal_information', None)
+        if personal_info_data:
+            PersonalInformation.objects.update_or_create(user=user, defaults=personal_info_data)
+
+        # Save educational background
+        education_data = validated_data.pop('educational_background', [])
+        for edu in education_data:
+            Education.objects.create(user=user, **edu)
+
+        # Save work experience
+        work_experience_data = validated_data.pop('work_experience', [])
+        for work in work_experience_data:
+            WorkExperience.objects.create(user=user, **work)
+
+        # Save portfolio links
+        portfolio_data = validated_data.pop('portfolio', [])
+        PortfolioLink.objects.filter(user=user).delete()  # Clear old links
+        for link in portfolio_data:
+            PortfolioLink.objects.create(user=user, **link)
+
+        return validated_data

@@ -45,11 +45,14 @@ INSTALLED_APPS = [
     # libs
     'rest_framework',
     # 'rest_framework.authtoken',
-    # 'corsheaders'
+    'rest_framework_simplejwt',
+    # 'rest_framework_simplejwt.token_blacklist',  # Optional for refresh token blacklist
+    'corsheaders'
 
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -131,8 +134,23 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+##################################################
+##################################################
+
+AUTH_USER_MODEL = "core.User"
+
+CORS_ALLOW_ALL_ORIGINS = True
+
+CORS_ALLOWED_ORIGINS = [
+    # "http://localhost:3000",
+    "http://localhost:5173",
+]
+
 import environ
 import os
+from datetime import timedelta
 
 # Initialize environ
 env = environ.Env()
@@ -143,11 +161,37 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Read the .env file
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
-EMAIL_HOST = env('EMAIL_HOST')
-EMAIL_HOST_USER = env('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
-EMAIL_BACKEND = env('EMAIL_BACKEND')
-EMAIL_PORT = env.int('EMAIL_PORT')
-EMAIL_USE_TLS = env.bool('EMAIL_USE_TLS')
-DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL')
+# EMAIL_HOST = env('EMAIL_HOST')
+# EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+# EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+# EMAIL_BACKEND = env('EMAIL_BACKEND')
+# EMAIL_PORT = env.int('EMAIL_PORT')
+# EMAIL_USE_TLS = env.bool('EMAIL_USE_TLS')
+# DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL')
 
+EMAIL_HOST_USER = 'rohitjworkspace@gmail.com' 
+EMAIL_HOST_PASSWORD ='kumv alyz uzup ebbl'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'noreply@myapp.com'
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
+
+
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30), 
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=2),  
+    'ROTATE_REFRESH_TOKENS': False,  
+    'BLACKLIST_AFTER_ROTATION': True,
+    'ALGORITHM': 'HS256',  # Default JWT signing algorithm
+    'SIGNING_KEY': 'your_secret_key_here',  # Replace with your Django SECRET_KEY
+    'AUTH_HEADER_TYPES': ('Bearer',),  # Authorization header type
+}
