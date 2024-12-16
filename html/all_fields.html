@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Job Portal Form</title>
+    <style>
+      /* Basic Reset */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+      }
+
+      body {
+        /* background-color: #f9fafb; */
+        padding: 20px;
+      }
+
+      h2 {
+        font-size: 18px;
+        font-weight: 300;
+        margin: 20px 0 10px;
+        color: #1e293b; /* Section title color */
+        /* border-up: 2px solid #dee4f0; */
+        border-top: 1px solid #dee4f0;
+        padding-bottom: 5px;
+        padding-top: 15px;
+      }
+
+      .form-container {
+        max-width: 800px;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 20px;
+        /* border-radius: 8px; */
+        /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
+      }
+
+      /* Input container for fields */
+      .input-container {
+        margin: 15px 0;
+      }
+
+      .input-label {
+        font-size: 16px;
+        font-weight: 400;
+        color: #64748b;
+        margin-bottom: 4px;
+        display: block;
+      }
+
+      .required {
+        color: red;
+      }
+
+      /* Input Field */
+      .input-field {
+        width: 100%;
+        border: 2px solid #dee4f0;
+        border-radius: 4px;
+        padding: 10px 12px;
+        font-size: 14px;
+        outline: none;
+        transition: border-color 0.3s, box-shadow 0.3s;
+      }
+
+      .input-field:focus {
+        border-color: #4a90e2;
+        box-shadow: 0 0 4px rgba(74, 144, 226, 0.5);
+      }
+
+      /* Styling for Portfolio Links */
+      .portfolio-link {
+        color: #4a90e2;
+        text-decoration: none;
+      }
+      .portfolio-link:hover {
+        text-decoration: underline;
+      }
+
+      /* Section spacing */
+      .section {
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="form-container">
+      <!-- Personal Information Section -->
+      <div class="section">
+        <h2>Personal Information</h2>
+        <div class="input-container">
+          <label class="input-label" for="full-name"
+            >Full Name <span class="required">*</span></label
+          >
+          <input
+            type="text"
+            id="full-name"
+            class="input-field"
+            placeholder="Full Name"
+          />
+        </div>
+        <div class="input-container">
+          <label class="input-label" for="email"
+            >Email <span class="required">*</span></label
+          >
+          <input
+            type="email"
+            id="email"
+            class="input-field"
+            placeholder="Email"
+          />
+        </div>
+        <div class="input-container">
+          <label class="input-label" for="mobile"
+            >Mobile <span class="required">*</span></label
+          >
+          <input
+            type="text"
+            id="mobile"
+            class="input-field"
+            placeholder="Mobile"
+          />
+        </div>
+        <!-- <div class="input-container">
+          <label class="input-label" for="address">Address</label>
+          <input
+            type="text"
+            id="address"
+            class="input-field"
+            placeholder="Address"
+          />
+        </div>
+        <div class="input-container">
+          <label class="input-label" for="city">City</label>
+          <input type="text" id="city" class="input-field" placeholder="City" />
+        </div>
+        <div class="input-container">
+          <label class="input-label" for="state">State</label>
+          <input
+            type="text"
+            id="state"
+            class="input-field"
+            placeholder="State"
+          />
+        </div>
+        <div class="input-container">
+          <label class="input-label" for="zip-code">Zip Code</label>
+          <input
+            type="text"
+            id="zip-code"
+            class="input-field"
+            placeholder="Zip Code"
+          />
+        </div>
+        <div class="input-container">
+          <label class="input-label" for="country">Country</label>
+          <input
+            type="text"
+            id="country"
+            class="input-field"
+            placeholder="Country"
+          />
+        </div> -->
+      </div>
+
+      <div class="section">
+        <h2>Address Information</h2>
+        <div class="input-container">
+          <label class="input-label" for="address">Address</label>
+          <input
+            type="text"
+            id="address"
+            class="input-field"
+            placeholder="Address"
+          />
+        </div>
+        <div class="input-container">
+          <label class="input-label" for="city">City</label>
+          <input type="text" id="city" class="input-field" placeholder="City" />
+        </div>
+        <div class="input-container">
+          <label class="input-label" for="state">State</label>
+          <input
+            type="text"
+            id="state"
+            class="input-field"
+            placeholder="State"
+          />
+        </div>
+        <div class="input-container">
+          <label class="input-label" for="zip-code">Zip Code</label>
+          <input
+            type="text"
+            id="zip-code"
+            class="input-field"
+            placeholder="Zip Code"
+          />
+        </div>
+        <div class="input-container">
+          <label class="input-label" for="country">Country</label>
+          <input
+            type="text"
+            id="country"
+            class="input-field"
+            placeholder="Country"
+          />
+        </div>
+      </div>
+
+      <!-- Educational Background Section -->
+      <div class="section">
+        <h2>Educational Background</h2>
+        <div class="input-container">
+          <label class="input-label" for="degree-1">Degree</label>
+          <input
+            type="text"
+            id="degree-1"
+            class="input-field"
+            placeholder="Degree"
+          />
+        </div>
+        <div class="input-container">
+          <label class="input-label" for="institution-1">Institution</label>
+          <input
+            type="text"
+            id="institution-1"
+            class="input-field"
+            placeholder="Institution"
+          />
+        </div>
+        <div class="input-container">
+          <label class="input-label" for="field-study-1">Field of Study</label>
+          <input
+            type="text"
+            id="field-study-1"
+            class="input-field"
+            placeholder="Field of Study"
+          />
+        </div>
+        <div class="input-container">
+          <label class="input-label" for="graduation-year-1"
+            >Graduation Year</label
+          >
+          <input
+            type="text"
+            id="graduation-year-1"
+            class="input-field"
+            placeholder="Graduation Year"
+          />
+        </div>
+      </div>
+
+      <!-- Work Experience Section -->
+      <div class="section">
+        <h2>Work Experience</h2>
+        <div class="input-container">
+          <label class="input-label" for="company-1">Company Name</label>
+          <input
+            type="text"
+            id="company-1"
+            class="input-field"
+            placeholder="Company Name"
+          />
+        </div>
+        <div class="input-container">
+          <label class="input-label" for="job-title-1">Job Title</label>
+          <input
+            type="text"
+            id="job-title-1"
+            class="input-field"
+            placeholder="Job Title"
+          />
+        </div>
+        <div class="input-container">
+          <label class="input-label" for="responsibilities-1"
+            >Responsibilities</label
+          >
+          <input
+            type="text"
+            id="responsibilities-1"
+            class="input-field"
+            placeholder="Responsibilities"
+          />
+        </div>
+      </div>
+
+      <!-- Portfolio Section -->
+      <div class="section">
+        <h2>Portfolio</h2>
+        <div class="input-container">
+          <label class="input-label" for="company-1">Linkedin Link</label>
+          <input
+            type="text"
+            id="company-1"
+            class="input-field"
+            placeholder="Linkedin Link"
+          />
+        </div>
+        <div class="input-container">
+          <label class="input-label" for="job-title-1">Github Link</label>
+          <input
+            type="text"
+            id="job-title-1"
+            class="input-field"
+            placeholder="Github Link"
+          />
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

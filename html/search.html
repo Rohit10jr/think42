@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Capsule Search Bar</title>
+    <style>
+      /* General container styling */
+      .search-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 20px auto;
+        width: 80%; /* Adjust as needed */
+        max-width: 250px;
+        border: 2px solid #ccc;
+        border-radius: 25px; /* Capsule shape */
+        background-color: #f9f9f9;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Capsule-shaped input */
+      .search-input {
+        flex: 1;
+        border: none;
+        font-size: 16px;
+        outline: none;
+        background: none;
+        padding: 10px 0px 10px 10px;
+        border-radius: 25px 0 0 25px;
+        /* Smooth transition between input and button */
+        /* margin-left: 10px; */
+        /* border: 1px solid red; */
+      }
+
+      /* Search button styling */
+      .search-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #f9f9f9;
+        border: none;
+        cursor: pointer;
+        /* border-radius: 0 25px 25px 0; */
+        /* padding: 0 15px; */
+        margin-right: 5px;
+        border: 1px solid red;
+      }
+
+      /* Search logo inside button */
+      .search-logo {
+        height: 16px;
+        width: auto;
+      }
+
+      /* Responsive design */
+      @media (max-width: 600px) {
+        .search-container {
+          width: 95%;
+        }
+        .search-input {
+          font-size: 14px;
+        }
+        .search-logo {
+          height: 14px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="search-container">
+      <input type="text" placeholder="Search..." class="search-input" />
+      <button class="search-button">
+        <img src="search.png" alt="Search" class="search-logo" />
+      </button>
+    </div>
+  </body>
+</html>

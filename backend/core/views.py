@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.utils.timezone import now
-from .models import User, OTP, WorkExperience, Education, PortfolioLink, PersonalInformation
+from .models import User, OTP, WorkExperience, Education, PortfolioLink, PersonalInformation, AddressInformation
 import random
 from .utils import generate_otp, send_otp_via_email
 from .serializers import SignupSerializer, VerifyOTPSerializer, UserDetailSerializer
@@ -136,6 +136,7 @@ class UserDetailView(APIView):
 
         # Fetch the user's personal information
         personal_information = PersonalInformation.objects.filter(user=user).first()
+        address_information = AddressInformation.objects.filter(user=user).first()
 
         # Fetch related data
         educational_background = Education.objects.filter(user=user)
@@ -145,6 +146,7 @@ class UserDetailView(APIView):
         # Serialize the data
         data = {
             "personal_information": personal_information,
+            "address_information": address_information,
             "educational_background": educational_background,
             "work_experience": work_experience,
             "portfolio": portfolio,
@@ -157,8 +159,11 @@ class UserDetailView(APIView):
         Create or update user details.
         """
         serializer = UserDetailSerializer(data=request.data, context={"user": request.user})
+        print("s-1")
         if serializer.is_valid():
+            print("s-2")
             serializer.save()
+            print("s-3")
             return Response({"message": "User details saved successfully."}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User, OTP, PersonalInformation, Education, WorkExperience, PortfolioLink
+from .models import User, OTP, PersonalInformation, AddressInformation, Education, WorkExperience, PortfolioLink
 from django.utils.timezone import now
 
 
@@ -87,6 +87,18 @@ class PersonalInformationSerializer(serializers.ModelSerializer):
         return super().create(validated_data)
 
 
+
+class AddressInformationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AddressInformation
+        exclude = ["user"]  # User is handled separately
+    
+    def create(self, validated_data):
+        user = self.context['user']  # Set user from context
+        validated_data['user'] = user
+        return super().create(validated_data)
+
+
 class EducationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Education
@@ -127,6 +139,7 @@ class PortfolioSerializer(serializers.ModelSerializer):
 
 class UserDetailSerializer(serializers.Serializer):
     personal_information = PersonalInformationSerializer()
+    address_information = AddressInformationSerializer()
     educational_background = EducationSerializer(many=True)
     work_experience = WorkExperienceSerializer(many=True)
     portfolio = PortfolioSerializer(many=True)
@@ -137,7 +150,12 @@ class UserDetailSerializer(serializers.Serializer):
         # Save personal information
         personal_info_data = validated_data.pop('personal_information', None)
         if personal_info_data:
-            PersonalInformation.objects.update_or_create(user=user, defaults=personal_info_data)
+            PersonalInformation.objects.update_or_create(user=user, defaults=personal_info_data)   
+
+        # Save address information
+        address_info_data = validated_data.pop('address_information', None)
+        if personal_info_data:
+            AddressInformation.objects.update_or_create(user=user, defaults=address_info_data)
 
         # Save educational background
         education_data = validated_data.pop('educational_background', [])
@@ -151,7 +169,7 @@ class UserDetailSerializer(serializers.Serializer):
 
         # Save portfolio links
         portfolio_data = validated_data.pop('portfolio', [])
-        PortfolioLink.objects.filter(user=user).delete()  # Clear old links
+        # PortfolioLink.objects.filter(user=user).delete()  # Clear old links
         for link in portfolio_data:
             PortfolioLink.objects.create(user=user, **link)
 

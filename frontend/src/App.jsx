@@ -11,7 +11,7 @@ import Logout from "./pages/Logout";
 import PublicRoute from "./routes/PublicRoute";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import AuthForm from "./pages/AuthForm";
-
+import ErrorBoundary from "./components/ErrorBoundary";
 const App = () => {
   return (
     <Router>
@@ -32,7 +32,18 @@ const App = () => {
 
         <Route path="/logout" element={<Logout />} />
 
-        <Route path="/home" element={<ProtectedRoute element={<Home />} />} />
+        <Route
+          path="/home"
+          element={
+            <ProtectedRoute
+              element={
+                <ErrorBoundary>
+                  <Home />
+                </ErrorBoundary>
+              }
+            />
+          }
+        />
 
         {/* <Route path="/verify" element={<VerifyOTP />} /> */}
       </Routes>

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import OTP, User, PortfolioLink, Education, WorkExperience, PersonalInformation
+from .models import OTP, User, PortfolioLink, Education, WorkExperience, PersonalInformation, AddressInformation
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 # Register your models here.
 
@@ -25,6 +25,7 @@ admin.site.register(User, CustomUserAdmin)
 
 admin.site.register(OTP)
 admin.site.register(PersonalInformation)
+admin.site.register(AddressInformation)
 admin.site.register(Education)
 admin.site.register(WorkExperience)
 admin.site.register(PortfolioLink)

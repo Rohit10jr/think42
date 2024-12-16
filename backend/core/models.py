@@ -70,6 +70,17 @@ class PersonalInformation(models.Model):
     full_name = models.CharField(max_length=255)
     email = models.EmailField()
     mobile = models.CharField(max_length=15)
+    # address = models.TextField()
+    # city = models.CharField(max_length=100)
+    # state = models.CharField(max_length=100)
+    # zip_code = models.CharField(max_length=10)
+    # country = models.CharField(max_length=100)
+
+    def __str__(self):
+        return f"{self.full_name}"
+    
+class AddressInformation(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="address_info")
     address = models.TextField()
     city = models.CharField(max_length=100)
     state = models.CharField(max_length=100)
@@ -77,7 +88,7 @@ class PersonalInformation(models.Model):
     country = models.CharField(max_length=100)
 
     def __str__(self):
-        return f"{self.full_name}"
+        return f"{self.user} {self.city}"
 
  
 class Education(models.Model):

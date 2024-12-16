@@ -1,0 +1,109 @@
+/* Basic Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+/* user fields */
+/* body {
+        padding: 20px;
+      } */
+
+.user-info-h2 {
+  font-size: 18px;
+  font-weight: 300;
+  margin: 20px 0 10px;
+  color: #1e293b; /* Section title color */
+  /* border-up: 2px solid #dee4f0; */
+  border-top: 1px solid #dee4f0;
+  padding-bottom: 5px;
+  padding-top: 30px;
+}
+
+.form-container {
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: #fff;
+  padding: 20px 0px;
+  /* border-radius: 8px; */
+  /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
+}
+
+/* Input container for fields */
+.input-container {
+  margin: 15px 0;
+}
+
+.input-label {
+  font-size: 16px;
+  font-weight: 400;
+  color: #64748b;
+  margin-bottom: 4px;
+  display: block;
+}
+
+.required {
+  color: red;
+}
+
+/* Input Field */
+.input-field {
+  width: 100%;
+  border: 2px solid #dee4f0;
+  border-radius: 4px;
+  padding: 10px 12px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.input-field:focus {
+  border-color: #4a90e2;
+  box-shadow: 0 0 4px rgba(74, 144, 226, 0.5);
+}
+
+/* Styling for Portfolio Links */
+.portfolio-link {
+  color: #4a90e2;
+  text-decoration: none;
+}
+.portfolio-link:hover {
+  text-decoration: underline;
+}
+
+/* Section spacing */
+.section {
+  /* border: 1px solid red; */
+  margin-bottom: 30px;
+}
+
+
+/* Submit Button Styles */
+.submit-button {
+  display: inline-block;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  background-color: #4CAF50; /* Green */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.submit-button:hover {
+  background-color: #45a049; /* Darker green on hover */
+  transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
+.submit-button:active {
+  transform: scale(1); /* Reset scale on click */
+}
+
+.submit-button:disabled {
+  background-color: #9e9e9e; /* Grey for disabled state */
+  cursor: not-allowed;
+}

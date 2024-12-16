@@ -6,7 +6,6 @@ import ActionButton from "../components/Signup/ActionButton";
 import Message from "../components/Signup/Message";
 import "./authForm.css";
 
-
 const AuthForm = ({ isRegister }) => {
   const navigate = useNavigate();
   const [input, setInput] = useState("");
@@ -29,7 +28,7 @@ const AuthForm = ({ isRegister }) => {
 
   const handleSendOtp = async () => {
     if (!input) {
-      setError("Please enter your email.");
+      setError("Please enter your email or mobile number.");
       return;
     }
 
@@ -37,10 +36,13 @@ const AuthForm = ({ isRegister }) => {
     const endpoint = isRegister ? "register/" : "login/";
 
     try {
-      await api.post(endpoint, { email: input });
+      await api.post(endpoint, {
+        email: input.includes("@") ? input : null,
+        // mobile: !input.includes("@") ? input : null,
+      });
 
       setOtpSent(true);
-      setSuccess("OTP sent successfully! Please check your email.");
+      setSuccess("OTP sent successfully! Please check your email or mobile.");
       localStorage.setItem("email", input);
     } catch (err) {
       setError(err.response?.data?.error || "Failed to send OTP. Try again.");
@@ -57,7 +59,11 @@ const AuthForm = ({ isRegister }) => {
 
     setLoading(true);
     try {
-      const response = await api.post("verify/", { email: input, otp });
+      const response = await api.post("verify/", {
+        email: input.includes("@") ? input : null,
+        // mobile: !input.includes("@") ? input : null,
+        otp,
+      });
 
       const { access, refresh } = response.data;
       localStorage.setItem("access_token", access);
@@ -74,62 +80,49 @@ const AuthForm = ({ isRegister }) => {
   };
 
   return (
-    <div className="container">
-      <div className="loginContainer">
-        <form onSubmit={(e) => e.preventDefault()}>
-          <div className="loginTitle">
-            <h2>{isRegister ? "Register" : "Login"}</h2>
-            <p>{isRegister ? "Sign up with your email" : "Please login with your email"}</p>
-          </div>
-
-          {!otpSent ? (
-            <div className="inputContainer">
-              <input
-                type="email"
-                value={input}
-                onChange={handleInputChange}
-                placeholder="Email"
-                required
-              />
-            </div>
-          ) : (
-            <div className="inputContainer">
-              <input
-                type="text"
-                value={otp}
-                onChange={handleOtpChange}
-                placeholder="Enter OTP"
-                required
-              />
-            </div>
-          )}
-
-          <button
-            type="button"
-            onClick={!otpSent ? handleSendOtp : handleVerifyOtp}
-            className="loginButton"
-            disabled={loading}
-          >
-            {loading ? "Loading..." : !otpSent ? "Send OTP" : "Verify OTP"}
-          </button>
-
-          {error && <p className="error-message">{error}</p>}
-          {success && <p className="success-message">{success}</p>}
-
-          {!otpSent && (
-          isRegister ? (
-            <p className="signupText">
-              Have an account? <a href="/login">Login</a>
-            </p>
-          ) : (
-            <p className="signupText">
-              Don’t have an account? <a href="/register">Sign up</a>
-            </p>
-          )
+    // <div class="container">
+    <div className="register-container">
+      <div className="register-card">
+        <h1>{isRegister ? "Registration" : "Login"}</h1>
+        {!otpSent ? (
+          <>
+            <InputField
+              value={input}
+              onChange={handleInputChange}
+              // placeholder="Enter Email or Mobile"
+              placeholder="Enter Email"
+              className="register-input"
+            />
+            <ActionButton
+              onClick={handleSendOtp}
+              disabled={loading}
+              loading={loading}
+              label="Send OTP"
+              className="send-otp"
+            />
+          </>
+        ) : (
+          <>
+            <InputField
+              value={otp}
+              onChange={handleOtpChange}
+              placeholder="Enter OTP"
+              className="register-input"
+            />
+            <ActionButton
+              onClick={handleVerifyOtp}
+              disabled={loading}
+              loading={loading}
+              label="Verify OTP"
+              className="verify-otp"
+            />
+          </>
         )}
-        </form>
+        {error && <Message text={error} type="error" />}
+        {success && <Message text={success} type="success" />}
       </div>
     </div>
+    // </div>
   );
 };
 

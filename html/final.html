@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      /* Basic Reset */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+      }
+
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 20px;
+        background-color: #ffffff; /* White background */
+        border-bottom: 1px solid #e5e7eb; /* Light gray bottom border */
+      }
+
+      /* Left Section */
+      .site-logo {
+        font-size: 24px;
+        color: #0f9d58; /* Glassdoor green color */
+        font-weight: bold;
+      }
+
+      /* Navigation Center */
+      .header-nav {
+        display: flex;
+        gap: 30px;
+      }
+
+      .nav-link {
+        text-decoration: none;
+        color: #111827; /* Dark gray for text */
+        font-size: 18px;
+        font-weight: 500;
+        position: relative;
+        padding-bottom: 5px;
+      }
+
+      .nav-link.active {
+        color: #0f9d58; /* Active tab green color */
+      }
+
+      .nav-link.active::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background-color: #0f9d58; /* Green underline */
+      }
+
+      .nav-link:hover {
+        color: #0f9d58; /* Hover state green */
+      }
+
+      /* Right Section */
+      .header-right {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+      }
+
+      .icon {
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+      }
+
+      .logout {
+        text-decoration: none;
+        color: #dc2626; /* Red color for logout */
+        font-size: 16px;
+        font-weight: 500;
+      }
+
+      .logout:hover {
+        text-decoration: underline;
+      }
+
+      /* Resume Upload Section */
+      .resume-upload {
+        margin-bottom: 30px;
+        margin: 0 auto;
+        text-align: center; /* Center the container */
+      }
+
+      .resume-header {
+        max-width: 800px; /* Center container with fixed width */
+        margin: 0 auto;
+        padding: 20px 0px;
+        text-align: left;
+        /* border: 1px solid red; */
+      }
+
+      .resume-upload h2 {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 10px;
+        color: #1e293b;
+      }
+
+      .upload-description {
+        font-size: 14px;
+        color: #64748b;
+        margin-bottom: 15px;
+      }
+
+      .upload-box {
+        border: 2px dashed #dee4f0;
+        border-radius: 6px;
+        background-color: #f9fafb;
+        text-align: center;
+        padding: 30px 20px;
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      .upload-text {
+        font-size: 16px;
+        color: #334155;
+        margin-bottom: 5px;
+      }
+
+      .upload-link {
+        color: #4a90e2;
+        text-decoration: none;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      .upload-link:hover {
+        text-decoration: underline;
+      }
+
+      .upload-filetypes {
+        font-size: 12px;
+        color: #64748b;
+      }
+
+      .upload-optional {
+        font-size: 12px;
+        color: #94a3b8;
+        font-style: italic;
+        margin-top: 5px;
+      }
+      /* user fields */
+      /* body {
+        padding: 20px;
+      } */
+
+      .user-info-h2 {
+        font-size: 18px;
+        font-weight: 300;
+        margin: 20px 0 10px;
+        color: #1e293b; /* Section title color */
+        /* border-up: 2px solid #dee4f0; */
+        border-top: 1px solid #dee4f0;
+        padding-bottom: 5px;
+        padding-top: 30px;
+      }
+
+      .form-container {
+        max-width: 800px;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 20px 0px;
+        /* border-radius: 8px; */
+        /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
+      }
+
+      /* Input container for fields */
+      .input-container {
+        margin: 15px 0;
+      }
+
+      .input-label {
+        font-size: 16px;
+        font-weight: 400;
+        color: #64748b;
+        margin-bottom: 4px;
+        display: block;
+      }
+
+      .required {
+        color: red;
+      }
+
+      /* Input Field */
+      .input-field {
+        width: 100%;
+        border: 2px solid #dee4f0;
+        border-radius: 4px;
+        padding: 10px 12px;
+        font-size: 14px;
+        outline: none;
+        transition: border-color 0.3s, box-shadow 0.3s;
+      }
+
+      .input-field:focus {
+        border-color: #4a90e2;
+        box-shadow: 0 0 4px rgba(74, 144, 226, 0.5);
+      }
+
+      /* Styling for Portfolio Links */
+      .portfolio-link {
+        color: #4a90e2;
+        text-decoration: none;
+      }
+      .portfolio-link:hover {
+        text-decoration: underline;
+      }
+
+      /* Section spacing */
+      .section {
+        /* border: 1px solid red; */
+        margin-bottom: 30px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Job Site Header -->
+    <header class="job-header">
+      <!-- Logo on the left -->
+      <div class="header-left">
+        <h1 class="site-logo">'GLASSDOOR'</h1>
+      </div>
+
+      <!-- Navigation in the center -->
+      <nav class="header-nav">
+        <a href="#" class="nav-link active">Community</a>
+        <a href="#" class="nav-link">Jobs</a>
+        <a href="#" class="nav-link">Companies</a>
+        <a href="#" class="nav-link">Salaries</a>
+      </nav>
+
+      <!-- Icons and Logout on the right -->
+      <div class="header-right">
+        <img src="search.png" alt="Search Icon" class="icon" />
+        <img src="bell.png" alt="Notifications" class="icon" />
+        <img src="user.png" alt="User Profile" class="icon" />
+        <a href="#" class="logout">Logout</a>
+      </div>
+    </header>
+
+    <!-- Resume Upload Section -->
+    <div class="section resume-upload">
+      <!-- Added container for text alignment -->
+      <div class="resume-header">
+        <h2>Autofill Application</h2>
+        <p class="upload-description">
+          Upload your resume/cv in seconds with the autofill option.
+        </p>
+      </div>
+      <div class="upload-box">
+        <p class="upload-text">
+          <span class="upload-link">Upload your resume</span> or drag and drop
+          it here
+        </p>
+        <p class="upload-filetypes">Only .doc, .docx, .pdf, .odt, .rtf</p>
+        <p class="upload-optional">(Optional)</p>
+      </div>
+    </div>
+
+    <!-- user fields -->
+    <div class="form-container">
+      <!-- Personal Information Section -->
+      <div class="section">
+        <h2 class="user-info-h2">Personal Information</h2>
+        <div class="input-container">
+          <label class="input-label" for="full-name"
+            >Full Name <span class="required">*</span></label
+          >
+          <input
+            type="text"
+            id="full-name"
+            class="input-field"
+            placeholder="Full Name"
+          />
+        </div>
+        <div class="input-container">
+          <label class="input-label" for="email"
+            >Email <span class="required">*</span></label
+          >
+          <input
+            type="email"
+            id="email"
+            class="input-field"
+            placeholder="Email"
+          />
+        </div>
+        <div class="input-container">
+          <label class="input-label" for="mobile"
+            >Mobile <span class="required">*</span></label
+          >
+          <input
+            type="text"
+            id="mobile"
+            class="input-field"
+            placeholder="Mobile"
+          />
+        </div>
+      </div>
+
+      <div class="section">
+        <h2 class="user-info-h2">Address Information</h2>
+        <div class="input-container">
+          <label class="input-label" for="address">Address</label>
+          <input
+            type="text"
+            id="address"
+            class="input-field"
+            placeholder="Address"
+          />
+        </div>
+        <div class="input-container">
+          <label class="input-label" for="city">City</label>
+          <input type="text" id="city" class="input-field" placeholder="City" />
+        </div>
+        <div class="input-container">
+          <label class="input-label" for="state">State</label>
+          <input
+            type="text"
+            id="state"
+            class="input-field"
+            placeholder="State"
+          />
+        </div>
+        <div class="input-container">
+          <label class="input-label" for="zip-code">Zip Code</label>
+          <input
+            type="text"
+            id="zip-code"
+            class="input-field"
+            placeholder="Zip Code"
+          />
+        </div>
+        <div class="input-container">
+          <label class="input-label" for="country">Country</label>
+          <input
+            type="text"
+            id="country"
+            class="input-field"
+            placeholder="Country"
+          />
+        </div>
+      </div>
+
+      <!-- Educational Background Section -->
+      <div class="section">
+        <h2 class="user-info-h2">Educational Background</h2>
+        <div class="input-container">
+          <label class="input-label" for="degree-1">Degree</label>
+          <input
+            type="text"
+            id="degree-1"
+            class="input-field"
+            placeholder="Degree"
+          />
+        </div>
+        <div class="input-container">
+          <label class="input-label" for="institution-1">Institution</label>
+          <input
+            type="text"
+            id="institution-1"
+            class="input-field"
+            placeholder="Institution"
+          />
+        </div>
+        <div class="input-container">
+          <label class="input-label" for="field-study-1">Field of Study</label>
+          <input
+            type="text"
+            id="field-study-1"
+            class="input-field"
+            placeholder="Field of Study"
+          />
+        </div>
+        <div class="input-container">
+          <label class="input-label" for="graduation-year-1"
+            >Graduation Year</label
+          >
+          <input
+            type="text"
+            id="graduation-year-1"
+            class="input-field"
+            placeholder="Graduation Year"
+          />
+        </div>
+      </div>
+
+      <!-- Work Experience Section -->
+      <div class="section">
+        <h2 class="user-info-h2">Work Experience</h2>
+        <div class="input-container">
+          <label class="input-label" for="company-1">Company Name</label>
+          <input
+            type="text"
+            id="company-1"
+            class="input-field"
+            placeholder="Company Name"
+          />
+        </div>
+        <div class="input-container">
+          <label class="input-label" for="job-title-1">Job Title</label>
+          <input
+            type="text"
+            id="job-title-1"
+            class="input-field"
+            placeholder="Job Title"
+          />
+        </div>
+        <div class="input-container">
+          <label class="input-label" for="responsibilities-1"
+            >Responsibilities</label
+          >
+          <input
+            type="text"
+            id="responsibilities-1"
+            class="input-field"
+            placeholder="Responsibilities"
+          />
+        </div>
+      </div>
+
+      <!-- Portfolio Section -->
+      <div class="section">
+        <h2 class="user-info-h2">Portfolio</h2>
+        <div class="input-container">
+          <label class="input-label" for="company-1">Linkedin Link</label>
+          <input
+            type="text"
+            id="company-1"
+            class="input-field"
+            placeholder="Linkedin Link"
+          />
+        </div>
+        <div class="input-container">
+          <label class="input-label" for="job-title-1">Github Link</label>
+          <input
+            type="text"
+            id="job-title-1"
+            class="input-field"
+            placeholder="Github Link"
+          />
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,215 +1,470 @@
-import React from "react";
-import "./LandingPage.css";
-import AutoFill from "../components/Form/Autofill";
+// import React from "react";
+import "./Home.css";
+// import AutoFill from "../components/Form/Autofill";
+import Header from "../components/Home/header.jsx";
+import Upload from "../components/Home/upload.jsx";
+import React, { useState } from "react";
 
-const LandingPage = () => {
+const Home = () => {
+  const [formData, setFormData] = useState({
+    personal_information: {
+      full_name: "",
+      email: "",
+      mobile: "",
+    },
+    address_information: {
+      address: "",
+      city: "",
+      state: "",
+      zip_code: "",
+      country: "",
+    },
+    educational_background: [
+      {
+        degree: "",
+        institution: "",
+        field_of_study: "",
+        graduation_year: "",
+        gpa: "",
+      },
+    ],
+    work_experience: [
+      {
+        job_title: "",
+        company_name: "",
+        start_date: "",
+        end_date: "",
+        responsibilities: "",
+      },
+    ],
+    portfolio: [
+      {
+        link_type: "LinkedIn",
+        url: "",
+      },
+      {
+        link_type: "GitHub",
+        url: "",
+      },
+    ],
+  });
+
+  // const handleChange = (e, section, key, index = null) => {
+  //   const { id, value } = e.target;
+  //   setFormData((prev) => {
+  //     const newData = { ...prev };
+  //     if (index !== null) {
+  //       newData[section][index][key] = value;
+  //     } else {
+  //       newData[section][key] = value;
+  //     }
+  //     return newData;
+  //   });
+  // };
+
+  const handleChange = (e, section, key, index = null) => {
+    const { value } = e.target;
+
+    setFormData((prev) => {
+      const newData = { ...prev };
+      if (index !== null && newData[section][index]) {
+        newData[section][index][key] = value;
+      } else if (index === null) {
+        newData[section][key] = value;
+      }
+      return newData;
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const accessToken = localStorage.getItem("access_token");
+      console.log(accessToken); // Include the Bearer token// Retrieve the token from localStorage
+
+      console.log(JSON.stringify(formData))
+
+      const response = await fetch("http://127.0.0.1:8000/api/user/details/", {
+        method: 'POST',
+        headers: {
+          // Authorization: `Bearer ${accessToken}`,
+          'Authorization': `Bearer ${accessToken}`,
+          // Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+
+        
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        alert("Data submitted successfully!");
+      } else {
+        alert("Failed to submit data.");
+      }
+    } catch (error) {
+      console.error("Error submitting data:", error);
+      alert("An error occurred while submitting data.");
+    }
+  };
+
   return (
-    <div className="landing-page">
-      <header className="navbar">
-        <div className="navbar-logo">ThinkJobs</div>
-        <nav className="navbar-links">
-          <a href="#home">Home</a>
-          <a href="#about">About Us</a>
-          <a href="#jobs">Jobs</a>
-          <a href="#contact">Contact</a>
-          {/* <a href="#logout" className="logout">Logout</a> */}
-        </nav>
-      </header>
-
-      <main className="form-section">
-        <h2 className="form-title">Create Your Profile</h2>
-
-        <AutoFill />
-
-        <form className="job-form">
-          <fieldset className="form-group">
-            <legend>Personal Information</legend>
-            <label>
-              {/* Full Name */}
+    <>
+      <Header />
+      <Upload />
+      <form onSubmit={handleSubmit}>
+        <div className="form-container">
+          {/* Personal Information Section */}
+          <div className="section">
+            <h2 className="user-info-h2">Personal Information</h2>
+            <div className="input-container">
+              <label className="input-label" htmlFor="full-name">
+                Full Name <span className="required">*</span>
+              </label>
               <input
                 type="text"
-                name="fullName"
-                placeholder="Enter your full name"
-                required
+                id="full-name"
+                className="input-field"
+                // placeholder="Full Name"
+                value={formData.personal_information.full_name}
+                onChange={(e) =>
+                  handleChange(e, "personal_information", "full_name")
+                }
               />
-            </label>
-            <label>
-              {/* Email Address */}
+            </div>
+            <div className="input-container">
+              <label className="input-label" htmlFor="email">
+                Email <span className="required">*</span>
+              </label>
               <input
                 type="email"
-                name="email"
-                placeholder="Enter your email address"
-                required
+                id="email"
+                className="input-field"
+                // placeholder="Email"
+                value={formData.personal_information.email}
+                onChange={(e) =>
+                  handleChange(e, "personal_information", "email")
+                }
               />
-            </label>
-            <label>
-              {/* Mobile Number */}
-              <input
-                type="tel"
-                name="mobile"
-                placeholder="Enter your mobile number"
-                required
-              />
-            </label>
-            <label>
-              {/* Address */}
+            </div>
+            <div className="input-container">
+              <label className="input-label" htmlFor="mobile">
+                Mobile <span className="required">*</span>
+              </label>
               <input
                 type="text"
-                name="address"
-                placeholder="City, State, ZIP Code, Country"
-                required
+                id="mobile"
+                className="input-field"
+                // placeholder="Mobile"
+                value={formData.personal_information.mobile}
+                onChange={(e) =>
+                  handleChange(e, "personal_information", "mobile")
+                }
               />
-            </label>
-          </fieldset>
+            </div>
+          </div>
 
-          <fieldset className="form-group">
-            <legend>Educational Background</legend>
-            <label>
-              {/* Degree/Qualification */}
+          {/* Address Information Section */}
+          <div className="section">
+            <h2 className="user-info-h2">Address Information</h2>
+            <div className="input-container">
+              <label className="input-label" htmlFor="address">
+                Address
+              </label>
               <input
                 type="text"
-                name="degree"
-                placeholder="Enter your degree or qualification"
-                required
+                id="address"
+                className="input-field"
+                // placeholder="Address"
+                value={formData.address_information.address}
+                onChange={(e) =>
+                  handleChange(e, "address_information", "address")
+                }
               />
-            </label>
-            <label>
-              {/* Institution/University Name */}
+            </div>
+            <div className="input-container">
+              <label className="input-label" htmlFor="city">
+                City
+              </label>
               <input
                 type="text"
-                name="institution"
-                placeholder="Enter your institution name"
-                required
+                id="city"
+                className="input-field"
+                // placeholder="City"
+                value={formData.address_information.city}
+                onChange={(e) => handleChange(e, "address_information", "city")}
               />
-            </label>
-            <label>
-              {/* Field of Study */}
+            </div>
+            <div className="input-container">
+              <label className="input-label" htmlFor="state">
+                State
+              </label>
               <input
                 type="text"
-                name="field"
-                placeholder="Enter your field of study"
-                required
+                id="state"
+                className="input-field"
+                // placeholder="State"
+                value={formData.address_information.state}
+                onChange={(e) =>
+                  handleChange(e, "address_information", "state")
+                }
               />
-            </label>
-            <label>
-              {/* Graduation Year */}
-              <input
-                type="number"
-                name="gradYear"
-                placeholder="Enter your graduation year"
-                required
-              />
-            </label>
-            <label>
-              {/* GPA/Percentage */}
-              <input
-                type="text"
-                name="gpa"
-                placeholder="Enter your GPA or percentage"
-                required
-              />
-            </label>
-          </fieldset>
+            </div>
 
-          <fieldset className="form-group">
-            <legend>Work Experience</legend>
-            <label>
-              {/* Job Title */}
+            <div className="input-container">
+              <label className="input-label" htmlFor="zip_code">
+                Zip Code
+              </label>
               <input
                 type="text"
-                name="jobTitle"
-                placeholder="Enter your job title"
-                required
+                id="zip_code"
+                className="input-field"
+                // placeholder="Zip Code"
+                value={formData.address_information.zip_code}
+                onChange={(e) =>
+                  handleChange(e, "address_information", "zip_code")
+                }
               />
-            </label>
-            <label>
-              {/* Company Name */}
-              <input
-                type="text"
-                name="companyName"
-                placeholder="Enter your company name"
-                required
-              />
-            </label>
-            <label>
-              {/* Employment Period */}
-              <input
-                type="text"
-                name="employmentPeriod"
-                placeholder="Start Date - End Date"
-                required
-              />
-            </label>
-            <label>
-              {/* Responsibilities/Key Achievements */}
-              <textarea
-                name="responsibilities"
-                placeholder="Enter your responsibilities or key achievements"
-                required
-              ></textarea>
-            </label>
-          </fieldset>
+            </div>
 
-          <fieldset className="form-group">
-            <legend>Skills</legend>
-            <label>
-              {/* Technical Skills */}
+            <div className="input-container">
+              <label className="input-label" htmlFor="country">
+                Country
+              </label>
               <input
                 type="text"
-                name="technicalSkills"
-                placeholder="Enter your technical skills"
-                required
+                id="country"
+                className="input-field"
+                // placeholder="Country"
+                value={formData.address_information.country}
+                onChange={(e) =>
+                  handleChange(e, "address_information", "country")
+                }
               />
-            </label>
-            <label>
-              {/* Languages */}
-              <input
-                type="text"
-                name="languages"
-                placeholder="Enter the languages you know"
-                required
-              />
-            </label>
-          </fieldset>
+            </div>
 
-          <fieldset className="form-group">
-            <legend>Portfolio/Links</legend>
-            <label>
-              {/* LinkedIn Profile */}
+            {/* Repeat for other address fields */}
+          </div>
+
+          {/* Educational Background Section */}
+          <div className="section">
+            <h2 className="user-info-h2">Educational Background</h2>
+            <div className="input-container">
+              <label className="input-label" htmlFor="degree-1">
+                Degree
+              </label>
               <input
-                type="url"
-                name="linkedin"
-                placeholder="Enter your LinkedIn profile URL"
-                required
+                type="text"
+                id="degree-1"
+                className="input-field"
+                // placeholder="Degree"
+                value={formData.educational_background[0].degree}
+                onChange={(e) =>
+                  handleChange(e, "educational_background", "degree", 0)
+                }
               />
-            </label>
-            <label>
-              {/* Portfolio/Projects */}
+            </div>
+
+            <div className="input-container">
+              <label className="input-label" htmlFor="institution-1">
+                Institution
+              </label>
               <input
-                type="url"
-                name="portfolio"
-                placeholder="Enter portfolio or project links"
-                required
+                type="text"
+                id="institution-1"
+                className="input-field"
+                // placeholder="Institution"
+                value={formData.educational_background[0].institution}
+                onChange={(e) =>
+                  handleChange(e, "educational_background", "institution", 0)
+                }
               />
-            </label>
-            <label>
-              {/* GitHub Profile */}
+            </div>
+
+            <div className="input-container">
+              <label className="input-label" htmlFor="field_of_study-1">
+                Field Of Study
+              </label>
               <input
-                type="url"
-                name="github"
-                placeholder="Enter your GitHub profile URL"
-                required
+                type="text"
+                id="field_of_study-1"
+                className="input-field"
+                // placeholder="Field Of Study"
+                value={formData.educational_background[0].field_of_study}
+                onChange={(e) =>
+                  handleChange(e, "educational_background", "field_of_study", 0)
+                }
               />
-            </label>
-          </fieldset>
+            </div>
+
+            <div className="input-container">
+              <label className="input-label" htmlFor="graduation_year-1">
+                Graduation Year
+              </label>
+              <input
+                type="text"
+                id="graduation_year-1"
+                className="input-field"
+                // placeholder="Graduation Year"
+                value={formData.educational_background[0].graduation_year}
+                onChange={(e) =>
+                  handleChange(
+                    e,
+                    "educational_background",
+                    "graduation_year",
+                    0
+                  )
+                }
+              />
+            </div>
+
+            <div className="input-container">
+              <label className="input-label" htmlFor="gpa-1">
+                Gpa
+              </label>
+              <input
+                type="text"
+                id="gpa-1"
+                className="input-field"
+                // placeholder="Gpa"
+                value={formData.educational_background[0].gpa}
+                onChange={(e) =>
+                  handleChange(e, "educational_background", "gpa", 0)
+                }
+              />
+            </div>
+            {/* Repeat for other educational fields */}
+          </div>
+
+          {/* Work Experience Section */}
+          <div className="section">
+            <h2 className="user-info-h2">Work Experience</h2>
+            <div className="input-container">
+              <label className="input-label" htmlFor="job_title-1">
+                Job Title
+              </label>
+              <input
+                type="text"
+                id="job_title-1"
+                className="input-field"
+                // placeholder="Job Title"
+                value={formData.work_experience[0].job_title}
+                onChange={(e) =>
+                  handleChange(e, "work_experience", "job_title", 0)
+                }
+              />
+            </div>
+
+            <div className="input-container">
+              <label className="input-label" htmlFor="company-1">
+                Company Name
+              </label>
+              <input
+                type="text"
+                id="company-1"
+                className="input-field"
+                // placeholder="Company Name"
+                value={formData.work_experience[0].company_name}
+                onChange={(e) =>
+                  handleChange(e, "work_experience", "company_name", 0)
+                }
+              />
+            </div>
+
+            <div className="input-container">
+              <label className="input-label" htmlFor="start_date-1">
+                Start Date
+              </label>
+              <input
+                type="text"
+                id="start_date-1"
+                className="input-field"
+                // placeholder="Company Name"
+                value={formData.work_experience[0].start_date}
+                onChange={(e) =>
+                  handleChange(e, "work_experience", "start_date", 0)
+                }
+              />
+            </div>
+
+
+            <div className="input-container">
+              <label className="input-label" htmlFor="end_date-1">
+              End Date
+              </label>
+              <input
+                type="text"
+                id="end_date-1"
+                className="input-field"
+                // placeholder="Company Name"
+                value={formData.work_experience[0].end_date}
+                onChange={(e) =>
+                  handleChange(e, "work_experience", "end_date", 0)
+                }
+              />
+            </div>
+
+
+            <div className="input-container">
+              <label className="input-label" htmlFor="responsibilities-1">
+                Responsibilities
+              </label>
+              <input
+                type="text"
+                id="responsibilities-1"
+                className="input-field"
+                // placeholder="Responsibilities"
+                value={formData.work_experience[0].responsibilities}
+                onChange={(e) =>
+                  handleChange(e, "work_experience", "responsibilities", 0)
+                }
+              />
+            </div>
+
+            {/* Repeat for other work experience fields */}
+          </div>
+
+          {/* Portfolio Section */}
+          <div className="section">
+            <h2 className="user-info-h2">Portfolio</h2>
+            <div className="input-container">
+              <label className="input-label" htmlFor="linkedin-link">
+                LinkedIn Link
+              </label>
+              <input
+                type="text"
+                id="linkedin-link"
+                className="input-field"
+                // placeholder="LinkedIn Link"
+                value={formData.portfolio[0].url}
+                onChange={(e) => handleChange(e, "portfolio", "url", 0)}
+              />
+            </div>
+
+            <div className="input-container">
+              <label className="input-label" htmlFor="GitHub-link">
+                LinkedIn Link
+              </label>
+              <input
+                type="text"
+                id="GitHub-link"
+                className="input-field"
+                // placeholder="GitHub Link"
+                value={formData.portfolio[1].url}
+                onChange={(e) => handleChange(e, "portfolio", "url", 1)}
+              />
+            </div>
+            {/* Repeat for GitHub */}
+          </div>
 
           <button type="submit" className="submit-button">
-            Submit
+            Send
           </button>
-        </form>
-      </main>
-    </div>
+        </div>
+      </form>
+    </>
   );
 };
 
-export default LandingPage;
+export default Home;

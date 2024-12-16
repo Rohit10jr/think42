@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Job Portal Form</title>
+    <style>
+      /* Basic Reset */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+      }
+
+      body {
+        padding: 20px;
+      }
+
+      h2 {
+        font-size: 18px;
+        font-weight: 300;
+        margin: 20px 0 10px;
+        color: #1e293b;
+      }
+
+      .form-container {
+        max-width: 800px;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 20px;
+      }
+
+      .input-container {
+        margin: 15px 0;
+      }
+
+      .input-label {
+        font-size: 16px;
+        font-weight: 400;
+        color: #64748b;
+        margin-bottom: 4px;
+        display: block;
+      }
+
+      .required {
+        color: red;
+      }
+
+      /* Input Field */
+      .input-field {
+        width: 100%;
+        border: 2px solid #dee4f0;
+        border-radius: 4px;
+        padding: 10px 12px;
+        font-size: 14px;
+        outline: none;
+        transition: border-color 0.3s, box-shadow 0.3s;
+      }
+
+      .input-field:focus {
+        border-color: #4a90e2;
+        box-shadow: 0 0 4px rgba(74, 144, 226, 0.5);
+      }
+
+      hr {
+        border: none;
+        height: 1px;
+        background-color: #dee4f0;
+        margin: 30px 0;
+      }
+
+      /* Section Spacing */
+      .section {
+        margin-bottom: 20px;
+      }
+
+      /* upload section */
+      .resume-upload {
+        margin-bottom: 30px;
+      }
+
+      .resume-upload h2 {
+        font-size: 18px;
+        font-weight: 300;
+        margin-bottom: 10px;
+        color: #1e293b;
+      }
+
+      .upload-description {
+        font-size: 14px;
+        color: #64748b;
+        margin-bottom: 15px;
+      }
+
+      .upload-box {
+        border: 2px dashed #dee4f0;
+        border-radius: 6px;
+        background-color: #f9fafb;
+        text-align: center;
+        padding: 30px 20px;
+        /* max-width: 600px; */
+        width: 100%;
+        margin: 0 auto;
+      }
+
+      .upload-text {
+        font-size: 16px;
+        color: #334155;
+        margin-bottom: 5px;
+      }
+
+      .upload-link {
+        color: #4a90e2;
+        text-decoration: none;
+        font-weight: 300;
+        cursor: pointer;
+      }
+
+      .upload-link:hover {
+        text-decoration: underline;
+      }
+
+      .upload-filetypes {
+        font-size: 12px;
+        color: #64748b;
+      }
+
+      .upload-optional {
+        font-size: 12px;
+        color: #94a3b8;
+        font-style: italic;
+        margin-top: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="form-container">
+      <!-- Resume Upload Section -->
+      <div class="section resume-upload">
+        <h2>Autofill Application</h2>
+        <p class="upload-description">
+          Upload your resume/cv in seconds with the autofill option.
+        </p>
+        <div class="upload-box">
+          <p class="upload-text">
+            <span class="upload-link">Upload your resume</span> or drag and drop
+            it here
+          </p>
+          <p class="upload-filetypes">Only .doc, .docx, .pdf, .odt, .rtf</p>
+          <!-- <p class="upload-optional">(Optional)</p> -->
+        </div>
+      </div>
+      <!-- Personal Information Section -->
+      <div class="section">
+        <h2>Personal Information</h2>
+        <div class="input-container">
+          <label class="input-label" for="full-name"
+            >Full Name <span class="required">*</span></label
+          >
+          <input
+            type="text"
+            id="full-name"
+            class="input-field"
+            placeholder="Enter your full name"
+          />
+        </div>
+        <div class="input-container">
+          <label class="input-label" for="email"
+            >Email <span class="required">*</span></label
+          >
+          <input
+            type="email"
+            id="email"
+            class="input-field"
+            placeholder="Enter your email"
+          />
+        </div>
+        <div class="input-container">
+          <label class="input-label" for="mobile"
+            >Mobile <span class="required">*</span></label
+          >
+          <input
+            type="text"
+            id="mobile"
+            class="input-field"
+            placeholder="Enter your mobile number"
+          />
+        </div>
+      </div>
+      <hr />
+      <!-- Address Section -->
+      <div class="section">
+        <h2>Address Information</h2>
+        <div class="input-container">
+          <label class="input-label" for="address">Address</label>
+          <input
+            type="text"
+            id="address"
+            class="input-field"
+            placeholder="Enter your address"
+          />
+        </div>
+        <div class="input-container">
+          <label class="input-label" for="city">City</label>
+          <input
+            type="text"
+            id="city"
+            class="input-field"
+            placeholder="Enter your city"
+          />
+        </div>
+        <div class="input-container">
+          <label class="input-label" for="state">State</label>
+          <input
+            type="text"
+            id="state"
+            class="input-field"
+            placeholder="Enter your state"
+          />
+        </div>
+        <div class="input-container">
+          <label class="input-label" for="zip-code">Zip Code</label>
+          <input
+            type="text"
+            id="zip-code"
+            class="input-field"
+            placeholder="Enter your zip code"
+          />
+        </div>
+      </div>
+      <hr />
+      <!-- Educational Background Section -->
+      <div class="section">
+        <h2>Educational Background</h2>
+        <div class="input-container">
+          <label class="input-label" for="degree">Degree</label>
+          <input
+            type="text"
+            id="degree"
+            class="input-field"
+            placeholder="Enter your degree"
+          />
+        </div>
+        <div class="input-container">
+          <label class="input-label" for="institution">Institution</label>
+          <input
+            type="text"
+            id="institution"
+            class="input-field"
+            placeholder="Enter your institution"
+          />
+        </div>
+        <div class="input-container">
+          <label class="input-label" for="field-study">Field of Study</label>
+          <input
+            type="text"
+            id="field-study"
+            class="input-field"
+            placeholder="Enter your field of study"
+          />
+        </div>
+        <div class="input-container">
+          <label class="input-label" for="graduation-year-1"
+            >Graduation Year</label
+          >
+          <input
+            type="text"
+            id="graduation-year-1"
+            class="input-field"
+            placeholder="Graduation Year"
+          />
+        </div>
+      </div>
+      <hr />
+      <!-- Work Experience Section -->
+      <div class="section">
+        <h2>Work Experience</h2>
+        <div class="input-container">
+          <label class="input-label" for="company-name">Company Name</label>
+          <input
+            type="text"
+            id="company-name"
+            class="input-field"
+            placeholder="Enter company name"
+          />
+        </div>
+        <div class="input-container">
+          <label class="input-label" for="job-title">Job Title</label>
+          <input
+            type="text"
+            id="job-title"
+            class="input-field"
+            placeholder="Enter your job title"
+          />
+        </div>
+        <div class="input-container">
+          <label class="input-label" for="responsibilities-1"
+            >Responsibilities</label
+          >
+          <input
+            type="text"
+            id="responsibilities-1"
+            class="input-field"
+            placeholder="Responsibilities"
+          />
+        </div>
+      </div>
+      <hr />
+      <!-- Portfolio Section -->
+      <div class="section">
+        <h2>Portfolio</h2>
+        <div class="input-container">
+          <label class="input-label" for="linkedin-link">LinkedIn Link</label>
+          <input
+            type="text"
+            id="linkedin-link"
+            class="input-field"
+            placeholder="Enter LinkedIn profile link"
+          />
+        </div>
+        <div class="input-container">
+          <label class="input-label" for="github-link">GitHub Link</label>
+          <input
+            type="text"
+            id="github-link"
+            class="input-field"
+            placeholder="Enter GitHub profile link"
+          />
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

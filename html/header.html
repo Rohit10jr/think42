@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      /* Basic Reset */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+      }
+
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 20px;
+        background-color: #ffffff; /* White background */
+        border-bottom: 1px solid #e5e7eb; /* Light gray bottom border */
+      }
+
+      /* Left Section */
+      .site-logo {
+        font-size: 24px;
+        color: #0f9d58; /* Glassdoor green color */
+        font-weight: bold;
+      }
+
+      /* Navigation Center */
+      .header-nav {
+        display: flex;
+        gap: 30px;
+      }
+
+      .nav-link {
+        text-decoration: none;
+        color: #111827; /* Dark gray for text */
+        font-size: 18px;
+        font-weight: 500;
+        position: relative;
+        padding-bottom: 5px;
+      }
+
+      .nav-link.active {
+        color: #0f9d58; /* Active tab green color */
+      }
+
+      .nav-link.active::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background-color: #0f9d58; /* Green underline */
+      }
+
+      .nav-link:hover {
+        color: #0f9d58; /* Hover state green */
+      }
+
+      /* Right Section */
+      .header-right {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+      }
+
+      .icon {
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+      }
+
+      .logout {
+        text-decoration: none;
+        color: #dc2626; /* Red color for logout */
+        font-size: 16px;
+        font-weight: 500;
+      }
+
+      .logout:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Job Site Header -->
+    <header class="job-header">
+      <!-- Logo on the left -->
+      <div class="header-left">
+        <h1 class="site-logo">'GLASSDOOR'</h1>
+      </div>
+
+      <!-- Navigation in the center -->
+      <nav class="header-nav">
+        <a href="#" class="nav-link active">Community</a>
+        <a href="#" class="nav-link">Jobs</a>
+        <a href="#" class="nav-link">Companies</a>
+        <a href="#" class="nav-link">Salaries</a>
+      </nav>
+
+      <!-- Icons and Logout on the right -->
+      <div class="header-right">
+        <img src="search.png" alt="Search Icon" class="icon" />
+        <img src="bell.png" alt="Notifications" class="icon" />
+        <img src="user.png" alt="User Profile" class="icon" />
+        <a href="#" class="logout">Logout</a>
+      </div>
+    </header>
+  </body>
+</html>
