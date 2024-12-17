@@ -17,7 +17,8 @@ def send_otp_via_email(email, otp):
     
     subject = "Your OTP for Login/Registration"
     message = f"Your One-Time Password (OTP) is: {otp}\nThis OTP is valid for 5 minutes."
-    from_email = settings.DEFAULT_FROM_EMAIL  
+    # from_email = settings.DEFAULT_FROM_EMAIL  
+    from_email = None
     
     try:
         send_mail(subject, message, from_email, [email])

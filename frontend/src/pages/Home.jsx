@@ -2,7 +2,7 @@
 import "./Home.css";
 // import AutoFill from "../components/Form/Autofill";
 import Header from "../components/Home/header.jsx";
-import Upload from "../components/Home/upload.jsx";
+import ResumeUpload from "../components/Home/upload.jsx";
 import React, { useState } from "react";
 
 const Home = () => {
@@ -76,6 +76,63 @@ const Home = () => {
     });
   };
 
+  const handleParsedData = (parsedDataString) => {
+    try {
+      // Parse the stringified JSON (removing backticks)
+      const parsedData = JSON.parse(parsedDataString.replace(/```json|```/g, "").trim());
+
+      // Update the formData state dynamically
+      setFormData((prevFormData) => {
+        const updatedFormData = { ...prevFormData };
+
+        // Merge parsed personal information
+        if (parsedData.personal_information) {
+          updatedFormData.personal_information = {
+            ...prevFormData.personal_information,
+            ...parsedData.personal_information,
+          };
+        }
+
+        // Merge parsed address information
+        if (parsedData.address_information) {
+          updatedFormData.address_information = {
+            ...prevFormData.address_information,
+            ...parsedData.address_information,
+          };
+        }
+
+        // Merge parsed educational background
+        if (parsedData.educational_background) {
+          updatedFormData.educational_background = parsedData.educational_background.map((education, index) => ({
+            ...prevFormData.educational_background[index],
+            ...education,
+          }));
+        }
+
+        // Merge parsed work experience
+        if (parsedData.work_experience) {
+          updatedFormData.work_experience = parsedData.work_experience.map((experience, index) => ({
+            ...prevFormData.work_experience[index],
+            ...experience,
+          }));
+        }
+
+        // Merge parsed portfolio
+        if (parsedData.portfolio) {
+          updatedFormData.portfolio = parsedData.portfolio.map((link, index) => ({
+            ...prevFormData.portfolio[index],
+            ...link,
+          }));
+        }
+
+        return updatedFormData;
+      });
+    } catch (error) {
+      console.error("Error parsing the resume data:", error);
+      alert("Failed to process the parsed resume data.");
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -112,7 +169,7 @@ const Home = () => {
   return (
     <>
       <Header />
-      <Upload />
+      <ResumeUpload onParsedDataReceived={handleParsedData} />
       <form onSubmit={handleSubmit}>
         <div className="form-container">
           {/* Personal Information Section */}

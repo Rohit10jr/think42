@@ -3,3 +3,5 @@ venv/
 try.py
 backend/db.sqlite3
 backend/try.py
+html/
+try/

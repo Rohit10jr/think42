@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User, OTP, PersonalInformation, AddressInformation, Education, WorkExperience, PortfolioLink
+from .models import User, OTP, PersonalInformation, AddressInformation, Education, WorkExperience, PortfolioLink, ResumeParse
 from django.utils.timezone import now
 
 
@@ -174,3 +174,11 @@ class UserDetailSerializer(serializers.Serializer):
             PortfolioLink.objects.create(user=user, **link)
 
         return validated_data
+    
+
+
+class ResumeParseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ResumeParse
+        fields = ['id', 'resume_file', 'uploaded_at']
+        read_only_fields = ['id', 'uploaded_at']

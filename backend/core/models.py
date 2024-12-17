@@ -113,3 +113,11 @@ class PortfolioLink(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="portfolio_links")
     link_type = models.CharField(max_length=50)  # Example: "LinkedIn", "GitHub", "Portfolio"
     url = models.URLField()
+
+# resume parsing model
+class ResumeParse(models.Model):
+    resume_file = models.FileField(upload_to='uploads/resumes/')
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return f"Resume uploaded on {self.uploaded_at}"
