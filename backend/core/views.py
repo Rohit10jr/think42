@@ -2,9 +2,9 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.utils.timezone import now
-from .models import User, OTP, WorkExperience, Education, PortfolioLink, PersonalInformation, AddressInformation, ResumeParse
+from .models import User, OTP, WorkExperience, Education, PortfolioLink, PersonalInformation, AddressInformation, ResumeParse, SkillSet
 import random
-from .utils import generate_otp, send_otp_via_email
+from .utils import generate_otp, send_otp_via_email, extract_text 
 from .serializers import SignupSerializer, VerifyOTPSerializer, UserDetailSerializer, ResumeParseSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 
@@ -154,6 +154,7 @@ class UserDetailView(APIView):
         educational_background = Education.objects.filter(user=user)
         work_experience = WorkExperience.objects.filter(user=user)
         portfolio = PortfolioLink.objects.filter(user=user)
+        skill_set = SkillSet.objects.filter(user=user)
 
         # Serialize the data
         data = {
@@ -161,6 +162,7 @@ class UserDetailView(APIView):
             "address_information": address_information,
             "educational_background": educational_background,
             "work_experience": work_experience,
+            "skill_set": skill_set,
             "portfolio": portfolio,
         }
         serializer = UserDetailSerializer(data)
@@ -223,28 +225,7 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 genai.configure(api_key= env('GEMINI_API_KEY'))
 
-# Helper functions for text extraction
-def extract_text_from_pdf(file_path):
-    text = ""
-    with pdfplumber.open(file_path) as pdf:
-        for page in pdf.pages:
-            text += page.extract_text()
-    return text.strip()
 
-def extract_text_from_word(file_path):
-    document = Document(file_path)
-    text = "\n".join([para.text for para in document.paragraphs])
-    return text.strip()
-
-def extract_text(file_path):
-    if not os.path.exists(file_path):
-        return None
-    file_extension = os.path.splitext(file_path)[1].lower()
-    if file_extension == ".pdf":
-        return extract_text_from_pdf(file_path)
-    elif file_extension == ".docx":
-        return extract_text_from_word(file_path)
-    return None
 
 # JSON structure for parsing
 json_structure = {
@@ -258,21 +239,24 @@ json_structure = {
         {"job_title": "", "company_name": "", "start_date": "", "end_date": "", "responsibilities": ""},
         {"job_title": "", "company_name": "", "start_date": "", "end_date": "", "responsibilities": ""}
     ],
-    "portfolio": [
-        {"link_type": "", "url": ""},
-        {"link_type": "", "url": ""}
-    ]
+    "skiskill_set": {
+      "skills": [],
+    },
+    "portfolio": {"linkedin_url": "", "github_url": "", "other_url": ""},
 }
 
-def gemini_prompt(resume_text, json_structure):
+def gemini_prompt(resume_text, urls, json_structure):
     prompt = textwrap.dedent(f"""
         You are an advanced AI model specialized in extracting structured information from resumes.
-        Use the provided resume text to generate a JSON object that matches the given structure. 
+        Use the provided resume text, resume Url to generate a JSON object that matches the given structure. 
         Ensure that all relevant fields in the JSON structure are filled accurately based on the resume text. 
         If any information is missing in the resume, leave those fields blank in the JSON.
 
         Resume Text:
         {resume_text}
+
+        Resume Url:
+        {urls}
 
         JSON Structure:
         {json_structure}
@@ -322,16 +306,18 @@ class ResumeUploadView(CreateAPIView):
         file_path = resume_instance.resume_file.path
 
         # Extract text from the file
+        resume_text, urls = extract_text(file_path)
         resume_text = extract_text(file_path)
         if not resume_text:
             raise ValueError("Failed to extract text from the file.")
 
         # Generate JSON using GenAI
-        prompt = gemini_prompt(resume_text, json_structure)
+        prompt = gemini_prompt(resume_text, urls, json_structure)
         gen_model = genai.GenerativeModel("gemini-1.5-flash")
         try:
             final_json_answer = gen_model.generate_content(prompt)
             generated_content = final_json_answer._result.candidates[0].content.parts[0].text
+            # print(final_json_answer)
         except Exception as e:
             raise ValueError(f"AI parsing failed: {str(e)}")
 
@@ -345,3 +331,37 @@ class ResumeUploadView(CreateAPIView):
             response.data['parsed_data'] = self.generated_data
         response.data['message'] = "Resume uploaded and parsed successfully"
         return response
+
+
+
+
+# check profile email with the user email
+
+class CheckEmailExistsView(APIView):
+    """
+    API endpoint to check if an email is already associated with an account,
+    excluding the logged-in user's email.
+    """
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        email = request.data.get('email')
+        user = request.user  # Get the logged-in user
+
+        if not email:
+            return Response({"error": "Email is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+       
+        email_exists = User.objects.filter(email=email).exclude(id=user.id).exists()
+
+        if email_exists:
+            return Response({
+                "available": False,
+                "message": "Email is already in use by another account. Please use a different email."
+            }, status=status.HTTP_200_OK)
+
+        return Response({
+            "available": True,
+            "message": "Email is available."
+        }, status=status.HTTP_200_OK)

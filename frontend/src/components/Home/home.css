@@ -153,3 +153,63 @@ header {
 .uploaded-file{
   font-size: 12px;
 }
+
+
+
+
+
+/* Add Education Button */
+.add-education-btn, .add-work-btn{
+  background-color: #4CAF50; 
+  color: white; 
+  padding: 5px 10px; 
+  border: none; 
+  border-radius: 5px;
+  font-size: 12px; 
+  cursor: pointer; 
+  transition: background-color 0.3s ease; 
+}
+
+.add-education-btn:hover, .add-work-btn:hover {
+  background-color: #45a049; /* Darker green when hovering */
+}
+
+/* Remove Education Button */
+.remove-education-btn, .remove-work-btn {
+  background-color: #f44336; 
+    color: white; 
+  padding: 5px 10px; 
+  border: none; 
+  border-radius: 5px; 
+  font-size: 12px; 
+  cursor: pointer; 
+  transition: background-color 0.3s ease; 
+  margin-left: 10px; 
+}
+
+.remove-education-btn:hover, .remove-work-btn:hover {
+  background-color: #e53935; 
+}
+
+/* 
+button {
+  display: inline-block;
+  margin-top: 15px;
+} */
+
+.section {
+  margin-bottom: 20px; /* Space between sections */
+}
+
+
+.error {
+  color: red;
+  /* font-size: 0.875rem; */
+  /* margin-top: 0.25rem; */
+  font-size: 12px;
+}
+
+.input-error {
+  border-color: red;
+  outline-color: red;
+}

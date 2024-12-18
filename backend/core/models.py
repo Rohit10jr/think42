@@ -98,6 +98,19 @@ class Education(models.Model):
     field_of_study = models.CharField(max_length=255)
     graduation_year = models.PositiveSmallIntegerField()
     gpa = models.DecimalField(max_digits=4, decimal_places=2, null=True, blank=True)
+    # percentage = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+
+    def calculate_percentage(self):
+        if self.gpa is not None:
+            return round(float(self.gpa) * 9.5, 2)
+        return None
+    
+    def save(self, *args, **kwargs):
+        self.percentage = self.calculate_percentage()
+        super(Education, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.degree} - {self.institution} "
 
 
 class WorkExperience(models.Model):
@@ -109,10 +122,22 @@ class WorkExperience(models.Model):
     responsibilities = models.TextField()
 
 
+class SkillSet(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="skill_set")
+    skills = models.JSONField()
+
+    def __str__(self):
+        return f"{self.user} skills"
+
+
 class PortfolioLink(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="portfolio_links")
-    link_type = models.CharField(max_length=50)  # Example: "LinkedIn", "GitHub", "Portfolio"
-    url = models.URLField()
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="portfolio_links")
+    linkedin_url = models.URLField(blank=True, null=True)
+    github_url = models.URLField(blank=True, null=True)
+    other_url = models.URLField(blank=True, null=True)
+    
+    def __str__(self):
+        return f"Portfolio links for {self.user}"
 
 # resume parsing model
 class ResumeParse(models.Model):
