@@ -153,8 +153,8 @@ class UserDetailView(APIView):
         # Fetch related data
         educational_background = Education.objects.filter(user=user)
         work_experience = WorkExperience.objects.filter(user=user)
-        portfolio = PortfolioLink.objects.filter(user=user)
-        skill_set = SkillSet.objects.filter(user=user)
+        skill_set = SkillSet.objects.filter(user=user).first()
+        portfolio = PortfolioLink.objects.filter(user=user).first()
 
         # Serialize the data
         data = {
@@ -239,7 +239,7 @@ json_structure = {
         {"job_title": "", "company_name": "", "start_date": "", "end_date": "", "responsibilities": ""},
         {"job_title": "", "company_name": "", "start_date": "", "end_date": "", "responsibilities": ""}
     ],
-    "skiskill_set": {
+    "skill_set": {
       "skills": [],
     },
     "portfolio": {"linkedin_url": "", "github_url": "", "other_url": ""},
@@ -317,7 +317,7 @@ class ResumeUploadView(CreateAPIView):
         try:
             final_json_answer = gen_model.generate_content(prompt)
             generated_content = final_json_answer._result.candidates[0].content.parts[0].text
-            # print(final_json_answer)
+            # print(generated_content)
         except Exception as e:
             raise ValueError(f"AI parsing failed: {str(e)}")
 

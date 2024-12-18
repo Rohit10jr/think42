@@ -12,6 +12,8 @@ import PublicRoute from "./routes/PublicRoute";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import AuthForm from "./pages/AuthForm";
 import ErrorBoundary from "./components/ErrorBoundary";
+import DashBoard from "./pages/user_dashBoard_try";
+import UserDashBoard from "./pages/userDash"
 const App = () => {
   return (
     <Router>
@@ -44,6 +46,14 @@ const App = () => {
             />
           }
         />
+
+        {/* <Route path="/dashboard" element={<ProtectedRoute element={<DashBoard />} />} /> */}
+        {/* <Route path="/dashboard" element={<DashBoard />} /> */}
+        <Route path="/dash"  element={
+                <ErrorBoundary>
+                  <UserDashBoard />
+                </ErrorBoundary>
+              } />
 
         {/* <Route path="/verify" element={<VerifyOTP />} /> */}
       </Routes>
