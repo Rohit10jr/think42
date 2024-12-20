@@ -259,7 +259,7 @@
         padding-top: 30px;
       }
 
-      .form-container {
+      .form-container-dash {
         max-width: 800px;
         margin: 0 auto;
         background-color: #f7f8fc;;
@@ -268,7 +268,7 @@
         /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
       }
 
-      .form-container-h3{
+      .form-container-dash-h3{
         font-size: 26px;
       }
 

@@ -1,18 +1,19 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
+import "./Home.css";
+import Header from "../components/Home/header.jsx";
+import ResumeUpload from "../components/Home/upload.jsx";
 import { debounce } from "lodash";
-import { useEffect } from "react";
-
 // import PersonalInformationForm from "../components/Home/PersonalInformationForm";
-import PersonalInformationSection from "../Home/personalsection.jsx";
-import AddressInformationSection from "../Home/addresssection.jsx";
-import SkillSetSection from "../Home/skill.jsx";
-import WorkSection from "../Home/work.jsx";
-import PortfolioSection from "../Home/portfolio.jsx";
-import EducationSection from "../Home/education.jsx";
-import api from "../../services/api.jsx";
-import { useCallback } from "react"
-function Profile() {
+import PersonalInformationSection from "../components/Home/personalsection.jsx";
+import AddressInformationSection from "../components/Home/addresssection.jsx";
+import SkillSetSection from "../components/Home/skill.jsx";
+import WorkSection from "../components/Home/work.jsx";
+import PortfolioSection from "../components/Home/portfolio.jsx";
+import EducationSection from "../components/Home/education.jsx";
+import api from "../services/api.jsx"
+
+
+const Home = () => {
   const [formData, setFormData] = useState({
     personal_information: {
       full_name: "",
@@ -48,102 +49,14 @@ function Profile() {
     skill_set: {
       skills: [],
     },
-    portfolio: {
-      linkedin_url: "",
-      github_url: "",
-      other_url: "",
-    },
+    portfolio: 
+      {
+        linkedin_url: "",
+        github_url: "",
+        other_url: ""
+      },
+     
   });
-
-  useEffect(() => {
-    let isMounted = true; // Track if component is mounted
-
-    const fetchUserDetails = async () => {
-      try {
-        const response = await api.get(
-          "http://127.0.0.1:8000/api/user/details/",
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        if (isMounted) {
-          const data = response.data;
-
-          // Map the response to the formData structure
-          setFormData({
-            personal_information: {
-              full_name: data.personal_information.full_name || "",
-              email: data.personal_information.email || "",
-              mobile: data.personal_information.mobile || "",
-            },
-            address_information: {
-              address: data.address_information.address || "",
-              city: data.address_information.city || "",
-              state: data.address_information.state || "",
-              zip_code: data.address_information.zip_code || "",
-              country: data.address_information.country || "",
-            },
-            educational_background: data.educational_background.map((edu) => ({
-              degree: edu.degree || "",
-              institution: edu.institution || "",
-              field_of_study: edu.field_of_study || "",
-              graduation_year: edu.graduation_year || "",
-              gpa: edu.gpa || "",
-            })),
-            work_experience: data.work_experience.map((work) => ({
-              job_title: work.job_title || "",
-              company_name: work.company_name || "",
-              start_date: work.start_date || "",
-              end_date: work.end_date || "",
-              responsibilities: work.responsibilities || "",
-            })),
-            skill_set: {
-              skills: data.skill_set.skills || [],
-            },
-            portfolio: {
-              linkedin_url: data.portfolio.linkedin_url || "",
-              github_url: data.portfolio.github_url || "",
-              other_url: data.portfolio.other_url || "",
-            },
-          });
-
-          setLoading(false); // Set loading to false after data is fetched
-        }
-      } catch (err) {
-        if (isMounted) {
-          setError("Failed to fetch user details. Please try again.");
-          setLoading(false);
-        }
-      }
-    };
-
-    fetchUserDetails();
-
-    return () => {
-      isMounted = false; // Cleanup to prevent setting state after unmount
-    };
-  }, []);
-
-  const handleFetch = async () => {
-    try {
-      const response = await api.get(
-        "http://127.0.0.1:8000/api/user/details/",
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      const data = response.data;
-      console.log(data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
 
   const handleAddWorkExperience = () => {
     setFormData((prev) => ({
@@ -160,8 +73,7 @@ function Profile() {
       ],
     }));
   };
-  const [emailStatus, setEmailStatus] = useState(null);
-  
+
   const handleRemoveWorkExperience = (index) => {
     setFormData((prev) => {
       const updatedWorkExperience = [...prev.work_experience];
@@ -200,21 +112,22 @@ function Profile() {
     });
   };
 
+  const [emailStatus, setEmailStatus] = useState(null);
 
-  const checkEmailAvailability = useCallback(debounce(async (email) => {
+  const checkEmailAvailability = debounce(async (email) => {
     try {
       const response = await api.post(
-        "http://127.0.0.1:8000/api/check-email/",
-        { email },
+        "http://127.0.0.1:8000/api/check-email/", 
+        { email }, 
         {
           headers: {
-            "Content-Type": "application/json",
-          },
+            "Content-Type": "application/json"
+          }
         }
       );
-
-      const data = response.data; 
-
+  
+      const data = response.data;  // No need for response.json()
+  
       if (data.available) {
         setEmailStatus({ available: true, message: "Email is available" });
       } else {
@@ -222,11 +135,11 @@ function Profile() {
           available: false,
           message: "Email is already in use",
         });
-
+  
         // Clear email if unavailable
         setFormData((prev) => {
           const newData = { ...prev };
-          newData.personal_information.email = "";
+          newData.personal_information.email = ""; // Clear the email field
           return newData;
         });
       }
@@ -237,9 +150,14 @@ function Profile() {
         message: "Unable to validate email. Please try again later.",
       });
     }
-  }, 1500),
-  [] // Empty dependency array ensures this function is memoized
-);
+  },1500)
+
+
+  const handlePrint = () => {
+    const accessToken = localStorage.getItem("access_token");
+    console.log(accessToken);
+    console.log(formData);
+  };
 
   const handleChange = async (e, section, key, index = null) => {
     const { value } = e.target;
@@ -253,7 +171,7 @@ function Profile() {
           // .map(skill => skill.trim())
           .filter((skill) => skill !== "");
       } else if (section === "personal_information" && key === "email") {
-        newData.personal_information.email = value;
+        newData.personal_information.email = value; 
       } else if (index !== null && newData[section][index]) {
         newData[section][index][key] = value;
       } else if (index === null) {
@@ -264,15 +182,91 @@ function Profile() {
 
     if (key === "email") {
       if (!value.trim()) {
-        setEmailStatus(null);
+        setEmailStatus(null); 
         return;
       }
       checkEmailAvailability(value);
     }
+   
   };
 
-  // if (loading) return <p>Loading...</p>;
-  // if (error) return <p>{error}</p>;
+  const handleParsedData = (parsedDataString) => {
+    try {
+      // Parse the stringified JSON (removing backticks)
+      const parsedData = JSON.parse(
+        parsedDataString.replace(/```json|```/g, "").trim()
+      );
+
+      // Update the formData state dynamically
+      setFormData((prevFormData) => {
+        const updatedFormData = { ...prevFormData };
+
+        // Merge parsed personal information
+        if (parsedData.personal_information) {
+          updatedFormData.personal_information = {
+            ...prevFormData.personal_information,
+            ...parsedData.personal_information,
+          };
+        }
+
+        // Merge parsed address information
+        if (parsedData.address_information) {
+          updatedFormData.address_information = {
+            ...prevFormData.address_information,
+            ...parsedData.address_information,
+          };
+        }
+
+        // Merge parsed educational background
+        if (parsedData.educational_background) {
+          updatedFormData.educational_background =
+            parsedData.educational_background.map((education, index) => ({
+              ...prevFormData.educational_background[index],
+              ...education,
+            }));
+        }
+
+        // Merge parsed work experience
+        if (parsedData.work_experience) {
+          updatedFormData.work_experience = parsedData.work_experience.map(
+            (experience, index) => ({
+              ...prevFormData.work_experience[index],
+              ...experience,
+            })
+          );
+        }
+
+        if (parsedData.address_information) {
+          updatedFormData.address_information = {
+            ...prevFormData.address_information,
+            ...parsedData.address_information,
+          };
+        }
+
+        if (parsedData.skill_set) {
+          updatedFormData.skill_set = {
+            ...prevFormData.skill_set,
+            skills: Array.isArray(parsedData.skill_set.skills)
+              ? parsedData.skill_set.skills
+              : prevFormData.skill_set.skills, // Fallback if skills is not an array
+          };
+        }
+        if (parsedData.portfolio) {
+          updatedFormData.portfolio = {
+            ...prevFormData.portfolio,
+            ...parsedData.portfolio,
+          }
+        }
+        console.log("resume parse update")
+        console.log(updatedFormData)
+
+        return updatedFormData;
+      });
+    } catch (error) {
+      console.error("Error parsing the resume data:", error);
+      alert("Failed to process the parsed resume data.");
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -283,16 +277,16 @@ function Profile() {
       console.log(JSON.stringify(formData));
 
       const response = await api.post(
-        "http://127.0.0.1:8000/api/user/details/",
-        formData,
+        "http://127.0.0.1:8000/api/user/details/", 
+        formData,  
         {
           headers: {
-            "Content-Type": "application/json",
-          },
+            "Content-Type": "application/json" 
+          }
         }
       );
 
-      console.log(response);
+      console.log(response)
 
       if (response.status === 201) {
         alert("Data submitted successfully!");
@@ -305,27 +299,23 @@ function Profile() {
     }
   };
 
-  const handlePrint = () => {
-    // const accessToken = localStorage.getItem("access_token");
-    // console.log(accessToken);
-    console.log(formData);
-  };
-
   return (
     <>
-      <h3>User details</h3>
+      <Header />
+      <ResumeUpload onParsedDataReceived={handleParsedData} />
       <form onSubmit={handleSubmit}>
-        <div className="form-container-dash">
+        <div className="form-container">
           <PersonalInformationSection
             formData={formData}
             handleChange={handleChange}
-            emailStatus={emailStatus}
+            emailStatus={emailStatus} 
+            
           />
           <AddressInformationSection
             formData={formData}
             handleChange={handleChange}
           />
-
+          
           {formData.work_experience.map((workItem, index) => (
             <WorkSection
               key={index}
@@ -338,15 +328,15 @@ function Profile() {
           ))}
 
           {formData.educational_background.map((workItem, index) => (
-            <EducationSection
-              key={index}
-              index={index}
-              formData={formData}
-              handleChange={handleChange}
-              handleAddEducation={handleAddEducation} // Pass the function here
-              handleRemoveEducation={handleRemoveEducation} // Pass the remove function here
-            />
-          ))}
+          <EducationSection
+            key={index}
+            index={index}
+            formData={formData}
+            handleChange={handleChange}
+            handleAddEducation={handleAddEducation} // Pass the function here
+            handleRemoveEducation={handleRemoveEducation} // Pass the remove function here
+          />
+        ))}
 
           <SkillSetSection formData={formData} handleChange={handleChange} />
 
@@ -357,10 +347,11 @@ function Profile() {
           </button>
         </div>
       </form>
-      {/* <button onClick={handlePrint}>print state</button>
-      <button onClick={handleFetch}>print data from backend</button> */}
+      {/* <button type="submit" className="submit-button" onClick={handlePrint}>
+        print json
+      </button> */}
     </>
   );
-}
+};
 
-export default Profile;
+export default Home;

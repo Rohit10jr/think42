@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User, OTP, PersonalInformation, AddressInformation, Education, WorkExperience, PortfolioLink, ResumeParse, SkillSet
+from .models import User, OTP, PersonalInformation, AddressInformation, Education, WorkExperience, PortfolioLink, ResumeParse, SkillSet, UserDocuments
 from django.utils.timezone import now
 
 
@@ -146,6 +146,11 @@ class PortfolioSerializer(serializers.ModelSerializer):
     #         raise serializers.ValidationError("Invalid URL. It must start with 'http'.")
     #     return value
 
+class UserDocumentsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserDocuments
+        fields = ['resume', 'cover_letter']
+
 
 class UserDetailSerializer(serializers.Serializer):
     personal_information = PersonalInformationSerializer()
@@ -154,6 +159,7 @@ class UserDetailSerializer(serializers.Serializer):
     work_experience = WorkExperienceSerializer(many=True)
     skill_set = SkillsetSerializer()
     portfolio = PortfolioSerializer()
+    # documents = UserDocumentsSerializer()
 
     def create(self, validated_data):
         user = self.context['user']
@@ -179,25 +185,23 @@ class UserDetailSerializer(serializers.Serializer):
         # Save work experience
         work_experience_data = validated_data.pop('work_experience', [])
         for work in work_experience_data:
-            WorkExperience.objects.create(user=user, **work)
+            WorkExperience.objects.update_or_create(user=user, **work)
 
-        # Save educational background
+        # Extract and save educational background
         education_data = validated_data.pop('educational_background', [])
         for edu in education_data:
-            # Education.objects.create(user=user, **edu)
-            # education_instance = Education(user=user, **edu)
-            # education_instance.save()
-            education_serializer = EducationSerializer(data=edu, context={'user': user})
-            if education_serializer.is_valid():
-                education_serializer.save()
-            else:
-                raise serializers.ValidationError("Invalid data for educational background")
+            Education.objects.update_or_create(user=user, **edu)
 
-        # Handle other fields and return the updated data
-        # return super().create(validated_data)
-
+        # Save documents (resume and cover letter)
+        # documents_data = validated_data.pop('documents', None)
+        # if documents_data:
+        #     # Save or update the UserDocuments instance
+        #     UserDocuments.objects.update_or_create(user=user, defaults=documents_data)
 
         return validated_data
+
+    # def update(self, instance, validated_data):
+    #     return self.create(validated_data)
     
 
 

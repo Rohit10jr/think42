@@ -5,27 +5,6 @@ import * as Yup from "yup";
 
 
 // Yup Validation Schema
-const portfolioSchema = Yup.object().shape({
-  github: Yup.string()
-    .url("Invalid Github URL format")
-    .matches(
-      /^(https?:\/\/)?(www\.)?github\.com\/[A-Za-z0-9_-]+\/?$/,
-      "Enter a valid GitHub profile URL (e.g., https://github.com/username)"
-    )
-    // .required("GitHub link is required")
-    ,
-  linkedin: Yup.string()
-    .url("Invalid Linkedin URL format")
-    .matches(
-      /^(https?:\/\/)?(www\.)?linkedin\.com\/in\/[A-Za-z0-9_-]+\/?$/,
-      "Enter a valid LinkedIn profile URL (e.g., https://linkedin.com/in/username)"
-    )
-    // .required("LinkedIn link is required"),
-    
-  // other: Yup.string()
-  //   .url("Invalid URL format")
-  //   .nullable(),
-});
 
 const PortfolioSection = ({ formData, handleChange })=> {
   return (
@@ -33,7 +12,7 @@ const PortfolioSection = ({ formData, handleChange })=> {
       <h2 className="user-info-h2">Portfolio</h2>
       <Formik
         initialValues={{ github: "", linkedin: "", other: "" }}
-        validationSchema={portfolioSchema}
+        // validationSchema={portfolioSchema}
         onSubmit={(values) => {
           console.log("Form Data Submitted:", values);
           onSubmit(values);

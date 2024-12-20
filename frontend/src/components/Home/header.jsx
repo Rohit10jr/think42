@@ -4,6 +4,7 @@ import Bell from "../../assets/images/bell.png";
 import user from "../../assets/images/user.png";
 // import search from "../../assets/images/search";
 import "./home.css";
+import { NavLink, useLocation } from "react-router-dom";
 
 const Header = () => {
   return (
@@ -17,19 +18,31 @@ const Header = () => {
 
         {/* Navigation in the center */}
         <nav className="header-nav">
-          <a href="#" className="nav-link active">
-            Home
-          </a>
-          <a href="#" className="nav-link">
-            Jobs
-          </a>
-          <a href="#" className="nav-link">
-            Companies
-          </a>
-          <a href="#" className="nav-link">
-            Salaries
-          </a>
-        </nav>
+      <NavLink
+        to="/home"
+        className={`nav-link ${location.pathname === "/home" ? "active" : ""}`}
+      >
+        Home
+      </NavLink>
+      <NavLink
+        to="/jobs"
+        className={`nav-link ${location.pathname === "/jobs" ? "active" : ""}`}
+      >
+        Jobs
+      </NavLink>
+      <NavLink
+        to="/companies"
+        className={`nav-link ${location.pathname === "/companies" ? "active" : ""}`}
+      >
+        Companies
+      </NavLink>
+      <NavLink
+        to="/dash"
+        className={`nav-link ${location.pathname === "/dash" ? "active" : ""}`}
+      >
+        Dashboard
+      </NavLink>
+    </nav>
 
         {/* Icons and Logout on the right */}
         <div className="header-right">

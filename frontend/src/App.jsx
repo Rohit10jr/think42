@@ -14,6 +14,9 @@ import AuthForm from "./pages/AuthForm";
 import ErrorBoundary from "./components/ErrorBoundary";
 import DashBoard from "./pages/user_dashBoard_try";
 import UserDashBoard from "./pages/userDash"
+import FormikHome from "./pages/formikHome"
+
+import Formik from "./pages/tut_formik"
 const App = () => {
   return (
     <Router>
@@ -54,6 +57,9 @@ const App = () => {
                   <UserDashBoard />
                 </ErrorBoundary>
               } />
+        <Route path="/formik" element={<Formik/>}/>
+        <Route path="/formikHome" element={
+           <ErrorBoundary><FormikHome/></ErrorBoundary>}/>
 
         {/* <Route path="/verify" element={<VerifyOTP />} /> */}
       </Routes>

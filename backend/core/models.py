@@ -3,6 +3,8 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 import random
+import os
+
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email=None, mobile=None, password=None):
@@ -146,3 +148,26 @@ class ResumeParse(models.Model):
     
     def __str__(self):
         return f"Resume uploaded on {self.uploaded_at}"
+
+
+def upload_to(instance, filename):
+    return f"uploads/{instance.user.id}/{filename}"
+
+
+class UserDocuments(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='documents')
+    resume = models.FileField(upload_to=upload_to, null=True, blank=True)
+    cover_letter = models.FileField(upload_to=upload_to, null=True, blank=True)
+    uploaded_at = models.DateTimeField(auto_now=True)
+
+    def save(self, *args, **kwargs):
+        # Delete old resume file if a new one is being uploaded
+        if self.pk:
+            old_instance = UserDocuments.objects.get(pk=self.pk)
+            if old_instance.resume and old_instance.resume != self.resume:
+                if os.path.isfile(old_instance.resume.path):
+                    os.remove(old_instance.resume.path)
+            if old_instance.cover_letter and old_instance.cover_letter != self.cover_letter:
+                if os.path.isfile(old_instance.cover_letter.path):
+                    os.remove(old_instance.cover_letter.path)
+        super(UserDocuments, self).save(*args, **kwargs)
