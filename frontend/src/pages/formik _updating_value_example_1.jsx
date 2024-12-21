@@ -21,11 +21,11 @@ const AutoFillForm = () => {
       .required('Mobile number is required'),
   });
 
-  // First function: Simulates a GET request to fetch data
-  const fetchUserData = async () => {
+  // Combined function to fetch user data and update form values
+  const fetchAndUpdateUserData = async (setFieldValue) => {
     setLoading(true);
     try {
-      // Simulate an API call
+      // Simulate an API call to fetch user data
       const response = await new Promise((resolve) =>
         setTimeout(() => resolve({
           fullName: 'John Doe',
@@ -34,24 +34,19 @@ const AutoFillForm = () => {
         }), 1000)
       );
 
-      // Once data is fetched, call the second function
-      return response;
+      // Once data is fetched, update the form values
+      if (response) {
+        setFieldValue('fullName', response.fullName);
+        setFieldValue('email', response.email);
+        setFieldValue('mobile', response.mobile);
+      } else {
+        alert('Failed to fetch data');
+      }
     } catch (error) {
       console.error('Error fetching data:', error);
-      return null;
+      alert('Failed to fetch data');
     } finally {
       setLoading(false);
-    }
-  };
-
-  // Second function: Updates the form values
-  const updateFormikValues = (setFieldValue, userData) => {
-    if (userData) {
-      setFieldValue('fullName', userData.fullName);
-      setFieldValue('email', userData.email);
-      setFieldValue('mobile', userData.mobile);
-    } else {
-      alert('Failed to fetch data');
     }
   };
 
@@ -102,10 +97,7 @@ const AutoFillForm = () => {
             <div>
               <button
                 type="button"
-                onClick={async () => {
-                  const userData = await fetchUserData(); // Fetch data
-                  updateFormikValues(setFieldValue, userData); // Update formik values
-                }}
+                onClick={() => fetchAndUpdateUserData(setFieldValue)} // Call the combined function
                 disabled={loading}
               >
                 {loading ? 'Loading...' : 'Auto Fill Fields'}

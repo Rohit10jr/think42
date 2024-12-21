@@ -230,33 +230,18 @@ genai.configure(api_key= env('GEMINI_API_KEY'))
 # JSON structure for parsing
 json_structure = {
     "personal_information": {"full_name": "", "email": "", "mobile": ""},
-    "address_information": {"address": "", "city": "", "state": "", "zip_code": "", "country": ""},
-    "educational_background": [
-        {"degree": "", "institution": "", "field_of_study": "", "graduation_year": "", "gpa": ""},
-        {"degree": "", "institution": "", "field_of_study": "", "graduation_year": "", "gpa": ""}
-    ],
-    "work_experience": [
-        {"job_title": "", "company_name": "", "start_date": "", "end_date": "", "responsibilities": ""},
-        {"job_title": "", "company_name": "", "start_date": "", "end_date": "", "responsibilities": ""}
-    ],
-    "skill_set": {
-      "skills": [],
-    },
-    "portfolio": {"linkedin_url": "", "github_url": "", "other_url": ""},
+
 }
 
 def gemini_prompt(resume_text, urls, json_structure):
     prompt = textwrap.dedent(f"""
         You are an advanced AI model specialized in extracting structured information from resumes.
-        Use the provided resume text, resume Url to generate a JSON object that matches the given structure. 
-        Ensure that all relevant fields in the JSON structure are filled accurately based on the resume text. 
+        Use the provided resume text, to generate a JSON object that matches the given structure. 
+        Ensure that full name, email, mobile in the JSON structure are filled accurately based on the resume text. 
         If any information is missing in the resume, leave those fields blank in the JSON.
 
         Resume Text:
         {resume_text}
-
-        Resume Url:
-        {urls}
 
         JSON Structure:
         {json_structure}
@@ -330,6 +315,8 @@ class ResumeUploadView(CreateAPIView):
         if hasattr(self, 'generated_data'):
             response.data['parsed_data'] = self.generated_data
         response.data['message'] = "Resume uploaded and parsed successfully"
+        print("response to frontend")
+        print(response.data)
         return response
 
 
