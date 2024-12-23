@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.utils.timezone import now
-from .models import User, OTP, WorkExperience, Education, PortfolioLink, PersonalInformation, AddressInformation, ResumeParse, SkillSet
+from .models import User, OTP, WorkExperience, Education, PortfolioLink, PersonalInformation, AddressInformation, ResumeParse, SkillSet,UserDocuments
 import random
 from .utils import generate_otp, send_otp_via_email, extract_text 
 from .serializers import SignupSerializer, VerifyOTPSerializer, UserDetailSerializer, ResumeParseSerializer
@@ -12,6 +12,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.generics import CreateAPIView
 
+from rest_framework.parsers import MultiPartParser, FormParser
 
 import os
 import PyPDF2
@@ -136,25 +137,23 @@ class VerifyOTPView(APIView):
 
 
 class UserDetailView(APIView):
-    """
-    API endpoint to handle User Details with nested Personal Information,
-    Educational Background, Work Experience, and Portfolio.
-    """
-    authentication_classes = [JWTAuthentication]  # Enable JWT Authentication
-    permission_classes = [IsAuthenticated]       # Require the user to be authenticated
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]       
+    parser_classes = [MultiPartParser, FormParser]  
 
     def get(self, request, *args, **kwargs):
-        user = request.user  # Authenticated user
+        user = request.user  
 
-        # Fetch the user's personal information
+        # user's personal information
         personal_information = PersonalInformation.objects.filter(user=user).first()
         address_information = AddressInformation.objects.filter(user=user).first()
 
-        # Fetch related data
+        # user's Fetch related data
         educational_background = Education.objects.filter(user=user)
         work_experience = WorkExperience.objects.filter(user=user)
         skill_set = SkillSet.objects.filter(user=user).first()
         portfolio = PortfolioLink.objects.filter(user=user).first()
+        documents = UserDocuments.objects.filter(user=user).first()
 
         # Serialize the data
         data = {
@@ -164,6 +163,8 @@ class UserDetailView(APIView):
             "work_experience": work_experience,
             "skill_set": skill_set,
             "portfolio": portfolio,
+            "documents": documents,
+            
         }
         serializer = UserDetailSerializer(data)
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -172,11 +173,22 @@ class UserDetailView(APIView):
         """
         Create or update user details.
         """
+        user = request.user
         serializer = UserDetailSerializer(data=request.data, context={"user": request.user})
         print("s-1")
         if serializer.is_valid():
             print("s-2")
             serializer.save()
+            resume = request.FILES.get("resume", None)
+            cover_letter = request.FILES.get("cover_letter", None)
+
+            if resume or cover_letter:
+                user_documents, created = UserDocuments.objects.get_or_create(user=user)
+                if resume:
+                    user_documents.resume = resume
+                if cover_letter:
+                    user_documents.cover_letter = cover_letter
+                user_documents.save()
             print("s-3")
             return Response({"message": "User details saved successfully."}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -185,12 +197,26 @@ class UserDetailView(APIView):
         """
         Update user details.
         """
-        serializer = UserDetailSerializer(data=request.data, context={"user": request.user})
+        user = request.user
+        serializer = UserDetailSerializer(data=request.data, context={"user": user})
+
         if serializer.is_valid():
             serializer.save()
+            # resume = request.FILES.get("documents[resume]", None)
+            # cover_letter = request.FILES.get("documents[cover_letter]", None)
+            resume = request.FILES.get("resume", None)
+            cover_letter = request.FILES.get("cover_letter", None)
+
+            if resume or cover_letter:
+                user_documents, created = UserDocuments.objects.get_or_create(user=user)
+                if resume:
+                    user_documents.resume = resume
+                if cover_letter:
+                    user_documents.cover_letter = cover_letter
+                user_documents.save()
+
             return Response({"message": "User details updated successfully."}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
 
 
 # class ResumeUploadView(APIView):
@@ -229,19 +255,57 @@ genai.configure(api_key= env('GEMINI_API_KEY'))
 
 # JSON structure for parsing
 json_structure = {
-    "personal_information": {"full_name": "", "email": "", "mobile": ""},
-
+  "personal_information": {
+    "full_name": "",
+    "email": "",
+    "mobile": ""
+  },
+  "address_information": {
+    "address": "",
+    "city": "",
+    "state": "",
+    "zip_code": "",
+    "country": ""
+  },
+  "work_experience": [
+    {
+      "job_title": "",
+      "company_name": "",
+      "start_date": "",
+      "end_date": "",
+      "responsibilities": ""
+    }
+  ],
+  "educational_background": [
+    {
+      "degree": "",
+      "institution": "",
+      "field_of_study": "",
+      "graduation_year": "",
+      "gpa": ""
+    }
+  ],
+  "skill_set": {
+    "skills": []
+  },
+  "portfolio": {
+    "linkedin_url": "",
+    "github_url": "",
+    "other_url": ""
+  }
 }
 
 def gemini_prompt(resume_text, urls, json_structure):
     prompt = textwrap.dedent(f"""
         You are an advanced AI model specialized in extracting structured information from resumes.
         Use the provided resume text, to generate a JSON object that matches the given structure. 
-        Ensure that full name, email, mobile in the JSON structure are filled accurately based on the resume text. 
+        Ensure that all relevant fields in the JSON structure are filled accurately based on the resume text. 
         If any information is missing in the resume, leave those fields blank in the JSON.
 
         Resume Text:
         {resume_text}
+        Resume Url:
+        {urls}
 
         JSON Structure:
         {json_structure}
@@ -292,7 +356,7 @@ class ResumeUploadView(CreateAPIView):
 
         # Extract text from the file
         resume_text, urls = extract_text(file_path)
-        resume_text = extract_text(file_path)
+        # resume_text = extract_text(file_path)
         if not resume_text:
             raise ValueError("Failed to extract text from the file.")
 

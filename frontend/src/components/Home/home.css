@@ -160,7 +160,7 @@ header {
 
 
 /* Add Education Button */
-.add-education-btn, .add-work-btn{
+.add-education-btn, .add-work-btn, .formik-add-button{
   background-color: #4CAF50; 
   color: white; 
   padding: 5px 10px; 
@@ -171,26 +171,33 @@ header {
   transition: background-color 0.3s ease; 
 }
 
-.add-education-btn:hover, .add-work-btn:hover {
+.add-education-btn:hover, .add-work-btn:hover, .formik-add-button:hover{
   background-color: #45a049; /* Darker green when hovering */
 }
 
 /* Remove Education Button */
-.remove-education-btn, .remove-work-btn {
+.remove-education-btn, .remove-work-btn, .formik-remove-button {
   background-color: #f44336; 
-    color: white; 
+  color: white; 
   padding: 5px 10px; 
   border: none; 
   border-radius: 5px; 
   font-size: 12px; 
   cursor: pointer; 
   transition: background-color 0.3s ease; 
-  margin-left: 10px; 
+  /* margin-left: 10px;  */
+  margin-right: 10px; 
+  /* margin-bottom: 30px; */
 }
 
-.remove-education-btn:hover, .remove-work-btn:hover {
+.remove-education-btn:hover, .remove-work-btn:hover, .formik-remove-button:hover {
   background-color: #e53935; 
 }
+
+
+
+
+
 
 /* 
 button {

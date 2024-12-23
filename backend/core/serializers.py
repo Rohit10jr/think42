@@ -149,7 +149,19 @@ class PortfolioSerializer(serializers.ModelSerializer):
 class UserDocumentsSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserDocuments
-        fields = ['resume', 'cover_letter']
+        # fields = ['resume', 'cover_letter']
+        exclude = ["user"]
+
+    def create(self, validated_data):
+        user = self.context['user']  
+        validated_data['user'] = user
+        return super().create(validated_data)
+    
+    def update(self, instance, validated_data):
+        instance.resume = validated_data.get('resume', instance.resume)
+        instance.cover_letter = validated_data.get('cover_letter', instance.cover_letter)
+        instance.save()
+        return instance
 
 
 class UserDetailSerializer(serializers.Serializer):
@@ -163,39 +175,34 @@ class UserDetailSerializer(serializers.Serializer):
 
     def create(self, validated_data):
         user = self.context['user']
+        
+        personal_info_data = validated_data.pop('personal_information', None)
+        if personal_info_data:
+            PersonalInformation.objects.update_or_create(user=user, defaults=personal_info_data)   
+
+        address_info_data = validated_data.pop('address_information', None)
+        if personal_info_data:
+            AddressInformation.objects.update_or_create(user=user, defaults=address_info_data)
+
+        work_experience_data = validated_data.pop('work_experience', [])
+        for work in work_experience_data:
+            WorkExperience.objects.update_or_create(user=user, **work)
+
+        education_data = validated_data.pop('educational_background', [])
+        for edu in education_data:
+            Education.objects.update_or_create(user=user, **edu)
+
+        portfolio_data = validated_data.pop('portfolio', None)
+        if portfolio_data:
+            PortfolioLink.objects.update_or_create(user=user, defaults=portfolio_data)
 
         skill_info = validated_data.pop('skill_set', None)
         if skill_info:
             SkillSet.objects.update_or_create(user=user, defaults=skill_info)
 
-        portfolio_data = validated_data.pop('portfolio', None)
-        if portfolio_data:
-            PortfolioLink.objects.update_or_create(user=user, defaults=portfolio_data)
-        
-        # Save personal information
-        personal_info_data = validated_data.pop('personal_information', None)
-        if personal_info_data:
-            PersonalInformation.objects.update_or_create(user=user, defaults=personal_info_data)   
 
-        # Save address information
-        address_info_data = validated_data.pop('address_information', None)
-        if personal_info_data:
-            AddressInformation.objects.update_or_create(user=user, defaults=address_info_data)
-
-        # Save work experience
-        work_experience_data = validated_data.pop('work_experience', [])
-        for work in work_experience_data:
-            WorkExperience.objects.update_or_create(user=user, **work)
-
-        # Extract and save educational background
-        education_data = validated_data.pop('educational_background', [])
-        for edu in education_data:
-            Education.objects.update_or_create(user=user, **edu)
-
-        # Save documents (resume and cover letter)
         # documents_data = validated_data.pop('documents', None)
         # if documents_data:
-        #     # Save or update the UserDocuments instance
         #     UserDocuments.objects.update_or_create(user=user, defaults=documents_data)
 
         return validated_data

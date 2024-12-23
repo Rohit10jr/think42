@@ -5,6 +5,11 @@ from django.utils import timezone
 import random
 import os
 
+import logging 
+logger = logging.getLogger(__name__)
+from django.core.exceptions import ValidationError
+
+
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email=None, mobile=None, password=None):
@@ -153,21 +158,43 @@ class ResumeParse(models.Model):
 def upload_to(instance, filename):
     return f"uploads/{instance.user.id}/{filename}"
 
-
+# def validate_file_type(value):
+#     allowed_extensions = ['pdf', 'doc', 'docx']
+#     ext = value.name.split('.')[-1].lower()
+#     if ext not in allowed_extensions:
+#         raise ValidationError('Unsupported file extension. Allowed types: PDF, DOC, DOCX.')
+    
 class UserDocuments(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='documents')
+    # resume = models.FileField(upload_to=upload_to, validators=[validate_file_type], null=True, blank=True)
+    # cover_letter = models.FileField(upload_to=upload_to, validators=[validate_file_type], null=True, blank=True)
     resume = models.FileField(upload_to=upload_to, null=True, blank=True)
     cover_letter = models.FileField(upload_to=upload_to, null=True, blank=True)
     uploaded_at = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
-        # Delete old resume file if a new one is being uploaded
         if self.pk:
-            old_instance = UserDocuments.objects.get(pk=self.pk)
-            if old_instance.resume and old_instance.resume != self.resume:
-                if os.path.isfile(old_instance.resume.path):
-                    os.remove(old_instance.resume.path)
-            if old_instance.cover_letter and old_instance.cover_letter != self.cover_letter:
-                if os.path.isfile(old_instance.cover_letter.path):
-                    os.remove(old_instance.cover_letter.path)
+            try:
+                old_instance = UserDocuments.objects.get(pk=self.pk)
+                # Delete old resume if a new one is uploaded
+                if old_instance.resume and old_instance.resume != self.resume:
+                    if old_instance.resume and hasattr(old_instance.resume, 'path') and os.path.isfile(old_instance.resume.path):
+                        os.remove(old_instance.resume.path)
+                # Delete old cover letter if a new one is uploaded
+                if old_instance.cover_letter and old_instance.cover_letter != self.cover_letter:
+                    if old_instance.cover_letter and hasattr(old_instance.cover_letter, 'path') and os.path.isfile(old_instance.cover_letter.path):
+                        os.remove(old_instance.cover_letter.path)
+            except UserDocuments.DoesNotExist:
+                pass  # No old instance exists; safe to skip
         super(UserDocuments, self).save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        # Delete associated files when the instance is deleted
+        try:
+            if self.resume and hasattr(self.resume, 'path') and os.path.isfile(self.resume.path):
+                os.remove(self.resume.path)
+            if self.cover_letter and hasattr(self.cover_letter, 'path') and os.path.isfile(self.cover_letter.path):
+                os.remove(self.cover_letter.path)
+        except OSError as e:
+            logger.error(f"Error deleting files: {e}")
+        super(UserDocuments, self).delete(*args, **kwargs)
