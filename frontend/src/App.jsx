@@ -13,10 +13,12 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 import AuthForm from "./pages/AuthForm";
 import ErrorBoundary from "./components/ErrorBoundary";
 import DashBoard from "./pages/user_dashBoard_try";
-import UserDashBoard from "./pages/userDash"
-import FormikHome from "./pages/formikHome"
+import UserDashBoard from "./pages/userDash";
+import FormikHome from "./pages/formikHome";
+import Formik from "./pages/tut_formik";
+import UserTestJson from "./pages/TestFileJson";
+import UserTestUpload from "./pages/TestFileUpload";
 
-import Formik from "./pages/tut_formik"
 const App = () => {
   return (
     <Router>
@@ -52,14 +54,41 @@ const App = () => {
 
         {/* <Route path="/dashboard" element={<ProtectedRoute element={<DashBoard />} />} /> */}
         {/* <Route path="/dashboard" element={<DashBoard />} /> */}
-        <Route path="/dash"  element={
-                <ErrorBoundary>
-                  <UserDashBoard />
-                </ErrorBoundary>
-              } />
-        <Route path="/formik" element={<Formik/>}/>
-        <Route path="/formikHome" element={
-           <ErrorBoundary><FormikHome/></ErrorBoundary>}/>
+        <Route
+          path="/dash"
+          element={
+            <ErrorBoundary>
+              <UserDashBoard />
+            </ErrorBoundary>
+          }
+        />
+        <Route path="/formik" element={<Formik />} />
+        <Route
+          path="/formikHome"
+          element={
+            <ErrorBoundary>
+              <FormikHome />
+            </ErrorBoundary>
+          }
+        />
+        {/* test route to check the file uploading  */}
+        <Route
+          path="/testJson"
+          element={
+            <ErrorBoundary>
+              <UserTestJson />
+            </ErrorBoundary>
+          }
+        />
+
+        <Route
+          path="/testUpload"
+          element={
+            <ErrorBoundary>
+              <UserTestUpload />
+            </ErrorBoundary>
+          }
+        />
 
         {/* <Route path="/verify" element={<VerifyOTP />} /> */}
       </Routes>

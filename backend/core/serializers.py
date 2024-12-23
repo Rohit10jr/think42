@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User, OTP, PersonalInformation, AddressInformation, Education, WorkExperience, PortfolioLink, ResumeParse, SkillSet, UserDocuments
+from .models import User, OTP, PersonalInformation, AddressInformation, Education, WorkExperience, PortfolioLink, ResumeParse, SkillSet, UserDocuments, UserDocumentsTest, PortfolioTest
 from django.utils.timezone import now
 
 
@@ -217,3 +217,57 @@ class ResumeParseSerializer(serializers.ModelSerializer):
         model = ResumeParse
         fields = ['id', 'resume_file', 'uploaded_at']
         read_only_fields = ['id', 'uploaded_at']
+
+
+
+#############################################
+# Test serializer
+#############################################
+
+
+class PortfolioTestSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PortfolioTest
+        fields = ['linkedin_url']
+
+class UserDocumentsTestSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserDocumentsTest
+        fields = ['resume']
+
+class UserTestSerializer(serializers.Serializer):
+    # portfolio_links = PortfolioTestSerializer()
+    portfolio_links = serializers.JSONField()
+    # documents = UserDocumentsTestSerializer(required=False)
+
+    def create(self, validated_data):
+        # Extract nested data
+        portfolio_data = validated_data.pop('portfolio_links', None)
+        documents_data = validated_data.pop('resume', None)
+        
+        # Create the User
+        # user = User.objects.create(**validated_data)
+        user = self.context['user']
+        
+        if portfolio_data: 
+            PortfolioTest.objects.update_or_create(user=user,defaults=portfolio_data)
+        if documents_data:
+            # resume_file = self.context['request'].FILES.get('documents[resume]')
+            resume_file = self.context['request'].FILES.get('resume')
+            if resume_file: 
+                UserDocumentsTest.objects.update_or_create(
+                    user=user, defaults={'resume': resume_file}
+                    # user=user, defaults={'resume': resume_file} if resume_file else {}
+                )
+        
+        # return validated_data
+        return user
+    
+    def is_valid(self, raise_exception=False):
+        valid = super().is_valid(raise_exception=False)
+        if not valid:
+            print("Validation errors:", self.errors)
+        return valid    
+
+    
+

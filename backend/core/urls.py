@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import RegisterView, LoginView, VerifyOTPView, UserDetailView, ResumeUploadView, CheckEmailExistsView
+from .views import RegisterView, LoginView, VerifyOTPView, UserDetailView, ResumeUploadView, CheckEmailExistsView, UserTestJsonView,UserTestFileUpload
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -20,4 +20,9 @@ urlpatterns = [
     # path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),  # Login
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),  # Refresh
     path('token/verify/', TokenVerifyView.as_view(), name='token_verify'),  # Verify
+
+
+    # Testing
+    path("user/test-upload/", UserTestFileUpload.as_view(), name="user-test"),
+    path("user/test-json/", UserTestJsonView.as_view(), name="user-test"),
 ]

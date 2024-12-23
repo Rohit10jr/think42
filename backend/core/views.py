@@ -2,10 +2,10 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.utils.timezone import now
-from .models import User, OTP, WorkExperience, Education, PortfolioLink, PersonalInformation, AddressInformation, ResumeParse, SkillSet,UserDocuments
+from .models import User, OTP, WorkExperience, Education, PortfolioLink, PersonalInformation, AddressInformation, ResumeParse, SkillSet,UserDocuments, UserDocumentsTest,PortfolioTest
 import random
 from .utils import generate_otp, send_otp_via_email, extract_text 
-from .serializers import SignupSerializer, VerifyOTPSerializer, UserDetailSerializer, ResumeParseSerializer
+from .serializers import SignupSerializer, VerifyOTPSerializer, UserDetailSerializer, ResumeParseSerializer, UserTestSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from rest_framework.permissions import IsAuthenticated
@@ -416,3 +416,56 @@ class CheckEmailExistsView(APIView):
             "available": True,
             "message": "Email is available."
         }, status=status.HTTP_200_OK)
+
+
+
+#################################################
+# Test
+#################################################
+
+# testing view for file 
+
+class UserTestFileUpload(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser]
+
+    def post (self, request):
+        user = request.user
+        resume = request.FILES.get("resume", None)
+        if resume:
+            user_documents, created = UserDocumentsTest.objects.get_or_create(user=user)
+            user_documents.resume = resume
+            user_documents.save()
+            return Response({"message": "User Test file uploaded successfully."}, status=status.HTTP_201_CREATED)
+        return Response({"error":"file not uploaded"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+# testing view for nested json 
+class UserTestJsonView(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]       
+    parser_classes = [MultiPartParser, FormParser]  
+
+    def post(self, request, *args, **kwargs):
+        """
+        Create or update user details.
+        """
+        user = request.user
+        serializer = UserTestSerializer(data=request.data, context={"user": user, "request": request})
+        print("t-1")
+        print("Request Data:", request.data)
+        print("Request Files:", request.FILES)
+        if serializer.is_valid():
+            print("t-2")
+            serializer.save()
+            # resume = request.FILES.get("resume", None)
+            # if resume:
+            #     user_documents, created = UserDocumentsTest.objects.get_or_create(user=user)
+            #     user_documents.resume = resume
+            #     user_documents.save()
+            print("t-3")
+            return Response({"message": "User Test nested json saved successfully."}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    

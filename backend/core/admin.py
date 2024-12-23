@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import OTP, User, PortfolioLink, Education, WorkExperience, PersonalInformation, AddressInformation, SkillSet, ResumeParse, UserDocuments
+from .models import OTP, User, PortfolioLink, Education, WorkExperience, PersonalInformation, AddressInformation, SkillSet, ResumeParse, UserDocuments,PortfolioTest, UserDocumentsTest
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 # Register your models here.
 
@@ -32,4 +32,9 @@ admin.site.register(PortfolioLink)
 admin.site.register(SkillSet)
 admin.site.register(ResumeParse)
 admin.site.register(UserDocuments)
+
+
+# testing
+admin.site.register(PortfolioTest)
+admin.site.register(UserDocumentsTest)
 

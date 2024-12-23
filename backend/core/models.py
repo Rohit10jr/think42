@@ -198,3 +198,18 @@ class UserDocuments(models.Model):
         except OSError as e:
             logger.error(f"Error deleting files: {e}")
         super(UserDocuments, self).delete(*args, **kwargs)
+
+
+###################################
+# Test
+###################################
+
+
+class PortfolioTest(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="portfolio_links2")
+    linkedin_url = models.URLField(blank=True, null=True)
+
+
+class UserDocumentsTest(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='documents2')
+    resume = models.FileField(upload_to='Test/resume/', null=True, blank=True)
