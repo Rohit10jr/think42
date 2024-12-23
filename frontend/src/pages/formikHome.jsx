@@ -47,16 +47,19 @@ const initialValues = {
     other_url: "",
   },
 
-  documents: { resume: null, cover_letter: null },
+  resume: null,
+  cover_letter: null
+
+  // documents: { resume: null, cover_letter: null },
 };
 
 const validationSchema = Yup.object({
   personal_information: Yup.object({
     full_name: Yup.string()
-      .required("Full Name is required")
-      .min(3, "Full Name must be at least 3 characters long"),
+      .required("Full Name is required"),
+      // .min(3, "Full Name must be at least 3 characters long"),
     email: Yup.string()
-      .email("Invalid email format")
+      // .email("Invalid email format")
       .required("Email is required"),
     mobile: Yup.string()
       // .matches(/^[0-9]{10}$/, "Mobile number must be exactly 10 digits")
@@ -112,7 +115,7 @@ const validationSchema = Yup.object({
 
   skill_set: Yup.object({
     skills: Yup.array()
-      .min(1, "At least one skill is required")
+      // .min(1, "At least one skill is required")
       .required("Skills is required"),
   }),
 
@@ -127,8 +130,8 @@ const validationSchema = Yup.object({
       .required("github_url URL is required"),
   }),
 
-  documents: Yup.object({
-    resume: Yup.mixed().required("resume is required"),
+  // documents: Yup.object({
+  //   resume: Yup.mixed().required("resume is required"),
     //   .test('fileType', 'The file must be a PDF or DOCX', (value) => {
     //     // Check if the file is not empty and is of the correct type
     //     if (value) {
@@ -143,7 +146,7 @@ const validationSchema = Yup.object({
     //     return true; // No file, no validation error
     //   }),
 
-    cover_letter: Yup.mixed().nullable(),
+    // cover_letter: Yup.mixed().nullable(),
     // .test('fileType', 'The file must be a PDF or DOCX', (value) => {
     //   if (value) {
     //     return ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'].includes(value.type);
@@ -156,7 +159,7 @@ const validationSchema = Yup.object({
     //   }
     //   return true; // No file, no validation error
     // }),
-  }),
+  // }),
 });
 
 const MyForm = () => {
@@ -389,13 +392,13 @@ const MyForm = () => {
       // formData.append("documents[resume]", resumeFileInput.files[0]);
       // formData.append("documents[certificate]", certificateFileInput.files[0]);
 
-      if (values.documents.resume) {
-        formData.append("resume", values.documents.resume);
+      if (values.resume) {
+        formData.append("resume", values.resume);
       }
-      if (values.documents.cover_letter) {
+      if (values.cover_letter) {
         formData.append(
           "cover_letter",
-          values.documents.cover_letter
+          values.cover_letter
         );
       }
 
@@ -410,7 +413,7 @@ const MyForm = () => {
         {
           headers: {
             // "Content-Type": "application/json",
-            // "Content-Type": "multipart/form-data",
+            "Content-Type": "multipart/form-data",
           },
         }
       );
@@ -484,7 +487,8 @@ const MyForm = () => {
                   type="file"
                   ref={fileInputRef}
                   style={{ display: "none" }}
-                  accept=".doc,.docx,.pdf,.odt,.rtf"
+                  // accept=".doc,.docx,.pdf,.odt,.rtf"
+                  accept=".pdf,.doc,.docx"
                   onChange={(e) => handleResumeParse(e, setFieldValue)}
                 />
               </div>
@@ -1094,59 +1098,61 @@ const MyForm = () => {
                 </div>
               </div>
 
-              {/* portfolio Section */}
+              {/* Resume Section */}
               <div className="documents">
                 <h2 className="user-info-h2">Documents</h2>
 
                 {/* Resume File Input */}
                 {/* <div className="input-container"> */}
-                <label className="input-label" htmlFor="documents.resume">
+                <label className="input-label" htmlFor="resume">
                   Resume
                 </label>
                 <input
                   type="file"
-                  id="documents.resume"
-                  name="documents.resume"
+                  id="resume"
+                  name="resume"
+                  accept=".pdf,.doc,.docx"
                   onChange={(event) => {
                     setFieldValue(
-                      "documents.resume",
+                      "resume",
                       event.currentTarget.files[0]
                     );
                   }}
                   className="input-field"
                 />
-                <ErrorMessage
-                  name="documents.resume"
+                {/* <ErrorMessage
+                  name="resume"
                   component="div"
                   className="error-message"
-                />
+                /> */}
                 {/* </div> */}
 
                 {/* Cover Letter File Input */}
                 <div className="input-container">
                   <label
                     className="input-label"
-                    htmlFor="documents.cover_letter"
+                    htmlFor="cover_letter"
                   >
                     Cover Letter
                   </label>
                   <input
                     type="file"
-                    id="documents.cover_letter"
-                    name="documents.cover_letter"
+                    id="cover_letter"
+                    name="cover_letter"
+                    accept=".pdf,.doc,.docx"
                     onChange={(event) => {
                       setFieldValue(
-                        "documents.cover_letter",
+                        "cover_letter",
                         event.currentTarget.files[0]
                       );
                     }}
                     className="input-field"
                   />
-                  <ErrorMessage
-                    name="documents.cover_letter"
+                  {/* <ErrorMessage
+                    name="cover_letter"
                     component="div"
                     className="error-message"
-                  />
+                  /> */}
                 </div>
               </div>
 

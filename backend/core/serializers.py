@@ -199,13 +199,29 @@ class UserDetailSerializer(serializers.Serializer):
         skill_info = validated_data.pop('skill_set', None)
         if skill_info:
             SkillSet.objects.update_or_create(user=user, defaults=skill_info)
-
+        
+        # documents_data = validated_data.pop('resume', None)
+        # if documents_data:
+        #     # resume_file = self.context['request'].FILES.get('documents[resume]')
+        #     resume_file = self.context['request'].FILES.get('resume')
+        #     if resume_file: 
+        #         UserDocuments.objects.update_or_create(
+        #             user=user, defaults={'resume': resume_file}
+        #             # user=user, defaults={'resume': resume_file} if resume_file else {}
+        #         )
 
         # documents_data = validated_data.pop('documents', None)
         # if documents_data:
         #     UserDocuments.objects.update_or_create(user=user, defaults=documents_data)
 
         return validated_data
+        # return user
+        
+    def is_valid(self, raise_exception=False):
+        valid = super().is_valid(raise_exception=False)
+        if not valid:
+            print("Validation errors:", self.errors)
+        return valid
 
     # def update(self, instance, validated_data):
     #     return self.create(validated_data)
@@ -235,39 +251,55 @@ class UserDocumentsTestSerializer(serializers.ModelSerializer):
         model = UserDocumentsTest
         fields = ['resume']
 
+
+# class UserTestSerializer(serializers.Serializer):
+#     # portfolio_links = PortfolioTestSerializer()
+#     portfolio_links = serializers.JSONField()
+#     # documents = UserDocumentsTestSerializer(required=False)
+
+#     def create(self, validated_data):
+#         # Extract nested data
+#         portfolio_data = validated_data.pop('portfolio_links', None)
+#         documents_data = validated_data.pop('resume', None)
+        
+#         # Create the User
+#         user = self.context['user']
+#         # user = User.objects.create(**validated_data)
+        
+#         if portfolio_data: 
+#             PortfolioTest.objects.update_or_create(user=user,defaults=portfolio_data)
+#         if documents_data:
+#             # resume_file = self.context['request'].FILES.get('documents[resume]')
+#             resume_file = self.context['request'].FILES.get('resume')
+#             if resume_file: 
+#                 UserDocumentsTest.objects.update_or_create(
+#                     user=user, defaults={'resume': resume_file}
+#                     # user=user, defaults={'resume': resume_file} if resume_file else {}
+#                 )
+        
+#         return validated_data
+#         # return user
+  
+
+    
+
 class UserTestSerializer(serializers.Serializer):
-    # portfolio_links = PortfolioTestSerializer()
-    portfolio_links = serializers.JSONField()
-    # documents = UserDocumentsTestSerializer(required=False)
+    portfolio_links = serializers.JSONField() 
+    documents = UserDocumentsTestSerializer(required=False)
 
     def create(self, validated_data):
         # Extract nested data
         portfolio_data = validated_data.pop('portfolio_links', None)
-        documents_data = validated_data.pop('resume', None)
-        
-        # Create the User
-        # user = User.objects.create(**validated_data)
         user = self.context['user']
         
         if portfolio_data: 
             PortfolioTest.objects.update_or_create(user=user,defaults=portfolio_data)
-        if documents_data:
-            # resume_file = self.context['request'].FILES.get('documents[resume]')
-            resume_file = self.context['request'].FILES.get('resume')
-            if resume_file: 
-                UserDocumentsTest.objects.update_or_create(
-                    user=user, defaults={'resume': resume_file}
-                    # user=user, defaults={'resume': resume_file} if resume_file else {}
-                )
+       
+        return validated_data
         
-        # return validated_data
-        return user
     
     def is_valid(self, raise_exception=False):
         valid = super().is_valid(raise_exception=False)
         if not valid:
             print("Validation errors:", self.errors)
-        return valid    
-
-    
-
+        return valid 

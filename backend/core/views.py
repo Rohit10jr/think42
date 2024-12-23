@@ -174,8 +174,17 @@ class UserDetailView(APIView):
         Create or update user details.
         """
         user = request.user
-        serializer = UserDetailSerializer(data=request.data, context={"user": request.user})
+        parsed_data = request.data.dict()  # Convert QueryDict to a regular dictionary
+        for key in ['personal_information', 'address_information', 'work_experience', 
+                    'educational_background', 'skill_set', 'portfolio']:
+            if key in parsed_data:
+                parsed_data[key] = json.loads(parsed_data[key])
+
+        # Pass the parsed data to the serializer
+        serializer = UserDetailSerializer(data=parsed_data, context={"user": user, "request": request})
         print("s-1")
+        print("Request Data:", request.data)
+        print("Request Files:", request.FILES)
         if serializer.is_valid():
             print("s-2")
             serializer.save()
@@ -459,11 +468,11 @@ class UserTestJsonView(APIView):
         if serializer.is_valid():
             print("t-2")
             serializer.save()
-            # resume = request.FILES.get("resume", None)
-            # if resume:
-            #     user_documents, created = UserDocumentsTest.objects.get_or_create(user=user)
-            #     user_documents.resume = resume
-            #     user_documents.save()
+            resume = request.FILES.get("resume", None)
+            if resume:
+                user_documents, created = UserDocumentsTest.objects.get_or_create(user=user)
+                user_documents.resume = resume
+                user_documents.save()
             print("t-3")
             return Response({"message": "User Test nested json saved successfully."}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

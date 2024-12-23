@@ -199,6 +199,9 @@ class UserDocuments(models.Model):
             logger.error(f"Error deleting files: {e}")
         super(UserDocuments, self).delete(*args, **kwargs)
 
+    def __str__(self):
+        return self.user.email
+
 
 ###################################
 # Test
@@ -213,3 +216,10 @@ class PortfolioTest(models.Model):
 class UserDocumentsTest(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='documents2')
     resume = models.FileField(upload_to='Test/resume/', null=True, blank=True)
+
+    # def __str__(self):
+    #     # Ensure a string is always returned
+    #     return f"Documents for {self.user.email if self.user else 'Unknown User'}"
+
+    # def __str__(self):W
+    #     return self.user.email
