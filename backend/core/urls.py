@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import RegisterView, LoginView, VerifyOTPView, UserDetailView, ResumeUploadView, CheckEmailExistsView, UserTestJsonView,UserTestFileUpload
+from .views import RegisterView, LoginView, VerifyOTPView, UserDetailView, ResumeUploadView, CheckEmailExistsView, UserTestJsonView,UserTestFileUpload, UserDocumentsView
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -15,6 +15,7 @@ urlpatterns = [
     path('check-email/', CheckEmailExistsView.as_view(), name='check_email'),
     
     path("user/details/", UserDetailView.as_view(), name="user-details"),
+    path("user-documents/", UserDocumentsView.as_view(), name="user-documents"),
 
     # jwt
     # path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),  # Login

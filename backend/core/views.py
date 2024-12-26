@@ -5,14 +5,14 @@ from django.utils.timezone import now
 from .models import User, OTP, WorkExperience, Education, PortfolioLink, PersonalInformation, AddressInformation, ResumeParse, SkillSet,UserDocuments, UserDocumentsTest,PortfolioTest
 import random
 from .utils import generate_otp, send_otp_via_email, extract_text 
-from .serializers import SignupSerializer, VerifyOTPSerializer, UserDetailSerializer, ResumeParseSerializer, UserTestSerializer
+from .serializers import SignupSerializer, VerifyOTPSerializer, UserDetailSerializer, ResumeParseSerializer, UserTestSerializer,UserDocumentsSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.generics import CreateAPIView
 
-from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 
 import os
 import PyPDF2
@@ -136,26 +136,127 @@ class VerifyOTPView(APIView):
 
 
 
+# class UserDetailView(APIView):
+#     authentication_classes = [JWTAuthentication]
+#     permission_classes = [IsAuthenticated]       
+#     parser_classes = [MultiPartParser, FormParser]  
+
+#     def get(self, request, *args, **kwargs):
+#         user = request.user  
+
+#         # user's personal information
+#         personal_information = PersonalInformation.objects.filter(user=user).first()
+#         address_information = AddressInformation.objects.filter(user=user).first()
+#         # user's Fetch related data
+#         educational_background = Education.objects.filter(user=user)
+#         work_experience = WorkExperience.objects.filter(user=user)
+#         skill_set = SkillSet.objects.filter(user=user).first()
+#         portfolio = PortfolioLink.objects.filter(user=user).first()
+#         documents = UserDocuments.objects.filter(user=user).first()
+
+#         # Serialize the data
+#         data = {
+#             "personal_information": personal_information,
+#             "address_information": address_information,
+#             "educational_background": educational_background,
+#             "work_experience": work_experience,
+#             "skill_set": skill_set,
+#             "portfolio": portfolio,
+#             # "documents": documents,
+            
+#         }
+#         serializer = UserDetailSerializer(data)
+#         return Response(serializer.data, status=status.HTTP_200_OK)
+
+#     def post(self, request, *args, **kwargs):
+#         """
+#         Create or update user details.
+#         """
+#         user = request.user
+#         parsed_data = request.data.dict()  # Convert QueryDict to a regular dictionary
+#         for key in ['personal_information', 'address_information', 'work_experience', 
+#                     'educational_background', 'skill_set', 'portfolio']:
+#             if key in parsed_data:
+#                 parsed_data[key] = json.loads(parsed_data[key])
+
+#         # Pass the parsed data to the serializer
+#         serializer = UserDetailSerializer(data=parsed_data, context={"user": user, "request": request})
+#         print("s-1")
+#         print("Request Data:", request.data)
+#         print("Request Files:", request.FILES)
+#         if serializer.is_valid():
+#             print("s-2")
+#             serializer.save()
+#             resume = request.FILES.get("resume", None)
+#             cover_letter = request.FILES.get("cover_letter", None)
+
+#             if resume or cover_letter:
+#                 user_documents, created = UserDocuments.objects.get_or_create(user=user)
+#                 if resume:
+#                     user_documents.resume = resume
+#                 if cover_letter:
+#                     user_documents.cover_letter = cover_letter
+#                 user_documents.save()
+#             print("s-3")
+#             return Response({"message": "User details saved successfully."}, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+#     def put(self, request, *args, **kwargs):
+#         """
+#         Update user details.
+#         """
+#         user = request.user
+#         serializer = UserDetailSerializer(data=request.data, context={"user": user})
+
+#         if serializer.is_valid():
+#             serializer.save()
+#             # resume = request.FILES.get("documents[resume]", None)
+#             # cover_letter = request.FILES.get("documents[cover_letter]", None)
+#             resume = request.FILES.get("resume", None)
+#             cover_letter = request.FILES.get("cover_letter", None)
+
+#             if resume or cover_letter:
+#                 user_documents, created = UserDocuments.objects.get_or_create(user=user)
+#                 if resume:
+#                     user_documents.resume = resume
+#                 if cover_letter:
+#                     user_documents.cover_letter = cover_letter
+#                 user_documents.save()
+
+#             return Response({"message": "User details updated successfully."}, status=status.HTTP_200_OK)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
 class UserDetailView(APIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]       
-    parser_classes = [MultiPartParser, FormParser]  
+    parser_classes = [JSONParser, MultiPartParser, FormParser]  
 
     def get(self, request, *args, **kwargs):
-        user = request.user  
+        user = request.user
 
-        # user's personal information
+        # Fetch related data
         personal_information = PersonalInformation.objects.filter(user=user).first()
         address_information = AddressInformation.objects.filter(user=user).first()
-
-        # user's Fetch related data
         educational_background = Education.objects.filter(user=user)
         work_experience = WorkExperience.objects.filter(user=user)
         skill_set = SkillSet.objects.filter(user=user).first()
         portfolio = PortfolioLink.objects.filter(user=user).first()
-        documents = UserDocuments.objects.filter(user=user).first()
+        # documents = UserDocuments.objects.filter(user=user).first()
 
         # Serialize the data
+        # data = {
+        #     "personal_information": PersonalInformationSerializer(personal_information).data if personal_information else {},
+        #     "address_information": AddressInformationSerializer(address_information).data if address_information else {},
+        #     "educational_background": EducationSerializer(educational_background, many=True).data,
+        #     "work_experience": WorkExperienceSerializer(work_experience, many=True).data,
+        #     "skill_set": SkillSetSerializer(skill_set).data if skill_set else {},
+        #     "portfolio": PortfolioLinkSerializer(portfolio).data if portfolio else {},
+        #     "resume": documents.resume.url if documents and documents.resume else None,
+        #     "cover_letter": documents.cover_letter.url if documents and documents.cover_letter else None,
+        # }
+
         data = {
             "personal_information": personal_information,
             "address_information": address_information,
@@ -163,8 +264,6 @@ class UserDetailView(APIView):
             "work_experience": work_experience,
             "skill_set": skill_set,
             "portfolio": portfolio,
-            "documents": documents,
-            
         }
         serializer = UserDetailSerializer(data)
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -174,6 +273,7 @@ class UserDetailView(APIView):
         Create or update user details.
         """
         user = request.user
+        # parsed_data = request.data
         parsed_data = request.data.dict()  # Convert QueryDict to a regular dictionary
         for key in ['personal_information', 'address_information', 'work_experience', 
                     'educational_background', 'skill_set', 'portfolio']:
@@ -183,8 +283,8 @@ class UserDetailView(APIView):
         # Pass the parsed data to the serializer
         serializer = UserDetailSerializer(data=parsed_data, context={"user": user, "request": request})
         print("s-1")
-        print("Request Data:", request.data)
-        print("Request Files:", request.FILES)
+        # print("Request Data:", request.data)
+        # print("Request Files:", request.FILES)
         if serializer.is_valid():
             print("s-2")
             serializer.save()
@@ -204,15 +304,24 @@ class UserDetailView(APIView):
 
     def put(self, request, *args, **kwargs):
         """
-        Update user details.
+        Create or update user details.
         """
         user = request.user
-        serializer = UserDetailSerializer(data=request.data, context={"user": user})
+        parsed_data = request.data
+        # parsed_data = request.data.dict()  # Convert QueryDict to a regular dictionary
+        # for key in ['personal_information', 'address_information', 'work_experience', 
+        #             'educational_background', 'skill_set', 'portfolio']:
+        #     if key in parsed_data:
+        #         parsed_data[key] = json.loads(parsed_data[key])
 
+        # Pass the parsed data to the serializer
+        serializer = UserDetailSerializer(data=parsed_data, context={"user": user, "request": request})
+        print("s-1")
+        # print("Request Data:", request.data)
+        # print("Request Files:", request.FILES)
         if serializer.is_valid():
+            print("s-2")
             serializer.save()
-            # resume = request.FILES.get("documents[resume]", None)
-            # cover_letter = request.FILES.get("documents[cover_letter]", None)
             resume = request.FILES.get("resume", None)
             cover_letter = request.FILES.get("cover_letter", None)
 
@@ -223,9 +332,17 @@ class UserDetailView(APIView):
                 if cover_letter:
                     user_documents.cover_letter = cover_letter
                 user_documents.save()
-
-            return Response({"message": "User details updated successfully."}, status=status.HTTP_200_OK)
+            print("s-3")
+            return Response({"message": "User details saved successfully."}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+
+
+
+
 
 
 # class ResumeUploadView(APIView):
@@ -427,6 +544,55 @@ class CheckEmailExistsView(APIView):
         }, status=status.HTTP_200_OK)
 
 
+
+
+
+
+
+    # resume get and upload 
+
+class UserDocumentsView(APIView):
+    parser_classes = [MultiPartParser, FormParser]
+
+    def get(self, request, *args, **kwargs):
+        """
+        Fetch user's resume and cover letter.
+        """
+        user = request.user
+        try:
+            user_documents = UserDocuments.objects.get(user=user)
+            serializer = UserDocumentsSerializer(user_documents)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except UserDocuments.DoesNotExist:
+            return Response(
+                {"error": "User documents not found."},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+    def put(self, request, *args, **kwargs):
+        """
+        Update user's resume and cover letter.
+        """
+        user = request.user
+        try:
+            user_documents, created = UserDocuments.objects.get_or_create(user=user)
+            serializer = UserDocumentsSerializer(
+                user_documents, data=request.data, partial=True
+            )
+
+            if serializer.is_valid():
+                serializer.save()
+                return Response(
+                    {"message": "User documents updated successfully."},
+                    status=status.HTTP_200_OK,
+                )
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        except Exception as e:
+            return Response(
+                {"error": f"An error occurred: {str(e)}"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
 
 #################################################
 # Test

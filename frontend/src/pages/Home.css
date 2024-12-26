@@ -27,6 +27,7 @@
   margin: 0 auto;
   background-color: #fff;
   padding: 20px 0px;
+  /* border: 1px red solid; */
   /* border-radius: 8px; */
   /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
 }
@@ -106,4 +107,39 @@
 .submit-button:disabled {
   background-color: #9e9e9e; /* Grey for disabled state */
   cursor: not-allowed;
+}
+
+
+.formik-add-button, .formik-remove-button{
+  display: inline-block;
+  padding: 10px 15px;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Add Button */
+.formik-add-button {
+  background-color: #28a745; /* Green */
+}
+
+.formik-add-button:hover {
+  background-color: #218838; /* Darker green on hover */
+  transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
+/* Remove Button */
+.formik-remove-button {
+  background-color: #dc3545; 
+  margin-right: 10px;/* Red */
+}
+
+.formik-remove-button:hover {
+  background-color: #c82333; /* Darker red on hover */
+  transform: scale(1.05); /* Slightly enlarge on hover */
 }

@@ -4,7 +4,21 @@ import * as Yup from "yup";
 import api from "../services/api.jsx";
 import { debounce } from "lodash";
 import "./Home.css";
-// import ResumeUpload from "../components/Home/upload.jsx";
+import ResumeUpload from "../components/Home/upload.jsx";
+
+import SkillFeild from "../components/Form/skillField.jsx";
+import PortfolioField from "../components/Form/portfolioField.jsx";
+import FileInput from "../components/Form/documentField.jsx";
+
+// import PersonalInfoSection from "../components/Form/PersonalinfoSection.jsx";
+import AddressInfoSection from "../components/Form/AddressSection.jsx";
+import PortfolioSection from "../components/Form/portfolioSection.jsx";
+import WorkExperienceSection from "../components/Form/WorkExperienceSection.jsx";
+import EducationSection from "../components/Form/EducationSection.jsx";
+
+
+import Header from "../components/Home/header.jsx";
+import Footer from "../components/Home/footer.jsx";
 
 const initialValues = {
   personal_information: {
@@ -48,16 +62,15 @@ const initialValues = {
   },
 
   resume: null,
-  cover_letter: null
+  cover_letter: null,
 
   // documents: { resume: null, cover_letter: null },
 };
 
 const validationSchema = Yup.object({
   personal_information: Yup.object({
-    full_name: Yup.string()
-      .required("Full Name is required"),
-      // .min(3, "Full Name must be at least 3 characters long"),
+    full_name: Yup.string().required("Full Name is required"),
+    // .min(3, "Full Name must be at least 3 characters long"),
     email: Yup.string()
       // .email("Invalid email format")
       .required("Email is required"),
@@ -132,33 +145,33 @@ const validationSchema = Yup.object({
 
   // documents: Yup.object({
   //   resume: Yup.mixed().required("resume is required"),
-    //   .test('fileType', 'The file must be a PDF or DOCX', (value) => {
-    //     // Check if the file is not empty and is of the correct type
-    //     if (value) {
-    //       return ['application.pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'].includes(value.type);
-    //     }
-    //     return true; // No file, no validation error
-    //   })
-    //   .test('fileSize', 'The file is too large. Max size is 5MB', (value) => {
-    //     if (value) {
-    //       return value.size <= 5 * 1024 * 1024; // 5MB limit
-    //     }
-    //     return true; // No file, no validation error
-    //   }),
+  //   .test('fileType', 'The file must be a PDF or DOCX', (value) => {
+  //     // Check if the file is not empty and is of the correct type
+  //     if (value) {
+  //       return ['application.pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'].includes(value.type);
+  //     }
+  //     return true; // No file, no validation error
+  //   })
+  //   .test('fileSize', 'The file is too large. Max size is 5MB', (value) => {
+  //     if (value) {
+  //       return value.size <= 5 * 1024 * 1024; // 5MB limit
+  //     }
+  //     return true; // No file, no validation error
+  //   }),
 
-    // cover_letter: Yup.mixed().nullable(),
-    // .test('fileType', 'The file must be a PDF or DOCX', (value) => {
-    //   if (value) {
-    //     return ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'].includes(value.type);
-    //   }
-    //   return true; // No file, no validation error
-    // })
-    // .test('fileSize', 'The file is too large. Max size is 5MB', (value) => {
-    //   if (value) {
-    //     return value.size <= 5 * 1024 * 1024; // 5MB limit
-    //   }
-    //   return true; // No file, no validation error
-    // }),
+  // cover_letter: Yup.mixed().nullable(),
+  // .test('fileType', 'The file must be a PDF or DOCX', (value) => {
+  //   if (value) {
+  //     return ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'].includes(value.type);
+  //   }
+  //   return true; // No file, no validation error
+  // })
+  // .test('fileSize', 'The file is too large. Max size is 5MB', (value) => {
+  //   if (value) {
+  //     return value.size <= 5 * 1024 * 1024; // 5MB limit
+  //   }
+  //   return true; // No file, no validation error
+  // }),
   // }),
 });
 
@@ -396,10 +409,7 @@ const MyForm = () => {
         formData.append("resume", values.resume);
       }
       if (values.cover_letter) {
-        formData.append(
-          "cover_letter",
-          values.cover_letter
-        );
+        formData.append("cover_letter", values.cover_letter);
       }
 
       for (let pair of formData.entries()) {
@@ -437,6 +447,7 @@ const MyForm = () => {
 
   return (
     <>
+    <Header/>
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -445,53 +456,25 @@ const MyForm = () => {
       >
         {({ values, setFieldValue, handleBlur, isValid, dirty }) => (
           <Form>
+              <ResumeUpload
+                handleUploadClick={handleUploadClick}
+                handleResumeParse={handleResumeParse}
+                fileInputRef={fileInputRef}
+                fileName={fileName}
+                isUploading={isUploading}
+                setFieldValue={setFieldValue}
+              />
             <div className="form-container">
-              {/* <div>
-                <label htmlFor="file">Resume (PDF, DOCX, etc.)</label>
-                <input
-                  type="file"
-                  id="file"
-                  name="file"
-                  accept=".pdf,.docx,.txt" // Restrict accepted file types
-                  ref={fileInputRef}
-                  onChange={(e) => handleResumeParse(e, setFieldValue)}
-                />
-                <ErrorMessage name="file" component="div" />
-              </div> */}
 
-              <div className="section resume-upload">
-                <div className="resume-header">
-                  <h2>Autofill Application</h2>
-                  <p className="upload-description">
-                    Upload your resume/CV in seconds with the autofill option.
-                  </p>
-                </div>
-                <div className="upload-box" onClick={handleUploadClick}>
-                  <p className="upload-text">
-                    <span className="upload-link">Upload your resume</span> or
-                    drag and drop it here
-                  </p>
-                  {fileName ? (
-                    <p className="uploaded-file">Uploaded File: {fileName}</p>
-                  ) : (
-                    <>
-                      <p className="upload-filetypes">
-                        Only .doc, .docx, .pdf, .odt, .rtf
-                      </p>
-                      <p className="upload-optional">(Optional)</p>
-                    </>
-                  )}
-                </div>
-                {isUploading && <p className="upload-status">Uploading...</p>}
-                <input
-                  type="file"
-                  ref={fileInputRef}
-                  style={{ display: "none" }}
-                  // accept=".doc,.docx,.pdf,.odt,.rtf"
-                  accept=".pdf,.doc,.docx"
-                  onChange={(e) => handleResumeParse(e, setFieldValue)}
-                />
-              </div>
+              {/* Personal Information Section */}
+
+              {/* <PersonalInfoSection
+            handleBlur={handleBlur}
+            setFieldValue={setFieldValue}
+            values={values}
+            emailStatus={emailStatus}
+            checkEmailAvailability={checkEmailAvailability}
+          /> */}
 
               {/* Personal Information Section */}
 
@@ -588,421 +571,13 @@ const MyForm = () => {
               </div>
 
               {/* Address Information Section */}
-              <div className="address-info-section">
-                <h2 className="user-info-h2">Address Information</h2>
-
-                <div className="input-container">
-                  <label
-                    className="input-label"
-                    htmlFor="address_information.address"
-                  >
-                    Address
-                  </label>
-                  <Field
-                    type="text"
-                    id="address_information.address"
-                    name="address_information.address"
-                    className="input-field"
-                    // placeholder="Address"
-                  />
-                  <ErrorMessage
-                    name="address_information.address"
-                    component="div"
-                    className="error-message"
-                  />
-                </div>
-
-                <div className="input-container">
-                  <label
-                    className="input-label"
-                    htmlFor="address_information.city"
-                  >
-                    City
-                  </label>
-                  <Field
-                    type="text"
-                    id="address_information.city"
-                    name="address_information.city"
-                    className="input-field"
-                    // placeholder="City"
-                  />
-                  <ErrorMessage
-                    name="address_information.city"
-                    component="div"
-                    className="error-message"
-                  />
-                </div>
-
-                <div className="input-container">
-                  <label
-                    className="input-label"
-                    htmlFor="address_information.state"
-                  >
-                    State
-                  </label>
-                  <Field
-                    type="text"
-                    id="address_information.state"
-                    name="address_information.state"
-                    className="input-field"
-                    // placeholder="State"
-                  />
-                  <ErrorMessage
-                    name="address_information.state"
-                    component="div"
-                    className="error-message"
-                  />
-                </div>
-
-                <div className="input-container">
-                  <label
-                    className="input-label"
-                    htmlFor="address_information.zip_code"
-                  >
-                    Zip Code
-                  </label>
-                  <Field
-                    type="text"
-                    id="address_information.zip_code"
-                    name="address_information.zip_code"
-                    className="input-field"
-                    // placeholder="Zip Code"
-                  />
-                  <ErrorMessage
-                    name="address_information.zip_code"
-                    component="div"
-                    className="error-message"
-                  />
-                </div>
-
-                <div className="input-container">
-                  <label
-                    className="input-label"
-                    htmlFor="address_information.country"
-                  >
-                    Country
-                  </label>
-                  <Field
-                    type="text"
-                    id="address_information.country"
-                    name="address_information.country"
-                    className="input-field"
-                    // placeholder="Country"
-                  />
-                  <ErrorMessage
-                    name="address_information.country"
-                    component="div"
-                    className="error-message"
-                  />
-                </div>
-              </div>
+              <AddressInfoSection values={values.address_information} />
 
               {/* Work Experience Section */}
-              <FieldArray
-                name="work_experience"
-                render={(arrayHelpers) => (
-                  <div className="work-section">
-                    <h2 className="user-info-h2">Work Experience</h2>
-
-                    {/* Dynamically render each work experience entry with count */}
-                    {values.work_experience.map((_, index) => (
-                      <div key={index} className="work-entry">
-                        {/* Display Work Experience Count */}
-                        <h5 className="dynamic-section-title">
-                          Experience {index + 1}
-                        </h5>
-
-                        <div className="input-container">
-                          <label
-                            className="input-label"
-                            htmlFor={`work_experience.${index}.job_title`}
-                          >
-                            Job Title
-                          </label>
-                          <Field
-                            type="text"
-                            id={`work_experience.${index}.job_title`}
-                            name={`work_experience.${index}.job_title`}
-                            className="input-field"
-                            placeholder="Job title"
-                          />
-                          <ErrorMessage
-                            name={`work_experience.${index}.job_title`}
-                            component="div"
-                            className="error-message"
-                          />
-                        </div>
-
-                        <div className="input-container">
-                          <label
-                            className="input-label"
-                            htmlFor={`work_experience.${index}.company_name`}
-                          >
-                            Company Name
-                          </label>
-                          <Field
-                            type="text"
-                            id={`work_experience.${index}.company_name`}
-                            name={`work_experience.${index}.company_name`}
-                            className="input-field"
-                            // placeholder="company name"
-                          />
-                          <ErrorMessage
-                            name={`work_experience.${index}.company_name`}
-                            component="div"
-                            className="error-message"
-                          />
-                        </div>
-
-                        <div className="input-container">
-                          <label
-                            className="input-label"
-                            htmlFor={`work_experience.${index}.start_date`}
-                          >
-                            Start Date
-                          </label>
-                          <Field
-                            type="text"
-                            id={`work_experience.${index}.start_date`}
-                            name={`work_experience.${index}.start_date`}
-                            className="input-field"
-                            placeholder="YYYY-MM-DD"
-                          />
-                          <ErrorMessage
-                            name={`work_experience.${index}.start_date`}
-                            component="div"
-                            className="error-message"
-                          />
-                        </div>
-
-                        <div className="input-container">
-                          <label
-                            className="input-label"
-                            htmlFor={`work_experience.${index}.end_date`}
-                          >
-                            End Date
-                          </label>
-                          <Field
-                            type="text"
-                            id={`work_experience.${index}.end_date`}
-                            name={`work_experience.${index}.end_date`}
-                            className="input-field"
-                            placeholder="YYYY-MM-DD"
-                          />
-                          <ErrorMessage
-                            name={`work_experience.${index}.end_date`}
-                            component="div"
-                            className="error-message"
-                          />
-                        </div>
-
-                        <div className="input-container">
-                          <label
-                            className="input-label"
-                            htmlFor={`work_experience.${index}.responsibilities`}
-                          >
-                            Responsibilities
-                          </label>
-                          <Field
-                            type="text"
-                            id={`work_experience.${index}.responsibilities`}
-                            name={`work_experience.${index}.responsibilities`}
-                            className="input-field"
-                            placeholder="Responsibilities"
-                          />
-                          <ErrorMessage
-                            name={`work_experience.${index}.responsibilities`}
-                            component="div"
-                            className="error-message"
-                          />
-                        </div>
-
-                        {/* Show Remove Button only for the last entry */}
-                        {values.work_experience.length > 1 &&
-                          index === values.work_experience.length - 1 && (
-                            <button
-                              type="button"
-                              onClick={() => arrayHelpers.remove(index)} // Remove work experience section
-                              className="formik-remove-button"
-                            >
-                              Remove Work Experience
-                            </button>
-                          )}
-
-                        {/* Add New Work Experience Button, only show at the bottom */}
-                        {index === values.work_experience.length - 1 && (
-                          <button
-                            type="button"
-                            onClick={
-                              () =>
-                                arrayHelpers.push({
-                                  job_title: "",
-                                  responsibilities: "",
-                                }) // Add new empty work experience entry
-                            }
-                            className="formik-add-button"
-                          >
-                            Add Work Experience
-                          </button>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                )}
-              />
+              <WorkExperienceSection values={values} />
 
               {/* Education Section */}
-
-              <FieldArray
-                name="educational_background"
-                render={(arrayHelpers) => (
-                  <div className="educational_background">
-                    <h2 className="user-info-h2">Education Background</h2>
-                    {/* Dynamically render each work experience entry with count */}
-                    {values.educational_background.map((_, index) => (
-                      <div key={index} className="education-entry">
-                        {/* Display Work Experience Count */}
-                        <h5>Experience {index + 1}</h5>
-
-                        <div className="input-container">
-                          <label
-                            className="input-label"
-                            htmlFor={`educational_background.${index}.degree`}
-                          >
-                            Degree
-                          </label>
-                          <Field
-                            type="text"
-                            id={`educational_background.${index}.degree`}
-                            name={`educational_background.${index}.degree`}
-                            className="input-field"
-                            placeholder="Degree"
-                          />
-                          <ErrorMessage
-                            name={`educational_background.${index}.degree`}
-                            component="div"
-                            className="error-message"
-                          />
-                        </div>
-
-                        <div className="input-container">
-                          <label
-                            className="input-label"
-                            htmlFor={`educational_background.${index}.institution`}
-                          >
-                            Institution
-                          </label>
-                          <Field
-                            type="text"
-                            id={`educational_background.${index}.institution`}
-                            name={`educational_background.${index}.institution`}
-                            className="input-field"
-                            placeholder="Institution"
-                          />
-                          <ErrorMessage
-                            name={`educational_background.${index}.institution`}
-                            component="div"
-                            className="error-message"
-                          />
-                        </div>
-
-                        <div className="input-container">
-                          <label
-                            className="input-label"
-                            htmlFor={`educational_background.${index}.field_of_study`}
-                          >
-                            Field of Study
-                          </label>
-                          <Field
-                            type="text"
-                            id={`educational_background.${index}.field_of_study`}
-                            name={`educational_background.${index}.field_of_study`}
-                            className="input-field"
-                            placeholder="Field of Study"
-                          />
-                          <ErrorMessage
-                            name={`educational_background.${index}.field_of_study`}
-                            component="div"
-                            className="error-message"
-                          />
-                        </div>
-
-                        <div className="input-container">
-                          <label
-                            className="input-label"
-                            htmlFor={`educational_background.${index}.graduation_year`}
-                          >
-                            Graduation Year
-                          </label>
-                          <Field
-                            type="text"
-                            id={`educational_background.${index}.graduation_year`}
-                            name={`educational_background.${index}.graduation_year`}
-                            className="input-field"
-                            placeholder="YYYY"
-                          />
-                          <ErrorMessage
-                            name={`educational_background.${index}.graduation_year`}
-                            component="div"
-                            className="error-message"
-                          />
-                        </div>
-
-                        <div className="input-container">
-                          <label
-                            className="input-label"
-                            htmlFor={`educational_background.${index}.gpa`}
-                          >
-                            GPA
-                          </label>
-                          <Field
-                            type="text"
-                            id={`educational_background.${index}.gpa`}
-                            name={`educational_background.${index}.gpa`}
-                            className="input-field"
-                            placeholder="Gpa"
-                          />
-                          <ErrorMessage
-                            name={`educational_background.${index}.gpa`}
-                            component="div"
-                            className="error-message"
-                          />
-                        </div>
-
-                        {/* Show Remove Button only for the last entry */}
-                        {values.educational_background.length > 1 &&
-                          index ===
-                            values.educational_background.length - 1 && (
-                            <button
-                              type="button"
-                              onClick={() => arrayHelpers.remove(index)} // Remove work experience section
-                              className="formik-remove-button"
-                            >
-                              Remove education
-                            </button>
-                          )}
-
-                        {/* Add New Work Experience Button, only show at the bottom */}
-                        {index === values.educational_background.length - 1 && (
-                          <button
-                            type="button"
-                            onClick={
-                              () =>
-                                arrayHelpers.push({
-                                  degree: "",
-                                  gpa: "",
-                                }) // Add new empty work experience entry
-                            }
-                            className="formik-add-button"
-                          >
-                            Add Education
-                          </button>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                )}
-              />
+              <EducationSection values={values} />
 
               {/* Skills Input */}
               <div className="skill_section">
@@ -1037,123 +612,45 @@ const MyForm = () => {
               </div>
 
               {/* portfolio Section */}
+              {/* <PortfolioSection values={values.portfolio} /> */}
+
+
               <div className="portfolio">
-                <h2 className="user-info-h2">Portfolio</h2>
+            <h2 className="user-info-h2">Portfolio</h2>
 
-                <div className="input-container">
-                  <label
-                    className="input-label"
-                    htmlFor="portfolio.linkedin_url"
-                  >
-                    Likedin
-                  </label>
-                  <Field
-                    type="text"
-                    id="portfolio.linkedin_url"
-                    name="portfolio.linkedin_url"
-                    className="input-field"
-                    // placeholder="State"
-                  />
-                  <ErrorMessage
-                    name="portfolio.linkedin_url"
-                    component="div"
-                    className="error-message"
-                  />
-                </div>
+            <PortfolioField
+              label="LinkedIn"
+              fieldName="portfolio.linkedin_url"
+            />
 
-                <div className="input-container">
-                  <label className="input-label" htmlFor="portfolio.github_url">
-                    github_url
-                  </label>
-                  <Field
-                    type="text"
-                    id="portfolio.github_url"
-                    name="portfolio.github_url"
-                    className="input-field"
-                    // placeholder="Zip Code"
-                  />
-                  <ErrorMessage
-                    name="portfolio.github_url"
-                    component="div"
-                    className="error-message"
-                  />
-                </div>
+            <PortfolioField
+              label="GitHub URL"
+              fieldName="portfolio.github_url"
+            />
 
-                <div className="input-container">
-                  <label className="input-label" htmlFor="portfolio.other_url">
-                    other_url Link
-                  </label>
-                  <Field
-                    type="text"
-                    id="portfolio.other_url"
-                    name="portfolio.other_url"
-                    className="input-field"
-                    // placeholder="Country"
-                  />
-                  <ErrorMessage
-                    name="portfolio.other_url"
-                    component="div"
-                    className="error-message"
-                  />
-                </div>
-              </div>
+            <PortfolioField
+              label="Other URL Link"
+              fieldName="portfolio.other_url"
+            />
+          </div>
 
-              {/* Resume Section */}
+              {/* Documents Section */}
               <div className="documents">
                 <h2 className="user-info-h2">Documents</h2>
 
                 {/* Resume File Input */}
-                {/* <div className="input-container"> */}
-                <label className="input-label" htmlFor="resume">
-                  Resume
-                </label>
-                <input
-                  type="file"
-                  id="resume"
-                  name="resume"
-                  accept=".pdf,.doc,.docx"
-                  onChange={(event) => {
-                    setFieldValue(
-                      "resume",
-                      event.currentTarget.files[0]
-                    );
-                  }}
-                  className="input-field"
+                <FileInput
+                  label="Resume"
+                  fieldName="resume"
+                  setFieldValue={setFieldValue}
                 />
-                {/* <ErrorMessage
-                  name="resume"
-                  component="div"
-                  className="error-message"
-                /> */}
-                {/* </div> */}
 
                 {/* Cover Letter File Input */}
-                <div className="input-container">
-                  <label
-                    className="input-label"
-                    htmlFor="cover_letter"
-                  >
-                    Cover Letter
-                  </label>
-                  <input
-                    type="file"
-                    id="cover_letter"
-                    name="cover_letter"
-                    accept=".pdf,.doc,.docx"
-                    onChange={(event) => {
-                      setFieldValue(
-                        "cover_letter",
-                        event.currentTarget.files[0]
-                      );
-                    }}
-                    className="input-field"
-                  />
-                  {/* <ErrorMessage
-                    name="cover_letter"
-                    component="div"
-                    className="error-message"
-                  /> */}
-                </div>
+                <FileInput
+                  label="Cover Letter"
+                  fieldName="cover_letter"
+                  setFieldValue={setFieldValue}
+                />
               </div>
 
               {/* Submit Button */}
@@ -1168,6 +665,7 @@ const MyForm = () => {
           </Form>
         )}
       </Formik>
+      <Footer/>
     </>
   );
 };

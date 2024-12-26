@@ -81,22 +81,50 @@ class PersonalInformationSerializer(serializers.ModelSerializer):
         model = PersonalInformation
         exclude = ["user"]  # User is handled separately
     
-    def create(self, validated_data):
-        user = self.context['user']  # Set user from context
-        validated_data['user'] = user
-        return super().create(validated_data)
+    # def create(self, validated_data):
+    #     user = validated_data.pop('user', None)
+    #     if not user:
+    #         raise serializers.ValidationError({"user": "User must be provided."})
+    #     validated_data['user'] = user
+    #     return super().create(validated_data)
+    
+    # def update(self, instance, validated_data):
+    #     user = validated_data.pop('user', None)
+    #     if not user:
+    #         raise serializers.ValidationError({"user": "User must be provided."})
+        
+    #     for attr, value in validated_data.items():
+    #         setattr(instance, attr, value)
+
+    #     instance.user = user
+    #     instance.save()
+    #     return instance
 
 
 
 class AddressInformationSerializer(serializers.ModelSerializer):
     class Meta:
         model = AddressInformation
-        exclude = ["user"] 
+        exclude = ["user"]  # User is handled separately
     
-    def create(self, validated_data):
-        user = self.context['user'] 
-        validated_data['user'] = user
-        return super().create(validated_data)
+    # def create(self, validated_data):
+    #     user = validated_data.pop('user', None)
+    #     if not user:
+    #         raise serializers.ValidationError({"user": "User must be provided."})
+    #     validated_data['user'] = user
+    #     return super().create(validated_data)
+    
+    # def update(self, instance, validated_data):
+    #     user = validated_data.pop('user', None)
+    #     if not user:
+    #         raise serializers.ValidationError({"user": "User must be provided."})
+        
+    #     for attr, value in validated_data.items():
+    #         setattr(instance, attr, value)
+
+    #     instance.user = user
+    #     instance.save()
+    #     return instance
 
 
 class EducationSerializer(serializers.ModelSerializer):
@@ -104,31 +132,72 @@ class EducationSerializer(serializers.ModelSerializer):
         model = Education
         exclude = ["user"]
 
-    def create(self, validated_data):
-        user = self.context['user']  
-        validated_data['user'] = user
-        return super().create(validated_data)
+    # def create(self, validated_data):
+    #     user = validated_data.pop('user', None)
+    #     if not user:
+    #         raise serializers.ValidationError({"user": "User must be provided."})
+    #     validated_data['user'] = user
+    #     return super().create(validated_data)
+    
+    # def update(self, instance, validated_data):
+    #     user = validated_data.pop('user', None)
+    #     if not user:
+    #         raise serializers.ValidationError({"user": "User must be provided."})
+        
+    #     for attr, value in validated_data.items():
+    #         setattr(instance, attr, value)
 
-
+    #     instance.user = user
+    #     instance.save()
+    #     return instance
+    
 class WorkExperienceSerializer(serializers.ModelSerializer):
     class Meta:
         model = WorkExperience
         exclude = ["user"]
 
-    def create(self, validated_data):
-        user = self.context['user']  
-        validated_data['user'] = user
-        return super().create(validated_data)
+    # def create(self, validated_data):
+    #     user = validated_data.pop('user', None)
+    #     if not user:
+    #         raise serializers.ValidationError({"user": "User must be provided."})
+    #     validated_data['user'] = user
+    #     return super().create(validated_data)
+    
+    # def update(self, instance, validated_data):
+    #     user = validated_data.pop('user', None)
+    #     if not user:
+    #         raise serializers.ValidationError({"user": "User must be provided."})
+        
+    #     for attr, value in validated_data.items():
+    #         setattr(instance, attr, value)
+
+    #     instance.user = user
+    #     instance.save()
+    #     return instance
 
 class SkillsetSerializer(serializers.ModelSerializer):
     class Meta:
         model = SkillSet
         exclude = ["user"]
 
-    def create(self, validated_data):
-        user = self.context['user']  
-        validated_data['user'] = user
-        return super().create(validated_data)
+    # def create(self, validated_data):
+    #     user = validated_data.pop('user', None)
+    #     if not user:
+    #         raise serializers.ValidationError({"user": "User must be provided."})
+    #     validated_data['user'] = user
+    #     return super().create(validated_data)
+    
+    # def update(self, instance, validated_data):
+    #     user = validated_data.pop('user', None)
+    #     if not user:
+    #         raise serializers.ValidationError({"user": "User must be provided."})
+        
+    #     for attr, value in validated_data.items():
+    #         setattr(instance, attr, value)
+
+    #     instance.user = user
+    #     instance.save()
+    #     return instance
         
 
 class PortfolioSerializer(serializers.ModelSerializer):
@@ -136,38 +205,48 @@ class PortfolioSerializer(serializers.ModelSerializer):
         model = PortfolioLink
         exclude = ["user"]
 
-    def create(self, validated_data):
-        user = self.context['user']  
-        validated_data['user'] = user
-        return super().create(validated_data)
+    # def create(self, validated_data):
+    #     user = validated_data.pop('user', None)
+    #     if not user:
+    #         raise serializers.ValidationError({"user": "User must be provided."})
+    #     validated_data['user'] = user
+    #     return super().create(validated_data)
+    
+    # def update(self, instance, validated_data):
+    #     user = validated_data.pop('user', None)
+    #     if not user:
+    #         raise serializers.ValidationError({"user": "User must be provided."})
+        
+    #     for attr, value in validated_data.items():
+    #         setattr(instance, attr, value)
+
+    #     instance.user = user
+    #     instance.save()
+    #     return instance
     
     # def validate_url(self, value):
     #     if not value.startswith("http"):
     #         raise serializers.ValidationError("Invalid URL. It must start with 'http'.")
     #     return value
 
-# class UserDocumentsSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = UserDocuments
-#         # fields = ['resume', 'cover_letter']
-#         exclude = ["user"]
-
-#     def create(self, validated_data):
-#         user = self.context['user']  
-#         validated_data['user'] = user
-#         return super().create(validated_data)
-    
-#     def update(self, instance, validated_data):
-#         instance.resume = validated_data.get('resume', instance.resume)
-#         instance.cover_letter = validated_data.get('cover_letter', instance.cover_letter)
-#         instance.save()
-#         return instance
-
 class UserDocumentsSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserDocuments
-        fields = ['resume', 'cover_letter']
-        
+        # fields = ['resume', 'cover_letter']
+        exclude = ["user"]
+
+    def create(self, validated_data):
+        user = self.context['user']  
+        validated_data['user'] = user
+        return super().create(validated_data)
+    
+    def update(self, instance, validated_data):
+        instance.resume = validated_data.get('resume', instance.resume)
+        instance.cover_letter = validated_data.get('cover_letter', instance.cover_letter)
+        instance.save()
+        return instance
+
+
 class UserDetailSerializer(serializers.Serializer):
     personal_information = PersonalInformationSerializer()
     address_information = AddressInformationSerializer()
@@ -187,18 +266,45 @@ class UserDetailSerializer(serializers.Serializer):
         address_info_data = validated_data.pop('address_information', None)
         if personal_info_data:
             AddressInformation.objects.update_or_create(user=user, defaults=address_info_data)
-
+        
+        # Personal Information
+        # personal_info_data = validated_data.pop('personal_information', None)
+        # if personal_info_data:
+        #     personal_serializer = PersonalInformationSerializer()
+        #     personal_serializer.create({**personal_info_data, "user": user})
+        
+        # Address Information
+        # address_info_data = validated_data.pop('address_information', None)
+        # if address_info_data:
+        #     address_serializer = AddressInformationSerializer()
+        #     address_serializer.create({**address_info_data, "user": user})
+        
+        # Work Experience
         work_experience_data = validated_data.pop('work_experience', [])
         if work_experience_data:
             WorkExperience.objects.filter(user=user).delete()
             for work in work_experience_data:
-                WorkExperience.objects.update_or_create(user=user, **work)
-
+                work_experience_data.create({**work, "user": user})
+        
+        # Educational Background
         education_data = validated_data.pop('educational_background', [])
         if education_data:
             Education.objects.filter(user=user).delete()
             for edu in education_data:
-                Education.objects.update_or_create(user=user, **edu)
+                education_serializer = EducationSerializer()
+                education_serializer.create({**edu, "user": user})
+
+        # Skill Set
+        # skill_info = validated_data.pop('skill_set', None)
+        # if skill_info:
+        #     skill_serializer = SkillsetSerializer()
+        #     skill_serializer.create({**skill_info, "user": user})
+        
+        # Portfolio
+        # portfolio_data = validated_data.pop('portfolio', None)
+        # if portfolio_data:
+        #     portfolio_serializer = PortfolioSerializer()
+        #     portfolio_serializer.create({**portfolio_data, "user": user})
 
         portfolio_data = validated_data.pop('portfolio', None)
         if portfolio_data:
@@ -208,8 +314,64 @@ class UserDetailSerializer(serializers.Serializer):
         if skill_info:
             SkillSet.objects.update_or_create(user=user, defaults=skill_info)
 
-        
         return validated_data
+
+    # def update(self, instance, validated_data):
+    #     user = self.context['user']
+        
+    #     # Personal Information
+    #     personal_info_data = validated_data.pop('personal_information', None)
+    #     address_info_data = validated_data.pop('address_information', None)
+    #     work_experience_data = validated_data.pop('work_experience', [])
+    #     education_data = validated_data.pop('educational_background', [])
+    #     portfolio_data = validated_data.pop('portfolio', None)
+    #     skill_info = validated_data.pop('skill_set', None)
+
+
+    #     if personal_info_data:
+    #         personal_info_data.update(
+    #             PersonalInformation.objects.filter(user=user).first(),
+    #             {**personal_info_data, "user": user}
+    #         )
+
+    #     if address_info_data:
+    #         address_serializer = AddressInformationSerializer()
+    #         address_serializer.update(
+    #             AddressInformation.objects.filter(user=user).first(),
+    #             {**address_info_data, "user": user}
+    #         )
+        
+    #     for work in work_experience_data:
+    #         existing_work = WorkExperience.objects.filter(user=user, **work).first()
+    #         work_serializer = WorkExperienceSerializer()
+    #         if existing_work:
+    #             work_serializer.update(existing_work, {**work, "user": user})
+    #         else:
+    #             work_serializer.create({**work, "user": user})
+        
+    #     for edu in education_data:
+    #         existing_edu = Education.objects.filter(user=user, **edu).first()
+    #         education_serializer = EducationSerializer()
+    #         if existing_edu:
+    #             education_serializer.update(existing_edu, {**edu, "user": user})
+    #         else:
+    #             education_serializer.create({**edu, "user": user})
+        
+    #     if portfolio_data:
+    #         portfolio_data.update(
+    #             PortfolioLink.objects.filter(user=user).first(),
+    #             {**portfolio_data, "user": user}
+    #         )
+
+    #     if skill_info:
+    #         skill_serializer = SkillsetSerializer()
+    #         skill_serializer.update(
+    #             SkillSet.objects.filter(user=user).first(),
+    #             {**skill_info, "user": user}
+    #         )
+
+    #     return validated_data
+
         
         # documents_data = validated_data.pop('resume', None)
         # if documents_data:

@@ -1,42 +1,58 @@
 import React, { useState } from "react";
 import Header from "../components/Home/header";
-import "./userDash.css";
+// import "./userDash.css";
 import user from "../assets/images/user.png";
-import Dashboard from "../components/example/dashboard";
-import Profile from "../components/example/profile";
-import Resume from "../components/example/resume";
-import Applied from "../components/example/applied";
-import Alerts from "../components/example/alert";
+import Dashboard from "../components/SideNavbar/dashboard";
+import Profile from "../components/SideNavbar/profile";
+import Resume from "../components/SideNavbar/resume";
+import Applied from "../components/SideNavbar/applied";
+import Alerts from "../components/SideNavbar/alert";
 
 // Import images for pages
+import ProfileIcon from "../assets/images/user_profile.png";
+import userIcon from "../assets/images/user-avatar.png";
 import ReportIcon from "../assets/images/report.png";
 import ApplyIcon from "../assets/images/apply.png";
 import AlertIcon from "../assets/images/alerts.png";
-import ProfileIcon from "../assets/images/user_profile.png";
 import CvIcon from "../assets/images/cv.png";
+import BookmarkIcon from "../assets/images/bookmark.png";
+import MessageIcon from "../assets/images/chat.png";
+import MeetingIcon from "../assets/images/focus-group.png";
+import styles from "./userDash.module.css";
+
 const UserDash = () => {
   const [activePage, setActivePage] = useState("Dashboard");
 
   // Map of page names to images
   const pageImages = {
     "User Dashboard": ReportIcon,
-    Profile: ProfileIcon,
+    // "My Profile": ProfileIcon,
+    "My Profile": userIcon,
     "My Resume": CvIcon,
-    Applied: ApplyIcon,
+    "Applied Jobs": ApplyIcon,
+    "Saved Jobs": BookmarkIcon,
     "Job Alerts": AlertIcon,
+    Messages: MessageIcon,
+    Meetings: MeetingIcon,
   };
 
   const renderContent = () => {
     switch (activePage) {
       case "User Dashboard":
         return <Dashboard />;
-      case "Profile":
+      case "My Profile":
         return <Profile />;
       case "My Resume":
         return <Resume />;
-      case "Applied":
+      case "Applied Jobs":
+        return <Applied />;
+      case "Saved Jobs":
         return <Applied />;
       case "Job Alerts":
+        return <Alerts />;
+      case "Messages":
+        return <Alerts />;
+      case "Meetings":
         return <Alerts />;
       default:
         return <Profile />;
@@ -47,41 +63,52 @@ const UserDash = () => {
     <>
       <Header />
 
-      <div className="main-wrapper">
+      <div className={styles.mainWrapper}>
         {/* Sidebar */}
-        <div className="sidebar">
-          <div className="user-profile">
+        <div className={styles.sideBar}>
+          {/* <div className="user-profile">
             <img src={user} className="profile" alt="User Picture" />
             <h3>Rohit JR</h3>
+          </div> */}
+
+          <div className={styles.profileContainer}>
+            <img src={ProfileIcon} alt="" className={styles.profileImg} />
+            <div className={styles.profileInfo}>
+              <div className={styles.profileName}>Rohit</div>
+              <a href="#" className={styles.profileButton}>
+                View Profile
+              </a>
+            </div>
           </div>
-          <ul className="nav-menu">
+
             {[
               "User Dashboard",
-              "Profile",
+              "My Profile",
               "My Resume",
-              "Applied",
+              "Applied Jobs",
+              "Saved Jobs",
               "Job Alerts",
+              "Messages",
+              "Meetings",
             ].map((page) => (
-              <li key={page} onClick={() => setActivePage(page)}>
+              
+              <div
+                key={page}
+                className={styles.navItem}
+                onClick={() => setActivePage(page)}
+              >
                 <img
                   src={pageImages[page]}
                   alt={`${page} Icon`}
-                  className="nav-icon"
-                  style={{
-                    width: "20px",
-                    height: "20px",
-                    marginRight: "10px",
-                    marginLeft: "5px",
-                  }}
+                  // className="nav-icon"
                 />
                 {page}
-              </li>
+              </div>
             ))}
-          </ul>
         </div>
 
         {/* Main Content */}
-        <div className="main-content">{renderContent()}</div>
+        <div className={styles.mainContent}>{renderContent()}</div>
       </div>
     </>
   );
