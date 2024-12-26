@@ -5,6 +5,8 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
     TokenVerifyView
 )
+from .views import JobPostListCreateView, JobPostDetailView
+
 
 urlpatterns = [
     path('register/', RegisterView.as_view(), name='register'),
@@ -21,6 +23,10 @@ urlpatterns = [
     # path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),  # Login
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),  # Refresh
     path('token/verify/', TokenVerifyView.as_view(), name='token_verify'),  # Verify
+
+
+    path('jobs/', JobPostListCreateView.as_view(), name='jobpost-list-create'),
+    path('jobs/<int:pk>/', JobPostDetailView.as_view(), name='jobpost-detail'),
 
 
     # Testing

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User, OTP, PersonalInformation, AddressInformation, Education, WorkExperience, PortfolioLink, ResumeParse, SkillSet, UserDocuments, UserDocumentsTest, PortfolioTest
+from .models import User, OTP, PersonalInformation, AddressInformation, Education, WorkExperience, PortfolioLink, ResumeParse, SkillSet, UserDocuments, UserDocumentsTest, PortfolioTest, JobPost
 from django.utils.timezone import now
 
 
@@ -244,6 +244,16 @@ class ResumeParseSerializer(serializers.ModelSerializer):
         model = ResumeParse
         fields = ['id', 'resume_file', 'uploaded_at']
         read_only_fields = ['id', 'uploaded_at']
+
+
+
+# JobPost Serializer    
+
+class JobPostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = JobPost
+        fields = '__all__'
+        read_only_fields =  ('employer', 'created_at', 'updated_at')
 
 
 

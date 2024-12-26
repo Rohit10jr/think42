@@ -14,6 +14,8 @@ import AuthForm from "./pages/AuthForm";
 import ErrorBoundary from "./components/ErrorBoundary";
 import UserDashBoard from "./pages/userDash";
 import FormikHome from "./pages/formikHome";
+import JobList from "./pages/JobList";
+import JobDetail from "./pages/JobDetail";
 // import Formik from "./pages/tut_formik";
 
 // import DashBoard from "./pages/user_dashBoard_try";
@@ -71,7 +73,16 @@ const App = () => {
             </ErrorBoundary>
           }
         />
-       
+
+        <Route
+          path="/jobs"
+          element={
+            <ErrorBoundary>
+              <JobList />
+            </ErrorBoundary>
+          }
+        />
+        <Route path="/jobs/:id" element={<JobDetail />} /> 
 
         {/* <Route path="/verify" element={<VerifyOTP />} /> */}
       </Routes>

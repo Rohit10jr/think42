@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 import random
 import os
-
+from django.conf import settings
 import logging 
 logger = logging.getLogger(__name__)
 from django.core.exceptions import ValidationError
@@ -36,9 +36,15 @@ class CustomUserManager(BaseUserManager):
         return user
 
 
+USER_TYPES = [
+    ('Employer', 'Employer'),
+    ('Job Seeker', 'Job Seeker'),
+]
+
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_('email address'), unique=True, null=True, blank=True)
     mobile = models.CharField(_('mobile number'), max_length=15, unique=True, null=True, blank=True)
+    user_type = models.CharField(max_length=20, choices=USER_TYPES, default='Job Seeker')
     
     is_active = models.BooleanField(_('active'), default=False)  
     is_staff = models.BooleanField(_('staff status'), default=False)
@@ -48,6 +54,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
+
     # REQUIRED_FIELDS = ['mobile']
 
     def __str__(self):
@@ -201,6 +208,41 @@ class UserDocuments(models.Model):
 
     def __str__(self):
         return self.user.email
+
+employment_type = [
+            ("Full-Time", "Full-Time"),
+            ("Part-Time", "Part-Time"),
+            ("Contract", "Contract"),
+            ("Internship", "Internship"),
+        ]
+
+class JobPost(models.Model):
+    title = models.CharField(max_length=255)
+    company = models.CharField(max_length=255)
+    # ratings = models.FloatField(null=True, blank=True)  
+    # reviews = models.TextField(null=True, blank=True)  
+    experience = models.CharField(max_length=50)  
+    salary = models.CharField(max_length=50)
+    location = models.CharField(max_length=255)
+    job_description = models.TextField()
+    education = models.CharField(max_length=255) 
+    skills = models.TextField()
+    role = models.CharField(max_length=255)
+    industry = models.CharField(max_length=255, null=True, blank=True) 
+    department = models.CharField(max_length=255, null=True, blank=True)  
+    employment_type = models.CharField(max_length=50, choices=employment_type) 
+    employer = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        limit_choices_to={'user_type': 'Employer'}
+    ) 
+    created_at = models.DateTimeField(auto_now_add=True)  
+    updated_at = models.DateTimeField(auto_now=True)  
+    def __str__(self):
+        return f"{self.title} at {self.company}"
+
+
+
 
 
 ###################################

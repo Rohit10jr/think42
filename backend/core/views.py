@@ -1,11 +1,11 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, generics, permissions
 from django.utils.timezone import now
-from .models import User, OTP, WorkExperience, Education, PortfolioLink, PersonalInformation, AddressInformation, ResumeParse, SkillSet,UserDocuments, UserDocumentsTest,PortfolioTest
+from .models import User, OTP, WorkExperience, Education, PortfolioLink, PersonalInformation, AddressInformation, ResumeParse, SkillSet,UserDocuments, UserDocumentsTest, PortfolioTest, JobPost
 import random
 from .utils import generate_otp, send_otp_via_email, extract_text 
-from .serializers import SignupSerializer, VerifyOTPSerializer, UserDetailSerializer, ResumeParseSerializer, UserTestSerializer,UserDocumentsSerializer
+from .serializers import SignupSerializer, VerifyOTPSerializer, UserDetailSerializer, ResumeParseSerializer, UserTestSerializer,UserDocumentsSerializer, JobPostSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from rest_framework.permissions import IsAuthenticated
@@ -13,7 +13,7 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.generics import CreateAPIView
 
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
-
+from rest_framework import serializers
 import os
 import PyPDF2
 import pdfplumber
@@ -593,6 +593,42 @@ class UserDocumentsView(APIView):
                 {"error": f"An error occurred: {str(e)}"},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )
+
+
+class JobPostListCreateView(generics.ListCreateAPIView):
+    serializer_class = JobPostSerializer
+    queryset = JobPost.objects.all()
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+
+    def perform_create(self, serializer):
+        if self.request.user.user_type == 'Employer':
+            serializer.save(employer=self.request.user)
+        else:
+            raise serializers.ValidationError("only employers can create job posts")
+
+
+class JobPostDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = JobPost.objects.all()
+    serializer_class = JobPostSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def perform_update(self, serializer):
+        # Ensure only the employer who created the post can update it
+        job_post = self.get_object()
+        if self.request.user == job_post.employer:
+            serializer.save()
+        else:
+            raise serializers.ValidationError("You do not have permission to edit this job post.")
+        
+    def perform_destroy(self, instance):
+        if self.request.user == instance.employer:
+            instance.delete()
+        else:
+            raise serializers.ValidationError("You do not have permission to delete this job post.")
+
+
 
 #################################################
 # Test
