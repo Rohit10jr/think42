@@ -1,0 +1,180 @@
+/* body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+} */
+
+.jobCard {
+  display: flex;
+  width: 100%;
+  height: 250px;
+  align-items: center;
+  background-color: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background-color: #f4f7fc;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.jobInnerCard {
+  width: 90%;
+  height: 80%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo {
+  flex-shrink: 0;
+  width: 120px;
+  height: 120px;
+  background-color: #cfe6f6;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo img {
+  width: 100px;
+  height: 100px;
+}
+
+.applicationInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.applyNow {
+  background-color: #1967d2;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 15px 60px;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.applyNow:hover {
+  background-color: #0056b3;
+}
+
+.bookmark {
+  margin-top: 8px;
+  color: #ccc;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.bookmark:hover {
+  color: #888;
+}
+
+.applicationEnd {
+  font-size: 14px;
+  font-weight: bold;
+  color: rgb(138, 132, 132);
+  padding: 10px;
+}
+
+.timing {
+  color: red;
+}
+
+.saveSpan {
+  display: flex;
+  width: 50px;
+  height: 50px;
+  background-color: #d3e1f6;
+  margin-left: 30px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+}
+
+.applySave {
+  display: flex;
+}
+
+.save {
+  width: 30px;
+  height: 30px;
+}
+
+.jobDetails {
+  flex-grow: 1;
+  margin-left: 16px;
+}
+
+.jobDetails h3 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.jobDetails p {
+  font-size: 14px;
+  color: #666;
+  margin: 8px 0;
+}
+
+.jobDetailsSpan {
+  display: inline-block;
+  margin-right: 16px;
+}
+
+.jobTags {
+  margin-top: 8px;
+}
+
+
+
+.jobTagFullTime {
+  color: #007bff;
+  background-color: #8ac6f0;
+  padding: 5px 15px;
+
+  display: inline-block;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 12px;
+  margin-right: 8px;
+}
+
+.jobTagUrgent {
+
+  display: inline-block;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 12px;
+  margin-right: 8px;
+  color: #fd9400;
+  background-color: #f6e09f;
+  padding: 5px 15px;
+}
+
+.jobInfoRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 8px;
+  gap: 16px;
+  color: #777777;
+}
+
+.salaryInfo {
+  color: #777777;
+  margin-top: 8px;
+}
+
+.jobDetailsSpanImg {
+  width: 30px;
+  height: 20px;
+  padding-right: 10px;
+}

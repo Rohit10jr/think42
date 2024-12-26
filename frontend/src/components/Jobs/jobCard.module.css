@@ -1,0 +1,64 @@
+.jobCard {
+  padding: 20px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.jobCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.jobCardHeader {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+.jobTitle {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333;
+  margin: 0;
+}
+
+.companyName {
+  font-size: 1rem;
+  color: #555;
+  margin-top: 5px;
+}
+
+.jobCardBody {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.jobLocation,
+.jobSalary {
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.icon {
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+  opacity: 0.7;
+}
+
+.jobCardBody img {
+  opacity: 0.9;
+}
+
+.jobCardBody img:hover {
+  opacity: 1;
+  transition: opacity 0.2s;
+}
