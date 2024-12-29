@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect  } from "react";
 import Header from "../components/Home/header";
 // import "./userDash.css";
 import user from "../assets/images/user.png";
@@ -7,7 +7,7 @@ import Profile from "../components/SideNavbar/profile";
 import Resume from "../components/SideNavbar/resume";
 import Applied from "../components/SideNavbar/applied";
 import Alerts from "../components/SideNavbar/alert";
-
+import SubmitJobs from "../components/SideNavbar/submitJobs"
 // Import images for pages
 import ProfileIcon from "../assets/images/user_profile.png";
 import userIcon from "../assets/images/user-avatar.png";
@@ -22,6 +22,13 @@ import styles from "./userDash.module.css";
 
 const UserDash = () => {
   const [activePage, setActivePage] = useState("Dashboard");
+  const [userType, setUserType] = useState("job_seeker");
+
+
+  useEffect(() => {
+    const userTypeFromStorage = localStorage.getItem("user_type");
+    setUserType(userTypeFromStorage || "job_seeker");
+  }, []);
 
   // Map of page names to images
   const pageImages = {
@@ -32,9 +39,43 @@ const UserDash = () => {
     "Applied Jobs": ApplyIcon,
     "Saved Jobs": BookmarkIcon,
     "Job Alerts": AlertIcon,
-    Messages: MessageIcon,
-    Meetings: MeetingIcon,
+    "Messages": MessageIcon,
+    "Meetings": MeetingIcon,
+
+    "My Jobs": ApplyIcon,
+    "Submit Jobs": BookmarkIcon,
+    "Applicants Jobs": ReportIcon,
+    "Shortlist Candidates": userIcon,
+    "Candidate Alerts": AlertIcon,
   };
+
+
+  const userSeekerPages = [
+    "User Dashboard",
+    "My Profile",
+    "My Resume",
+    "Applied Jobs",
+    "Saved Jobs",
+    "Job Alerts",
+    "Messages",
+    "Meetings",
+  ];
+
+  const employerPages = [
+    "User Dashboard",
+    "My Profile",
+    "My Jobs",
+    "Submit Jobs",
+    "Applicants Jobs",
+    "Shortlist Candidates",
+    "Candidate Alerts",
+    "Messages",
+    "Meetings",
+  ];
+
+
+  const pages = userType === "Employer" ? employerPages : userSeekerPages;
+
 
   const renderContent = () => {
     switch (activePage) {
@@ -54,6 +95,20 @@ const UserDash = () => {
         return <Alerts />;
       case "Meetings":
         return <Alerts />;
+
+      // additional sidenavbar contents for the employer
+      case "My Jobs":
+        return <Applied/>
+      case "Submit Jobs":
+        return <SubmitJobs/>
+      case "Applicants Jobs":
+        return <Applied/>
+      case "Shortlist Candidates":
+        return <Applied/>
+      case "Candidate Alerts":
+        return <Alerts/>
+
+
       default:
         return <Profile />;
     }
@@ -66,22 +121,19 @@ const UserDash = () => {
       <div className={styles.mainWrapper}>
         {/* Sidebar */}
         <div className={styles.sideBar}>
-          {/* <div className="user-profile">
-            <img src={user} className="profile" alt="User Picture" />
-            <h3>Rohit JR</h3>
-          </div> */}
-
           <div className={styles.profileContainer}>
             <img src={ProfileIcon} alt="" className={styles.profileImg} />
             <div className={styles.profileInfo}>
-              <div className={styles.profileName}>Rohit</div>
+              <div className={styles.profileName}>
+                {userType === "Employer" ? "Rohit" : "Rohit Jr"}
+              </div>
               <a href="#" className={styles.profileButton}>
                 View Profile
               </a>
             </div>
           </div>
 
-            {[
+            {/* {[
               "User Dashboard",
               "My Profile",
               "My Resume",
@@ -90,16 +142,22 @@ const UserDash = () => {
               "Job Alerts",
               "Messages",
               "Meetings",
-            ].map((page) => (
+            ].map((page) => ( */}
+
+              {pages.map((page) => (
               
               <div
                 key={page}
-                className={styles.navItem}
+               className={`${styles.navItem} ${
+                activePage === page ? styles.activeNavItem : ""
+              }`}
+                
                 onClick={() => setActivePage(page)}
               >
                 <img
                   src={pageImages[page]}
                   alt={`${page} Icon`}
+                  // className={styles.navIcon}
                   // className="nav-icon"
                 />
                 {page}

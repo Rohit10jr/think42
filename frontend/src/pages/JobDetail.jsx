@@ -7,7 +7,7 @@ import Header from "../components/Home/header";
 import Footer from "../components/Home/footer";
 import Money from "../assets/images/money.png";
 import Suitcase from "../assets/images/suitcase.png";
-import Location from "../assets/images/location (2).png";
+import Location from "../assets/images/location.png";
 import Calendar from "../assets/images/calendar.png";
 import BookMark from "../assets/images/bookmark.png";
 import JobLogo from "../assets/images/job.png";
@@ -103,7 +103,7 @@ const JobDetail = () => {
             <p>{job.job_description}</p>
           </section>
 
-          <section className={styles.jobExperience}>
+          {/* <section className={styles.jobExperience}>
             <h4>Experience</h4>
             <p>{job.experience}</p>
           </section>
@@ -115,7 +115,7 @@ const JobDetail = () => {
                 <li key={index}>{skill.trim()}</li>
               ))}
             </ul>
-          </section>
+          </section> */}
         </div>
       </div >
 

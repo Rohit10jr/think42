@@ -200,12 +200,29 @@ REST_FRAMEWORK = {
 
 
 
+# SIMPLE_JWT = {
+#     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30), 
+#     'REFRESH_TOKEN_LIFETIME': timedelta(days=2),  
+#     'ROTATE_REFRESH_TOKENS': False,  
+#     'BLACKLIST_AFTER_ROTATION': True,
+#     'ALGORITHM': 'HS256',  # Default JWT signing algorithm
+#     'SIGNING_KEY': 'your_secret_key_here',  # Replace with your Django SECRET_KEY
+#     'AUTH_HEADER_TYPES': ('Bearer',),  # Authorization header type
+# }
+
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30), 
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=2),  
-    'ROTATE_REFRESH_TOKENS': False,  
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=2),
+    'ROTATE_REFRESH_TOKENS': False,
     'BLACKLIST_AFTER_ROTATION': True,
-    'ALGORITHM': 'HS256',  # Default JWT signing algorithm
+    'ALGORITHM': 'HS256',
     'SIGNING_KEY': 'your_secret_key_here',  # Replace with your Django SECRET_KEY
-    'AUTH_HEADER_TYPES': ('Bearer',),  # Authorization header type
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'USER_ID_CLAIM': 'user_id',  # Default user identifier
+    'USER_ID_FIELD': 'id',  # Field in the user model used as an identifier
+    'USER_TYPE_CLAIM': 'user_type',
+    'TOKEN_USER_CLASS': 'django.contrib.auth.get_user_model',
+    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
+    'TOKEN_OBTAIN_SERIALIZER': 'core.serializers.CustomTokenObtainPairSerializer',
+    'TOKEN_PAYLOAD_HANDLER': 'core.jwt_claims.custom_jwt_payload',  # Custom payload handler
 }

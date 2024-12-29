@@ -1,17 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import search from "../../assets/images/search.png";
 import bell from "../../assets/images/bell.png";
 import user from "../../assets/images/user.png";
 import jobLogo from "../../assets/images/JOB-NXT.png";
 import styles from "./header.module.css";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const Header = () => {
   const [isDropdownVisible, setDropdownVisible] = useState(false);
+  const [userType, setUserType] = useState(null);
+  // const navigate  = useNavigate();
+
+  useEffect (()=>{
+    const userTypeFromStorage = localStorage.getItem("user_type");
+    setUserType(userTypeFromStorage);
+  }, []);
 
   const toggleMenu = () => {
     setDropdownVisible(!isDropdownVisible);
   };
+
+  // const ahndleAddJob = () =>{
+  //   navigate("/create-jobs");
+  // }  
 
   return (
     <header className={styles.jobHeader}>
@@ -62,6 +73,12 @@ const Header = () => {
           <img src={search} alt="Search Icon" className={styles.icon} />
           <img src={bell} alt="Notifications Icon" className={styles.icon} />
           <img src={user} alt="User Profile Icon" className={styles.icon} />
+          
+          {userType === "Employer" && (
+            <a className={styles.addJobButton} href="/create-jobs">
+             Add Job
+            </a>
+          )}
           <a href="/logout" className={styles.logout}>
             Logout
           </a>

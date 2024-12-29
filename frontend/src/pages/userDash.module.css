@@ -154,6 +154,11 @@
   color: #5271ff;
 }
 
+.activeNavItem{
+  background-color: #e0f2ff;
+  color: #5271ff;
+}
+
 .navItem.active img {
   filter: grayscale(0%);
 }

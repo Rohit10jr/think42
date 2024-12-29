@@ -3,8 +3,10 @@ import Header from "../components/Home/header";
 import JobCard from "../components/Jobs/jobCard";
 import { useState, useEffect } from "react";
 import api from "../services/api.jsx";
-import styles from "./JobList.module.css";
 import Footer from "../components/Home/footer";
+import styles from "./JobList.module.css";
+
+
 const JobList = () => {
     const [jobs, setJobs] = useState([]);
     const [loading, setLoading] = useState(true);

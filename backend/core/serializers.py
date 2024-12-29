@@ -1,6 +1,16 @@
 from rest_framework import serializers
 from .models import User, OTP, PersonalInformation, AddressInformation, Education, WorkExperience, PortfolioLink, ResumeParse, SkillSet, UserDocuments, UserDocumentsTest, PortfolioTest, JobPost
 from django.utils.timezone import now
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
+
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    def validate(self, attrs):
+        print("custom token obtain pair serializer")
+        data = super().validate(attrs)
+        data['user_type'] = self.user.user_type  # Add user_type to the token response
+        return data
 
 
 class UserSerializer(serializers.ModelSerializer):

@@ -59,9 +59,10 @@ const AuthForm = ({ isRegister }) => {
     try {
       const response = await api.post("verify/", { email: input, otp });
 
-      const { access, refresh } = response.data;
+      const { access, refresh, user_type } = response.data;
       localStorage.setItem("access_token", access);
       localStorage.setItem("refresh_token", refresh);
+      localStorage.setItem("user_type", user_type)
 
       setSuccess("OTP verified successfully! Redirecting...");
       setOtpSent(false);

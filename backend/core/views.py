@@ -23,6 +23,9 @@ import textwrap
 import json
 import environ
 import os
+from rest_framework_simplejwt.tokens import AccessToken
+
+from .jwt_claims import generate_tokens_with_user_type 
 
 class RegisterView(APIView):
     def post(self, request):
@@ -100,11 +103,22 @@ class VerifyOTPView(APIView):
 
             refresh = RefreshToken.for_user(user)
             access_token = str(refresh.access_token)
+            user_type = user.user_type
+            print(user_type)
+
+            # token = access_token
+            # decoded_payload = AccessToken(token)
+            # print(decoded_payload)
+
+            # tokens = generate_tokens_with_user_type(user)
+            # print(tokens)
 
             return Response({
                 'message': 'OTP verified successfully. Redirecting...',
                 'access': access_token,
-                'refresh': str(refresh)
+                'refresh': str(refresh),
+                'user_type': user_type,
+                #  **tokens,
             }, status=status.HTTP_200_OK)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

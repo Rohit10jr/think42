@@ -10,6 +10,7 @@
 }
 
 .jobCard:hover {
+  border: 1px solid orange;
   transform: translateY(-5px);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
@@ -18,6 +19,7 @@
   display: flex;
   flex-direction: column;
   margin-bottom: 10px;
+  /* border: 1px solid red; */
 }
 
 .jobTitle {
@@ -30,7 +32,7 @@
 .companyName {
   font-size: 1rem;
   color: #555;
-  margin-top: 5px;
+  margin-block: 5px;
 }
 
 .jobCardBody {
@@ -61,4 +63,69 @@
 .jobCardBody img:hover {
   opacity: 1;
   transition: opacity 0.2s;
+}
+
+
+.jobActions {
+  /* border: 1px solid red; */
+  display: flex;
+  height: 100%;
+  gap: 10px;
+  margin-bottom: 50px;
+  margin-left: 350px;
+  /* justify-content:flex-end; */
+}
+
+.jobActions img {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+
+.jobInfo {
+  display: flex;
+  gap: 15px;
+}
+
+
+.jobIcon {
+  width: 80px;
+  height: 80px;
+  /* border-radius: 50%; */
+  background-color: #e0e0e0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.jobIcon img {
+  background-color: white;
+  width: 100%;
+  height: 100%;
+  /* border-radius: 50%; */
+}
+
+.jobTags {
+  display: flex;
+  gap: 10px;
+  margin: 10px 0 0;
+  /* border: 1px red solid; */
+}
+
+.tag {
+  /* margin-top: 20px; */
+  background-color: #f0f3fa;
+  color: #555;
+  font-size: 12px;
+  padding: 5px 10px;
+  margin-right: 3px;
+  border-radius: 20px;
+  border: 1px solid #dce1ed;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.tag:hover {
+  background-color: #007bff;
+  color: #fff;
 }
