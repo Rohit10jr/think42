@@ -11,6 +11,9 @@ import Location from "../assets/images/location.png";
 import Calendar from "../assets/images/calendar.png";
 import BookMark from "../assets/images/bookmark.png";
 import JobLogo from "../assets/images/job.png";
+
+
+
 const JobDetail = () => {
   const { id } = useParams(); // Extract job ID from the URL
   const [job, setJob] = useState(null);
@@ -21,7 +24,7 @@ const JobDetail = () => {
     // Fetch job details
     const fetchJob = async () => {
       try {
-        const response = await  api.get(`/jobs/${id}/`);
+        const response = await api.get(`/jobs/${id}/`);
         setJob(response.data);
       } catch (err) {
         setError("Failed to load job details. Please try again later.");
@@ -39,7 +42,7 @@ const JobDetail = () => {
 
   return (
     <>
-    <Header />
+      <Header />
       <div>
         <div className={styles.jobCard}>
           <div className={styles.jobInnerCard}>
@@ -59,7 +62,7 @@ const JobDetail = () => {
                     {job.location}
                   </span>
                   <span className={styles.jobDetailsSpan}>
-                    <img className={styles.jobDetailsSpanImg}  src={Calendar} alt="" />
+                    <img className={styles.jobDetailsSpanImg} src={Calendar} alt="" />
                     {new Date(job.posted_date).toLocaleDateString()}
                   </span>
                 </div>
@@ -97,11 +100,19 @@ const JobDetail = () => {
         </div>
 
         {/* Description, Experience, and Skills Section */}
-        <div className={styles.jobAdditionalDetails}>
-          <section className={styles.jobDescription}>
-            <h4>Job Description</h4>
+        <div className={styles.jobDetailsContainer}>
+          {/* left section */}
+          <div className={styles.jobDescription}>
+            <h1>Job Description</h1>
             <p>{job.job_description}</p>
-          </section>
+            <h2>Key Responsibilities</h2>
+            <ul>
+              <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
+              <li>Curabitur aliquet felis sit amet dolor suscipit dictum.</li>
+              <li>Quisque tempor libero ac eros ultricies, ac dignissim justo.</li>
+              <li>Mauris in velit vel ligula aliquam gravida at ut nisi.</li>
+            </ul>
+          </div>
 
           {/* <section className={styles.jobExperience}>
             <h4>Experience</h4>
@@ -116,9 +127,64 @@ const JobDetail = () => {
               ))}
             </ul>
           </section> */}
+
+          {/* right section */}
+          <div className={styles.jobOverview}>
+            <h2 className={styles.jobTitle}>Job Overview</h2>
+            <div className={styles.jobDetail}>
+              <i className={`fa fa-calendar ${styles.icon}`}></i>
+              <div>
+                <span className={styles.label}>Date Posted</span>
+                <span className={styles.value}>June 20, 2021</span>
+              </div>
+            </div>
+            <div className={styles.jobDetail}>
+              <i className={`fa fa-map-marker-alt ${styles.icon}`}></i>
+              <div>
+                <span className={styles.label}>Location</span>
+                <span className={styles.value}>New York</span>
+              </div>
+            </div>
+            <div className={styles.jobDetail}>
+              <i className={`fa fa-hourglass-half ${styles.icon}`}></i>
+              <div>
+                <span className={styles.label}>Expiration date</span>
+                <span className={styles.value}>May 6, 2026</span>
+              </div>
+            </div>
+            <div className={styles.jobDetail}>
+              <i className={`fa fa-user ${styles.icon}`}></i>
+              <div>
+                <span className={styles.label}>Experience</span>
+                <span className={styles.value}>4 Year</span>
+              </div>
+            </div>
+            <div className={styles.jobDetail}>
+              <i className={`fa fa-venus-mars ${styles.icon}`}></i>
+              <div>
+                <span className={styles.label}>Gender</span>
+                <span className={styles.value}>Both</span>
+              </div>
+            </div>
+            <div className={styles.jobDetail}>
+              <i className={`fa fa-graduation-cap ${styles.icon}`}></i>
+              <div>
+                <span className={styles.label}>Qualification</span>
+                <span className={styles.value}>Bachelor Degree</span>
+              </div>
+            </div>
+            <div className={styles.jobDetail}>
+              <i className={`fa fa-briefcase ${styles.icon}`}></i>
+              <div>
+                <span className={styles.label}>Career Level</span>
+                <span className={styles.value}>Officer</span>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div >
-
+    <Footer/>
     </>
   );
 };

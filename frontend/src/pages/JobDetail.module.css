@@ -133,8 +133,6 @@
   margin-top: 8px;
 }
 
-
-
 .jobTagFullTime {
   color: #007bff;
   background-color: #8ac6f0;
@@ -148,7 +146,6 @@
 }
 
 .jobTagUrgent {
-
   display: inline-block;
   font-size: 12px;
   padding: 4px 8px;
@@ -177,4 +174,115 @@
   width: 30px;
   height: 20px;
   padding-right: 10px;
+}
+
+/* Container */
+.jobDetailsContainer {
+  /* border: 1px solid red; */
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 50px;
+  /* max-width: 1100px; */
+  width: 100%;
+  /* margin: 20px; */
+}
+
+/* Left Section */
+.jobDescription {
+  /* border: 1px solid red; */
+  width: 65%;
+  /* padding-right: 200px; */
+  /* border-right: 1px solid #e0e0e0; */
+}
+
+.jobDescription h1 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #202124;
+  margin-bottom: 15px;
+}
+
+.jobDescription p {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #77838f;
+  margin-bottom: 20px;
+}
+
+.jobDescription h2 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #202124;
+  margin-bottom: 10px;
+}
+
+.jobDescription ul {
+  list-style-type: disc;
+  padding-left: 20px;
+}
+
+.jobDescription ul li {
+  font-size: 16px;
+  color: #77838f;
+  margin-bottom: 20px;
+}
+
+/* right section */
+/* job overview */
+
+.jobOverview {
+  background-color: #f5f7fc;
+  border-radius: 10px;
+  /* border: 1px red solid; */
+  /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); */
+  padding: 25px;
+  width: 300px;
+  color: #333;
+}
+
+.jobTitle {
+  font-size: 20px;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.jobDetail {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  /* border: 1px red solid; */
+  /* padding-bottom: 10px; */
+}
+
+.jobDetail i {
+  font-size: 24px;
+  color: #007bff;
+  margin-right: 15px;
+}
+
+.label {
+  font-size: 15px;
+  font-weight: 700; /* Bold and darker label */
+  color: #333;
+  display: block;
+  /* margin-bottom: 2px; */
+  padding: 5px;
+  /* border: 1px red solid; */
+}
+
+.value {
+  font-size: 14px;
+  font-weight: 400; /* Lighter value */
+  color: #666;
+  display: block;
+}
+
+.jobDetail:last-child {
+  margin-bottom: 0;
 }

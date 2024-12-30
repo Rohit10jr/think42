@@ -87,3 +87,46 @@ body {
 .employmentType option:hover {
     background-color: #d0e4eb;
 }
+
+
+.formikAddButton, .formikRemoveButton{
+    margin-bottom: 20px;
+    display: inline-block;
+    padding: 10px 15px;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  /* Add Button */
+  .formikAddButton {
+    background-color: #28a745; /* Green */
+  }
+  
+  .formikAddButton:hover {
+    background-color: #218838; /* Darker green on hover */
+    transform: scale(1.05); /* Slightly enlarge on hover */
+  }
+  
+  /* Remove Button */
+  .formikRemoveButton {
+    background-color: #dc3545; 
+    margin-right: 10px;/* Red */
+  }
+  
+  .formikRemoveButton:hover {
+    background-color: #c82333; /* Darker red on hover */
+    transform: scale(1.05); /* Slightly enlarge on hover */
+  }
+
+
+  .error{
+    padding-top: 5px;
+    font-size: 14px;
+    color: red;
+  }

@@ -236,7 +236,7 @@ const JobPostForm = () => {
                     />
                 </div> */}
 
-                <button type="submit">Create Job Post</button>
+                <button className={styles.submitButton} type="submit">Create Job Post</button>
             </form>
         </div>
     );
