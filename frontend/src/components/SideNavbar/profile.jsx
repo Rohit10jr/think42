@@ -293,12 +293,13 @@ const ProfileForm = () => {
         {({ values, setFieldValue, handleBlur, isValid, dirty, setValues }) => {
           useEffect(() => {
             fetchUserDetails(setValues); // Pass Formik's setValues to fetchUserDetails
-          }, [setValues]);
+          }, []);
+          // }, [setValues]);
 
           return (
             <Form className={styles.formContainer}>
               <div className={styles.formSection}>
-                <h2>Personal Information</h2>
+                <h2 className={styles.sectionTitle}>Personal Information</h2>
                 <div className={styles.formGroup}>
                   <label htmlFor="full_name">Full Name</label>
                   <Field
@@ -371,7 +372,7 @@ const ProfileForm = () => {
 
               {/* address information */}
               <div className={styles.formSection}>
-                <h2>Address Information</h2>
+                <h2 className={styles.sectionTitle}>Address Information</h2>
                 <div className={styles.formGroup}>
                   <label htmlFor="address">Address</label>
                   <Field type="text" name="address_information.address" id="address" />
@@ -431,14 +432,14 @@ const ProfileForm = () => {
 
               {/* Work Experience */}
               <div className={styles.formSection}>
-                <h2>Work Experience</h2>
+                <h2 className={styles.sectionTitle}>Work Experience</h2>
                 <FieldArray
                   name="work_experience"
                   render={(arrayHelpers) => (
                     <>
                       {arrayHelpers.form.values.work_experience.map((_, index) => (
                         <div key={index}>
-                          <h5> work experience {index + 1}</h5>
+                          <span className={styles.dynamicTitle}> work experience {index + 1}</span>
                           <div className={styles.formRow}>
                             <div className={styles.formGroup}>
                               <label htmlFor="job_title">Job title</label>
@@ -497,6 +498,7 @@ const ProfileForm = () => {
                               className={styles.error}
                             />
                           </div>
+                          <div className={styles.dynamicButtons}>
 
                           {/* Show Remove Button only for the last entry */}
                           {arrayHelpers.form.values.work_experience.length > 1 &&
@@ -506,7 +508,7 @@ const ProfileForm = () => {
                                 onClick={() => arrayHelpers.remove(index)} // Remove work experience section
                                 className={styles.formikRemoveButton}
                               >
-                                Remove Work Experience
+                                Remove 
                               </button>
                             )}
 
@@ -525,9 +527,10 @@ const ProfileForm = () => {
                               }
                               className={styles.formikAddButton}
                             >
-                              Add Work Experience
+                              Add 
                             </button>
                           )}
+                          </div>
                         </div>
                       ))}
                     </>
@@ -544,14 +547,14 @@ const ProfileForm = () => {
 
               {/* education background */}
               <div className={styles.formSection}>
-                <h2>Educational Background</h2>
+                <h2 className={styles.sectionTitle}>Educational Background</h2>
                 <FieldArray
                   name="educational_background"
                   render={(arrayHelpers) => (
                     <>
                       {arrayHelpers.form.values.educational_background.map((_, index) => (
                         <div key={index}>
-                          <h5 > Educational background {index + 1}</h5>
+                          <span className={styles.dynamicTitle}>Educational background {index + 1}</span> 
 
                           <div className={styles.formRow}>
                             <div className={styles.formGroup}>
@@ -608,7 +611,7 @@ const ProfileForm = () => {
                               className={styles.error}
                             />
                           </div>
-
+                        <div className={styles.dynamicButtons}>
                           {/* Show Remove Button only for the last entry */}
                           {arrayHelpers.form.values.educational_background.length > 1 &&
                             index === arrayHelpers.form.values.educational_background.length - 1 && (
@@ -617,7 +620,7 @@ const ProfileForm = () => {
                                 onClick={() => arrayHelpers.remove(index)} // Remove educational_background section
                                 className={styles.formikRemoveButton}
                               >
-                                Remove Education
+                                Remove 
                               </button>
                             )}
 
@@ -636,9 +639,10 @@ const ProfileForm = () => {
                               }
                               className={styles.formikAddButton}
                             >
-                              Add Education
+                              Add
                             </button>
                           )}
+                          </div>
                         </div>
                       ))}
                     </>
@@ -648,13 +652,13 @@ const ProfileForm = () => {
 
               {/* skill information */}
               <div className={styles.formSection}>
-                <h2>Skill Set</h2>
+                <h2 className={styles.sectionTitle}>Skill Set</h2>
                 <div className={styles.formGroup}>
                   <label htmlFor="address">Skills</label>
                   <Field
                     as="textarea"
                     name="skill_set.skills"
-                    rows="7"
+                    rows="3"
                     id="skills"
                     className={styles.textarea}
                     placeholder="Enter your skills, ex: Python, React"
@@ -672,7 +676,7 @@ const ProfileForm = () => {
 
               {/* portfolio information */}
               <div className={styles.formSection}>
-                <h2>Portfolio</h2>
+                <h2 className={styles.sectionTitle}>Portfolio</h2>
                 <div className={styles.formGroup}>
                   <label htmlFor="address">Linkedin url</label>
                   <Field type="text" name="portfolio.linkedin_url" id="address" />

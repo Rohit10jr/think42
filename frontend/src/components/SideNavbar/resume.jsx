@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import api from "../../services/api";
-
+import "./resume.css"
 function Resume() {
   const [resume, setResume] = useState(null);
   const [coverLetter, setCoverLetter] = useState(null);
@@ -104,7 +104,7 @@ function Resume() {
             />
           </label>
         </div>
-        <button type="submit">Update Files</button>
+        <button className="button" type="submit">Update Files</button>
       </form>
 
       {/* Display status messages */}

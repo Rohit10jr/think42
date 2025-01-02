@@ -24,12 +24,12 @@ const JobCard = ({ job }) => {
             <h3 className={styles.jobTitle}>{job.title}</h3>
             <span className={styles.companyName}>{job.company}</span>
 
-            <div className={styles.jotTags}>
+            <div className={styles.jobTags}>
                     <span className={styles.tag}>{job.location}</span>
                     <span className={styles.tag}>{job.salary || "Not Disclosed"}</span>
                     <span className={styles.tag}>{job.employment_type}</span>
-                    <span className={styles.tag}>{job.experience}</span>
-                </div>
+                    <span className={styles.tag}>{job.experience} yr</span>
+            </div>
 
 
           </div>

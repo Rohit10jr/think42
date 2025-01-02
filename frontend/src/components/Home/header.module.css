@@ -24,7 +24,7 @@
 /* Left Section */
 .headerLeft img {
   width: auto;
-  height: 50px; /* Adjust the height of the logo */
+  height: 40px; /* Adjust the height of the logo */
 }
 
 /* Navigation Center */
@@ -36,7 +36,7 @@
 .navLink {
   text-decoration: none;
   color: #111827; /* Dark gray for text */
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 500;
   position: relative;
   padding-bottom: 5px;
@@ -70,8 +70,8 @@
 }
 
 .icon {
-  width: 25px;
-  height: 25px;
+  width: 20px;
+  height: 20px;
   cursor: pointer;
   transition: all 0.3s ease; /* Smooth transition for hover effects */
 }
@@ -83,10 +83,36 @@
   transform: scale(1.1); /* Slightly enlarge the icon */
 }
 
+
+/* add button for jobs */
+.addJobButton {
+  text-decoration: none;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  /* font-weight: bold; */
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.addJobButton:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+/* .addJobButton:active {
+  background-color: #004085;
+  transform: scale(1);
+} */
+
+
 .logout {
   text-decoration: none;
   color: #dc2626;
-  font-size: 20px;
+  font-size: 16x;
   font-weight: 500;
   position: relative;
 }
@@ -94,7 +120,7 @@
 .logout:hover {
   color: #dc2626;
   text-decoration: underline;
-  transform: scale(1.1);
+  transform: scale(1.05);
   text-shadow: 0 0 8px #f56767;
   transition: transform 0.3s ease, color 0.3s ease, text-decoration 0.3s ease;
 }
@@ -109,20 +135,20 @@
 }
 
 .hamburger:hover {
-  transform: scale(1.1); /* Slightly enlarge on hover */
+  transform: scale(1.05); /* Slightly enlarge on hover */
 }
 
 .hamburger .big {
-  width: 25px; /* Width of the big bar */
-  height: 3px;
+  width: 20px; /* Width of the big bar */
+  height: 2px;
   background-color: rgb(0, 0, 0);
   margin: 2px 0;
   transition: 0.4s;
 }
 
 .hamburger .small {
-  width: 15px; /* Width of the small bar */
-  height: 3px;
+  width: 10px; /* Width of the small bar */
+  height: 2px;
   background-color: rgb(0, 0, 0);
   margin: 2px 0;
   transition: 0.4s;
@@ -178,26 +204,3 @@
   transform: translateX(-50%);
 }
 
-/* add button for jobs */
-.addJobButton {
-  text-decoration: none;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: bold;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.addJobButton:hover {
-  background-color: #0056b3;
-  transform: scale(1.05);
-}
-
-.addJobButton:active {
-  background-color: #004085;
-  transform: scale(1);
-}

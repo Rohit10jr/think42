@@ -49,12 +49,14 @@ const JobPostForm = () => {
     
             if (response.status === 201) {
               setMessage("Job post has been created successfully!");
+              alert("Job post has been created successfully")
               resetForm();
             } else {
+              alert("Something went wrong. Please try again")
               setMessage("Something went wrong. Please try again.");
             }
 
-            alert(message)
+            // alert(message)
           } catch (error) {
             console.error("Error while creating job post:", error);
             setMessage("Error: Unable to create job post. Please try again.");
