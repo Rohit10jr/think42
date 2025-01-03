@@ -64,6 +64,10 @@ body {
     flex: 1;
 }
 
+.skillTextarea{
+    position: relative;
+}
+
 .dynamicTitle{
     font-size: 12px;
     color: #a6a6a6;
@@ -147,3 +151,31 @@ body {
     font-size: 14px;
     color: red;
   }
+
+
+  /*  relevent skills */
+  
+  
+  .skillChip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 12px;
+    background-color: #f9fafb; /* Light gray */
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    font-size: 12px;
+    color: #374151; /* Dark gray */
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .skillChip:hover {
+    background-color: #5f90f8; /* Blue hover */
+    color: #fff;
+  }
+  
+  .skillChip:active {
+    background-color: #5883f8; /* Darker blue */
+  }
+  

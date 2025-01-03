@@ -125,11 +125,11 @@ const validationSchema = Yup.object({
     })
   ),
 
-  skill_set: Yup.object({
-    skills: Yup.array()
-      // .min(1, "At least one skill is required")
-      .required("Skills is required"),
-  }),
+  // skill_set: Yup.object({
+  //   skills: Yup.array()
+  //     .min(1, "At least one skill is required")
+  //     .required("Skills is required"),
+  // }),
 
   portfolio: Yup.object({
     linkedin_url: Yup.string()
@@ -444,6 +444,41 @@ const MyForm = () => {
     fileInputRef.current.click();
   };
 
+
+  const techStacks = ["JavaScript", "Python", "Java", "C++", "Ruby", "PHP", "Swift", "Kotlin", "Go", "Rust", "React", "Angular", "Vue.js", "Node.js", "Django", "Flask", "Spring Boot", "Express.js", "Laravel", "Symfony", "MongoDB", "PostgreSQL", "MySQL", "SQLite", "Redis", "Docker", "Kubernetes", "AWS", "Azure", "Google Cloud", "TensorFlow", "PyTorch", "Scikit-learn", "NumPy", "Pandas", "Matplotlib", "Seaborn", "Hadoop", "Spark", "Git", "GitHub", "Bitbucket", "Jenkins", "CircleCI", "TravisCI", "Terraform", "Ansible", "JIRA", "Slack", "Figma", "Bootstrap", "Tailwind CSS", "SASS", "Less", "Material-UI", "Chakra UI", "Redux", "Zustand", "MobX", "GraphQL", "Apollo", "Prisma", "Electron", "React Native", "Flutter", "Ionic", "Xamarin", "Unity", "Unreal Engine", "C#", ".NET", "ASP.NET", "Visual Studio", "Eclipse", "IntelliJ IDEA", "VS Code", "WebStorm", "Android Studio", "Xcode", "TensorBoard", "Hugging Face", "OpenCV", "Keras", "FastAPI", "Selenium", "Cypress", "Jest", "Mocha", "Chai", "Postman", "Swagger", "Insomnia", "Nginx", "Apache", "Vagrant", "Chef", "Puppet", "Blender", "Three.js", "WebGL", "Babel", "Webpack", "Parcel", "Grunt", "Gulp", "WebRTC", "Socket.IO", "WebAssembly", "Graphite", "Tableau", "Power BI", "Alteryx", "Snowflake", "Airflow", "MLflow", "Jupyter", "Colab", "Dash", "Streamlit", "Metabase", "ClickHouse", "Elasticsearch", "Logstash", "Kibana", "Prometheus", "Grafana", "Splunk", "Nagios", "Zabbix", "Cassandra", "CouchDB", "Firebase", "Heroku", "DigitalOcean", "Linode", "Vercel", "Netlify", "Surge", "Expo", "Capacitor", "NativeScript", "Webpack", "Rollup", "ESLint", "Prettier", "Tailwind", "Storybook", "Cucumber", "JUnit", "TestNG", "RSpec", "Pytest", "Unittest", "JIRA", "Basecamp", "Monday", "Trello", "Notion", "Evernote", "Asana", "Zeplin", "InVision", "Sketch", "Framer", "Adobe XD", "CorelDRAW", "AutoCAD", "MATLAB", "Simulink", "LabVIEW", "Octave", "Fortran", "Perl", "COBOL", "ABAP", "Crystal Reports", "ERPNext", "SAP", "Oracle ERP", "Workday", "PeopleSoft", "HubSpot", "Salesforce", "Zoho CRM", "Marketo", "Tableau", "Looker", "BigQuery", "Athena", "Redshift", "DynamoDB", "Vault", "Consul", "OpenShift", "Rancher", "Istio", "Linkerd", "Numba", "JAX", "Horovod", "OpenAI Gym", "Rasa", "MLlib", "AutoML", "Optuna", "LightGBM", "CatBoost", "XGBoost", "HuggingFace", "LangChain", "Next.js", "Nuxt.js", "Svelte", "Sapper", "Solid.js", "Alpine.js", "Backbone.js", "Ember.js", "Meteor.js", "Knockout.js", "Chart.js", "D3.js", "ECharts", "Leaflet", "OpenLayers", "CesiumJS"];
+
+
+  const [filteredSkills, setFilteredSkills] = useState([]);
+  const [showDropdown, setShowDropdown] = useState(false);
+
+  const handleSkillInputChange = (e, setFieldValue) =>{
+    const value = e.target.value;
+
+    setFieldValue("skill_set.skills", value);
+
+    const skillsArray = value.split(" ");
+    const currentSkill = skillsArray[skillsArray.length - 1];
+
+    if (currentSkill) {
+      const filtered = techStacks.filter((skill) =>
+        skill.toLowerCase().startsWith(currentSkill.toLowerCase())
+      );
+      setFilteredSkills(filtered);
+      setShowDropdown(true);
+    } else {
+      setShowDropdown(false);
+    }
+  };
+
+  const handleSkillClick = (skill, values, setFieldValue) => {
+    const skillsArray = values.skill_set.skills.split(" ");
+    skillsArray[skillsArray.length - 1] = skill;
+
+    const updatedSkills = skillsArray.join(" ");
+    setFieldValue("skill_set.skills", updatedSkills);
+    setShowDropdown(false);
+  };
+
   return (
     <>
       <Header />
@@ -492,7 +527,7 @@ const MyForm = () => {
                     name="personal_information.full_name"
                     className="input-field"
                     onBlur={handleBlur}
-                    // placeholder="Full Name"
+                  // placeholder="Full Name"
                   />
                   <ErrorMessage
                     name="personal_information.full_name"
@@ -558,7 +593,7 @@ const MyForm = () => {
                     id="personal_information.mobile"
                     name="personal_information.mobile"
                     className="input-field"
-                    // placeholder="Mobile"
+                  // placeholder="Mobile"
                   />
                   <ErrorMessage
                     name="personal_information.mobile"
@@ -592,14 +627,35 @@ const MyForm = () => {
                     className="input-field"
                     rows="4"
                     placeholder="Enter skills separated by commas"
-                    value={values.skill_set.skills.join(", ")} // Display skills as comma-separated values
-                    onChange={(e) =>
-                      setFieldValue(
-                        "skill_set.skills",
-                        e.target.value.split(",").map((item) => item.trim())
-                      )
-                    }
+                    // value={values.skill_set.skills.join(", ")}
+                    // onChange={(e) =>
+                    //   setFieldValue(
+                    //     "skill_set.skills",
+                    //     e.target.value.split(",").map((item) => item.trim())
+                    //   )
+                    // }
+                    value={values.skill_set.skills}
+                    onChange={(e) => handleSkillInputChange(e, setFieldValue)}
                   />
+
+                  {showDropdown && filteredSkills.length > 0 && (
+                    <div className="dropdown">
+                      <div className="tabTitle">
+                        Relevant skills
+                      </div>
+                      <div className="skillChips">
+                        {filteredSkills.map((skill, index) => (
+                          <span
+                            key={index}
+                            className="skillChip"
+                            onClick={() => handleSkillClick(skill, values, setFieldValue)}
+                          >
+                            {skill}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
 
                   <ErrorMessage
                     name="skill_set.skills"

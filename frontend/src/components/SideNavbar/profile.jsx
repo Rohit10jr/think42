@@ -74,6 +74,9 @@ const ProfileForm = () => {
   const [error, setError] = useState(null);
   const [emailStatus, setEmailStatus] = useState(null);
 
+  const [filteredSkills, setFilteredSkills] = useState([]);
+  const [showDropdown, setShowDropdown] = useState(false);
+
 
   // useEffect(() => {
   //   let isMounted = true; // Track if component is mounted
@@ -279,6 +282,47 @@ const ProfileForm = () => {
 
   if (loading) return <p>Loading...</p>;
   // if (error) return <p>{error}</p>;
+
+
+  // relevent skills
+
+  const techStacks = ["JavaScript", "Python", "Java", "C++", "Ruby", "PHP", "Swift", "Kotlin", "Go", "Rust", "React", "Angular", "Vue.js", "Node.js", "Django", "Flask", "Spring Boot", "Express.js", "Laravel", "Symfony", "MongoDB", "PostgreSQL", "MySQL", "SQLite", "Redis", "Docker", "Kubernetes", "AWS", "Azure", "Google Cloud", "TensorFlow", "PyTorch", "Scikit-learn", "NumPy", "Pandas", "Matplotlib", "Seaborn", "Hadoop", "Spark", "Git", "GitHub", "Bitbucket", "Jenkins", "CircleCI", "TravisCI", "Terraform", "Ansible", "JIRA", "Slack", "Figma", "Bootstrap", "Tailwind CSS", "SASS", "Less", "Material-UI", "Chakra UI", "Redux", "Zustand", "MobX", "GraphQL", "Apollo", "Prisma", "Electron", "React Native", "Flutter", "Ionic", "Xamarin", "Unity", "Unreal Engine", "C#", ".NET", "ASP.NET", "Visual Studio", "Eclipse", "IntelliJ IDEA", "VS Code", "WebStorm", "Android Studio", "Xcode", "TensorBoard", "Hugging Face", "OpenCV", "Keras", "FastAPI", "Selenium", "Cypress", "Jest", "Mocha", "Chai", "Postman", "Swagger", "Insomnia", "Nginx", "Apache", "Vagrant", "Chef", "Puppet", "Blender", "Three.js", "WebGL", "Babel", "Webpack", "Parcel", "Grunt", "Gulp", "WebRTC", "Socket.IO", "WebAssembly", "Graphite", "Tableau", "Power BI", "Alteryx", "Snowflake", "Airflow", "MLflow", "Jupyter", "Colab", "Dash", "Streamlit", "Metabase", "ClickHouse", "Elasticsearch", "Logstash", "Kibana", "Prometheus", "Grafana", "Splunk", "Nagios", "Zabbix", "Cassandra", "CouchDB", "Firebase", "Heroku", "DigitalOcean", "Linode", "Vercel", "Netlify", "Surge", "Expo", "Capacitor", "NativeScript", "Webpack", "Rollup", "ESLint", "Prettier", "Tailwind", "Storybook", "Cucumber", "JUnit", "TestNG", "RSpec", "Pytest", "Unittest", "JIRA", "Basecamp", "Monday", "Trello", "Notion", "Evernote", "Asana", "Zeplin", "InVision", "Sketch", "Framer", "Adobe XD", "CorelDRAW", "AutoCAD", "MATLAB", "Simulink", "LabVIEW", "Octave", "Fortran", "Perl", "COBOL", "ABAP", "Crystal Reports", "ERPNext", "SAP", "Oracle ERP", "Workday", "PeopleSoft", "HubSpot", "Salesforce", "Zoho CRM", "Marketo", "Tableau", "Looker", "BigQuery", "Athena", "Redshift", "DynamoDB", "Vault", "Consul", "OpenShift", "Rancher", "Istio", "Linkerd", "Numba", "JAX", "Horovod", "OpenAI Gym", "Rasa", "MLlib", "AutoML", "Optuna", "LightGBM", "CatBoost", "XGBoost", "HuggingFace", "LangChain", "Next.js", "Nuxt.js", "Svelte", "Sapper", "Solid.js", "Alpine.js", "Backbone.js", "Ember.js", "Meteor.js", "Knockout.js", "Chart.js", "D3.js", "ECharts", "Leaflet", "OpenLayers", "CesiumJS"];
+
+  // const [filteredSkills, setFilteredSkills] = useState([]);
+  // const [showDropdown, setShowDropdown] = useState(false);
+
+  const handleSkillInputChange = (e, setFieldValue) => {
+    console.log("e.target.value", e.target.value);
+    const value = e.target.value;
+    // setFieldValue("values.skill_set.skills", value);
+    setFieldValue("skill_set.skills", value);
+
+    const skillsArray = value.split(" ");
+    const currentSkill = skillsArray[skillsArray.length - 1];
+
+    if (currentSkill) {
+      const filtered = techStacks.filter((skill) =>
+        skill.toLowerCase().startsWith(currentSkill.toLowerCase())
+      );
+      setFilteredSkills(filtered);
+      setShowDropdown(true);
+    } else {
+      setShowDropdown(false);
+    }
+  };
+
+  const handleSkillClick = (skill, values, setFieldValue) => {
+    const skillsArray = values.skill_set.skills.split(" ");
+    skillsArray[skillsArray.length - 1] = skill;
+
+    const updatedSkills = skillsArray.join(" ");
+    setFieldValue("skill_set.skills", updatedSkills);
+    setShowDropdown(false);
+  };
+
+  const handleSubmit = (values) => {
+    console.log("Form values:", values);
+  };
 
 
   return (
@@ -500,36 +544,36 @@ const ProfileForm = () => {
                           </div>
                           <div className={styles.dynamicButtons}>
 
-                          {/* Show Remove Button only for the last entry */}
-                          {arrayHelpers.form.values.work_experience.length > 1 &&
-                            index === arrayHelpers.form.values.work_experience.length - 1 && (
+                            {/* Show Remove Button only for the last entry */}
+                            {arrayHelpers.form.values.work_experience.length > 1 &&
+                              index === arrayHelpers.form.values.work_experience.length - 1 && (
+                                <button
+                                  type="button"
+                                  onClick={() => arrayHelpers.remove(index)} // Remove work experience section
+                                  className={styles.formikRemoveButton}
+                                >
+                                  Remove
+                                </button>
+                              )}
+
+                            {/* Add New Work Experience Button, only show at the bottom */}
+                            {index === arrayHelpers.form.values.work_experience.length - 1 && (
                               <button
                                 type="button"
-                                onClick={() => arrayHelpers.remove(index)} // Remove work experience section
-                                className={styles.formikRemoveButton}
+                                onClick={() =>
+                                  arrayHelpers.push({
+                                    job_title: "",
+                                    company_name: "",
+                                    start_date: "",
+                                    end_date: "",
+                                    responsibilities: "",
+                                  }) // Add new empty work experience entry
+                                }
+                                className={styles.formikAddButton}
                               >
-                                Remove 
+                                Add
                               </button>
                             )}
-
-                          {/* Add New Work Experience Button, only show at the bottom */}
-                          {index === arrayHelpers.form.values.work_experience.length - 1 && (
-                            <button
-                              type="button"
-                              onClick={() =>
-                                arrayHelpers.push({
-                                  job_title: "",
-                                  company_name: "",
-                                  start_date: "",
-                                  end_date: "",
-                                  responsibilities: "",
-                                }) // Add new empty work experience entry
-                              }
-                              className={styles.formikAddButton}
-                            >
-                              Add 
-                            </button>
-                          )}
                           </div>
                         </div>
                       ))}
@@ -554,7 +598,7 @@ const ProfileForm = () => {
                     <>
                       {arrayHelpers.form.values.educational_background.map((_, index) => (
                         <div key={index}>
-                          <span className={styles.dynamicTitle}>Educational background {index + 1}</span> 
+                          <span className={styles.dynamicTitle}>Educational background {index + 1}</span>
 
                           <div className={styles.formRow}>
                             <div className={styles.formGroup}>
@@ -611,37 +655,37 @@ const ProfileForm = () => {
                               className={styles.error}
                             />
                           </div>
-                        <div className={styles.dynamicButtons}>
-                          {/* Show Remove Button only for the last entry */}
-                          {arrayHelpers.form.values.educational_background.length > 1 &&
-                            index === arrayHelpers.form.values.educational_background.length - 1 && (
+                          <div className={styles.dynamicButtons}>
+                            {/* Show Remove Button only for the last entry */}
+                            {arrayHelpers.form.values.educational_background.length > 1 &&
+                              index === arrayHelpers.form.values.educational_background.length - 1 && (
+                                <button
+                                  type="button"
+                                  onClick={() => arrayHelpers.remove(index)} // Remove educational_background section
+                                  className={styles.formikRemoveButton}
+                                >
+                                  Remove
+                                </button>
+                              )}
+
+                            {/* Add New Educational background Button, only show at the bottom */}
+                            {index === arrayHelpers.form.values.educational_background.length - 1 && (
                               <button
                                 type="button"
-                                onClick={() => arrayHelpers.remove(index)} // Remove educational_background section
-                                className={styles.formikRemoveButton}
+                                onClick={() =>
+                                  arrayHelpers.push({
+                                    degree: "",
+                                    institution: "",
+                                    field_of_study: "",
+                                    graduation_year: "",
+                                    gpa: "",
+                                  }) // Add new empty educational_background entry
+                                }
+                                className={styles.formikAddButton}
                               >
-                                Remove 
+                                Add
                               </button>
                             )}
-
-                          {/* Add New Educational background Button, only show at the bottom */}
-                          {index === arrayHelpers.form.values.educational_background.length - 1 && (
-                            <button
-                              type="button"
-                              onClick={() =>
-                                arrayHelpers.push({
-                                  degree: "",
-                                  institution: "",
-                                  field_of_study: "",
-                                  graduation_year: "",
-                                  gpa: "",
-                                }) // Add new empty educational_background entry
-                              }
-                              className={styles.formikAddButton}
-                            >
-                              Add
-                            </button>
-                          )}
                           </div>
                         </div>
                       ))}
@@ -655,14 +699,42 @@ const ProfileForm = () => {
                 <h2 className={styles.sectionTitle}>Skill Set</h2>
                 <div className={styles.formGroup}>
                   <label htmlFor="address">Skills</label>
+                    {/* <Field
+                    as="textarea"
+                    name="skill_set.skills"
+                    rows="7"
+                    id="skills"
+                    className={styles.textarea}
+                    placeholder="Enter your skills, ex: Python, React"
+                  /> */}
                   <Field
                     as="textarea"
                     name="skill_set.skills"
                     rows="3"
                     id="skills"
-                    className={styles.textarea}
+                    className={styles.skillTextarea}
                     placeholder="Enter your skills, ex: Python, React"
+                    value={values.skill_set.skills}
+                    onChange={(e) => handleSkillInputChange(e, setFieldValue)}
                   />
+                  {showDropdown && filteredSkills.length > 0 && (
+                    <div className={styles.dropdown}>
+                      <div className={styles.tabTitle}>
+                        Relevant skills
+                      </div>
+                      <div className={styles.skillChips}>
+                        {filteredSkills.map((skill, index) => (
+                          <span
+                            key={index}
+                            className={styles.skillChip}
+                            onClick={() => handleSkillClick(skill, values, setFieldValue)}
+                          >
+                            {skill}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                   <ErrorMessage
                     name="skill_set.skills"
                     component="div"

@@ -16,6 +16,7 @@ import UserDashBoard from "./pages/userDash";
 import FormikHome from "./pages/formikHome";
 import JobList from "./pages/JobList";
 import JobDetail from "./pages/JobDetail";
+
 import TrySkillsInput from "./pages/try_SkillsInput";
 import TrySkillsInput_1 from "./pages/try_SkillsInput_1";
 // import Formik from "./pages/tut_formik";
@@ -84,11 +85,18 @@ const App = () => {
             </ErrorBoundary>
           }
         />
-        <Route path="/jobs/:id" element={<JobDetail />} /> 
+        <Route path="/jobs/:id" element={<JobDetail />} />
 
         {/* try out section */}
-        <Route path="/skillsInput" element={<TrySkillsInput />} /> 
-        <Route path="/skillsInput_1" element={<TrySkillsInput_1 />} /> 
+        <Route
+          path="/skillsInput"
+          element={
+            <ErrorBoundary>
+              <TrySkillsInput />
+            </ErrorBoundary>
+          } />
+          
+        <Route path="/skillsInput_1" element={<TrySkillsInput_1 />} />
 
         {/* <Route path="/verify" element={<VerifyOTP />} /> */}
       </Routes>
