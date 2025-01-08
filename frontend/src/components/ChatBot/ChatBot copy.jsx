@@ -3,6 +3,14 @@ import "./Chatbot.css";
 import options from '../../assets/images/option.png'
 import close from '../../assets/images/close.png'
 
+const predefinedReplies = [
+  "Hello! How can I assist you today?",
+  "I’m here to help you with your queries.",
+  "Please provide more details about your request.",
+  "Thank you for reaching out!",
+  "Let me know if you need further assistance.",
+];
+
 const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false); // To toggle chat window
   const [messages, setMessages] = useState([]);
@@ -11,40 +19,19 @@ const Chatbot = () => {
   const [showDropdown, setShowDropdown] = useState(false); // For three dots dropdown
 
   // Function to send a message
-  const sendMessage = async () => {
+  const sendMessage = () => {
     if (input.trim()) {
       // Add user message
       setMessages([...messages, { sender: "user", text: input }]);
-      const userMessage = input;
       setInput("");
 
       // Simulate bot typing
       setIsTyping(true);
-
-      try {
-        // Send the user message to Rasa
-        const response = await fetch("http://localhost:5005/webhooks/rest/webhook", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ sender: "user_123", message: userMessage }), // 'sender' can be a unique user ID
-        });
-
-        const botReplies = await response.json(); // Array of bot responses
-        const botMessages = botReplies.map((reply) => ({ sender: "bot", text: reply.text }));
-
-        // Update messages with bot replies
-        setMessages((prevMessages) => [...prevMessages, ...botMessages]);
-      } catch (error) {
-        console.error("Error communicating with Rasa:", error);
-        setMessages((prevMessages) => [
-          ...prevMessages,
-          { sender: "bot", text: "Oops! Something went wrong." },
-        ]);
-      } finally {
+      setTimeout(() => {
+        const botReply = predefinedReplies[Math.floor(Math.random() * predefinedReplies.length)];
+        setMessages((prevMessages) => [...prevMessages, { sender: "bot", text: botReply }]);
         setIsTyping(false);
-      }
+      }, 2000); // 2-second delay for bot reply
     }
   };
 
@@ -76,7 +63,7 @@ const Chatbot = () => {
                   onClick={() => setShowDropdown(!showDropdown)}
                   title="Options"
                 >
-                  Options
+                  <img src={options} alt="Image 2" className="options-icon" />
                 </button>
                 {showDropdown && (
                   <div className="dropdown-menu">
@@ -84,8 +71,12 @@ const Chatbot = () => {
                   </div>
                 )}
               </div>
-              <button className="close-btn" onClick={() => setIsOpen(false)} title="Close Chat">
-                Close
+              <button
+                className="close-btn"
+                onClick={() => setIsOpen(false)}
+                title="Close Chat"
+              >
+                <img src={close} alt="Image 1" className="header-icon" />
               </button>
             </div>
           </div>
@@ -93,11 +84,15 @@ const Chatbot = () => {
           {/* Body */}
           <div className="chatbot-body">
             {messages.map((msg, index) => (
-              <div key={index} className={`message ${msg.sender}`}>
+              <div
+                key={index}
+                className={`message ${msg.sender === "user" ? "user" : "bot"} ${msg.sender === "bot" && isTyping && index === messages.length - 1 ? "typing" : ""
+                  }`}
+              >
                 {msg.text}
               </div>
             ))}
-            {isTyping && <div className="typing-indicator">Bot is typing...</div>}
+            {isTyping && <div className="typing-indicator"> generating...</div>}
           </div>
 
           {/* Footer */}

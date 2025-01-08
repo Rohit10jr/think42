@@ -3,7 +3,7 @@
 // import viteLogo from "/vite.svg";
 // import "./App.css";
 
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route,useLocation  } from "react-router-dom";
 // import Register from "./pages/Register";
 // import Login from "./pages/Login";
 import Home from "./pages/Home";
@@ -27,6 +27,8 @@ import ChatBot from "./components/ChatBot/ChatBot.jsx"
 import LandingPage from  "./pages/LandingPage.jsx"
 import NotFoundPage from "./pages/404"
 const App = () => {
+  // const location = useLocation();
+  const hideChatBotRoutes = ['/login', '/register'];
   return (
     <>
     <Router>
@@ -99,8 +101,10 @@ const App = () => {
 
         {/* <Route path="/verify" element={<VerifyOTP />} /> */}
       </Routes>
-    </Router>
     <ChatBot/>
+        {/* Conditionally render ChatBot based on the current route */}
+        {/* {!hideChatBotRoutes.includes(location.pathname) && <ChatBot />} */}
+    </Router>
     </>
   );
 };

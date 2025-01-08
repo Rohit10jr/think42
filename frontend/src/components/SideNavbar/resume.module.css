@@ -1,0 +1,242 @@
+
+
+/* 
+.formContainer {
+  width: 90%;
+  margin: 2rem auto;
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.current-files-container {
+  margin-bottom: 2rem;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.current-files-container p {
+  font-size: 16px;
+  color: #333;
+  margin: 0.5rem 0;
+  display: flex;
+  align-items: center;
+}
+
+.current-files-container p a {
+  margin-left: 10px;
+  color: #007bff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.current-files-container p a:hover {
+  text-decoration: underline;
+  color: #0056b3;
+}
+
+.current-files-container p span {
+  font-weight: bold;
+  color: #ff6f61; 
+}
+
+
+
+.button{
+  background-color: blue;
+  margin: 20px 0;
+  display: inline-block;
+  padding: 10px 15px;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+
+.resume-container h1 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.resume-container label {
+  display: block;
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+
+.browse-button {
+  display: inline-block;
+  width: 100px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #007bff;
+  background-color: #f3f7fb;
+  border: 1px solid #d9e2ec;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.browse-button:hover {
+  background-color: #e9f1fb;
+}
+
+.file-info {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #6c757d;
+}
+
+.browse-button {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.3s ease;
+}
+
+.browse-button:hover {
+  background-color: #0056b3;
+}
+
+.file-info {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #6c757d;
+} */
+
+
+.formContainer {
+  width: 90%;
+  margin: 2rem auto;
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Display current resume and cover letter section */
+.currentFilesContainer {
+  margin-bottom: 2rem;
+  /* padding: 1rem; */
+  /* background-color: #f9f9f9; */
+  /* border: 1px solid #e0e0e0; */
+  border-radius: 8px;
+
+  /* padding-block: 0px; */
+  /* padding: 10px; */
+}
+
+.currentFilesContainer p {
+  font-size: 16px;
+  color: #333;
+  margin: 0.5rem 0;
+  display: flex;
+  align-items: center;
+  padding-block: 10px;
+}
+
+.currentFilesContainer p a {
+  margin-left: 10px;
+  color: #007bff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.currentFilesContainer p a:hover {
+  text-decoration: underline;
+  color: #0056b3;
+}
+
+.currentFilesContainer p span {
+  font-weight: bold;
+  color: #ff6f61; /* Highlight for 'Not uploaded' text */
+}
+
+.button {
+  background-color: blue;
+  margin: 20px 0;
+  display: inline-block;
+  padding: 10px 15px;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.button:hover {
+  background-color: #0056b3;
+}
+
+.resumeContainer p{
+  padding-block: 0;
+  padding-bottom: 40px;
+}
+.resumeContainer h1 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.resumeContainer label {
+  display: block;
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.browseButton {
+  display: inline-block;
+  width: 100px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #007bff;
+  background-color: #f3f7fb;
+  border: 1px solid #d9e2ec;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.browseButton:hover {
+  background-color: #e9f1fb;
+}
+
+.fileInfo {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #6c757d;
+}
+
+
+/* Hiding the input field */
+.resumeContainer input[type='file'] {
+  display: none;
+}
+
+.fileInfo {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #6c757d;
+}

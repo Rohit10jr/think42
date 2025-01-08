@@ -103,7 +103,6 @@ function Resume() {
               accept=".pdf,.doc,.docx"
               onChange={handleResumeChange}
             />
-            {/* {resumeFile && <p className={styles.fileName}>{resumeFile}</p>}  */}
           </div>
           <p className={styles.fileInfo}>Upload file .pdf, .doc, .docx</p>
         </div>
@@ -118,9 +117,7 @@ function Resume() {
               id="cv-upload"
               accept=".pdf,.doc,.docx"
               onChange={handleCoverLetterChange}
-              
             />
-            {/* {coverLetterFile && <p className={styles.fileName}>{coverLetterFile}</p>}  */}
           </div>
           <p className={styles.fileInfo}>Upload file .pdf, .doc, .docx</p>
         </div>

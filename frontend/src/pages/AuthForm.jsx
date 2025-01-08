@@ -66,7 +66,7 @@ const AuthForm = ({ isRegister }) => {
 
       setSuccess("OTP verified successfully! Redirecting...");
       setOtpSent(false);
-      navigate("/home");
+      navigate("/");
     } catch (err) {
       setError(err.response?.data?.error || "Invalid or expired OTP.");
     } finally {
