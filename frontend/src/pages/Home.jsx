@@ -639,7 +639,7 @@ const MyForm = () => {
                   />
 
                   {showDropdown && filteredSkills.length > 0 && (
-                    <div className="dropdown">
+                    <div className="skillsDropdown">
                       <div className="tabTitle">
                         Relevant skills
                       </div>

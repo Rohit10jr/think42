@@ -1,0 +1,35 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full viewport height */
+    width: 100vw;  /* Full viewport width */
+    background-color: #f8f9fa;
+    color: #343a40;
+    text-align: center;
+  }
+  
+  .title {
+    font-size: 6rem;
+    font-weight: bold;
+  }
+  
+  .message {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+  }
+  
+  .homeLink {
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: #ffffff;
+    background-color: #007bff;
+    border-radius: 5px;
+    text-decoration: none;
+  }
+  
+  .homeLink:hover {
+    background-color: #0056b3;
+  }
+  

@@ -1,0 +1,329 @@
+/* Page.module.css */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 5%;
+    background-color: #333;
+    color: #fff;
+  }
+  
+  .navLinks {
+    list-style: none;
+    display: flex;
+    gap: 15px;
+  }
+  
+  .navLink {
+    text-decoration: none;
+    color: #fff;
+    font-size: 16px;
+  }
+  
+  .section {
+    max-width: 95%;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    /* padding: 20px; */
+  }
+  
+  .section1 {
+    max-width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: url('../assets/images/bg-slider4.jpg') no-repeat center center/cover;
+    color: #fff;
+  }
+
+  .Section1title{
+    font-size: 36px;
+    font-weight: 600;
+  }
+  .Section1text{
+    font-size: 16px;
+  }
+  
+  .section2 {
+    height: 70vh;
+    width: 95%;
+    /* background-color: #f4f4f4; */
+  }
+
+  .content {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    border-radius: 10px;
+  }
+  
+
+  /* srarch bar  */
+  /* Search Bar Styling */
+.searchBar {
+    display: flex;
+    align-items: center;
+    width: 95%;
+    max-width: 1200px;
+    background-color: #fff;
+    border-radius: 50px;
+    /* border: 1px red solid; */
+    padding: 10px 10px 10px 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+  }
+  
+  .searchBarItem {
+    display: flex;
+    align-items: center;
+    flex: 1;
+  }
+  
+  .input {
+    border: none;
+    outline: none;
+    font-size: 16px;
+    width: 100%;
+    padding: 10px;
+    color: #333;
+  }
+  
+  .searchBarItem img {
+    width: 18px;
+    margin-right: 10px;
+    color: #aaa;
+  }
+  
+  .divider {
+    width: 1px;
+    height: 30px;
+    background-color: #ddd;
+    margin: 0 15px;
+  }
+  
+  .searchButton {
+    background-color: #ffcc00;
+    color: #fff;
+    font-size: 14px;
+    padding: 20px 50px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border: 1px solid transparent;
+    box-sizing: border-box;
+  }
+  
+  .searchButton:hover {
+    background-color: white;
+    color: #ffcc00;
+    border: 1px solid #ffcc00;
+  }
+  
+  /* Icons Styling */
+  .icon {
+    color: #aaa;
+  }
+  
+  .dropdownIcon:before {
+    content: '';
+  }
+
+
+  /*  section 2 css */
+
+  /* Container styling */
+.howItWorksContainer {
+  text-align: center;
+  /* margin: 50px auto; */
+  width: 100%;
+  /* border: 1px solid red; */
+  /* padding: 20px; */
+  background-color: white;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.howItWorksContainer h2 {
+  font-size: 32px;
+  color: #333;
+  margin-bottom: 10px;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial, sans-serif;
+  font-weight: 600;
+}
+
+.howItWorksContainer p {
+  font-size: 16px;
+  color: #a39d9d;
+  margin-bottom: 40px;
+}
+
+/* Steps grid */
+.steps {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.step {
+  text-align: center;
+  flex: 1 1 250px;
+  max-width: 300px;
+  padding: 20px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.step p {
+  color: #333;
+  font-weight: 600;
+}
+
+.step:hover {
+  transform: translateY(-10px);
+}
+
+/* Image styling with hover effect */
+.stepImage {
+  width: 100px;
+  height: 100px;
+  margin-bottom: 15px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.step:hover .stepImage {
+  transform: scale(1.1);
+}
+
+/* Step title styling */
+.stepTitle {
+  font-size: 14px;
+  color: #333;
+  font-weight: 500;
+  margin-top: 10px;
+}
+
+
+/* carousel */
+
+  
+.section3 {
+  height: 70vh;
+  /* background-color: #ddd; */
+  width: 100%;
+  background-color: #f9fbfd;
+}
+
+/* Container styling */
+.sliderContainer {
+  height: 70vh;
+  padding: 50px 20px;
+  /* justify-content: center; */
+  align-items: center;
+  width: 95%;
+  margin: 0 auto;
+  background-color: #f9fbfd;
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+
+  /* border: 1px solid red; */
+}
+
+/* Header section */
+.sliderHeader {
+  display: flex;
+  justify-content: space-between;
+  /* align-items: center; */
+  text-align: left;
+  padding: 20px 0;
+  margin-bottom: 40px;
+  /* border: 1px solid rgb(0, 102, 255); */
+}
+
+.sliderHeader span h2 {
+  font-size: 32px;
+  font-weight: bold;
+  padding-bottom: 10px ;
+  margin: 0;
+  color: #333;
+}
+
+.sliderHeader span p {
+  font-size: 14px;
+  color: #777;
+}
+
+.browseLink {
+  font-size: 14px;
+  text-decoration: none;
+  color: #007bff;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.browse-link:hover {
+  color: #0056b3;
+}
+
+/* Carousel images */
+.sliderItem {
+  /* border: 1px red solid; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+
+  margin: 0 auto;
+  box-sizing: border-box;
+  max-width: 120px;
+  max-height: 120px;
+}
+
+.sliderImage {
+  width: 80%;
+  height: auto;
+  /* background-color: none; */
+  /* height: 100px; */
+  margin: auto;
+  /* align-items: center; */
+  /* object-fit: contain; */
+  margin-bottom: 10px;
+}
+
+.sliderTitle {
+  font-size: 14px;
+  color: #4a4a4a;
+  margin: 0;
+}
+
+
+.slick-dots {
+  margin-top: 10px;
+  /* font-size: 20px; */
+  bottom: -25px;
+}
+
+.slick-dots li button:before {
+  font-size: 20px;
+  color: #c1c1c1;
+}
+
+.slick-dots li.slick-active button:before {
+  color: #000;
+  font-size: 16px;
+}
+
+
+.slick-prev,
+.slick-next {
+  z-index: 2;
+  color: #333;
+}
+
+.slick-prev:hover,
+.slick-next:hover {
+  color: #555;
+}

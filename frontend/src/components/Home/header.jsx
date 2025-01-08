@@ -5,13 +5,14 @@ import user from "../../assets/images/user.png";
 import jobLogo from "../../assets/images/JOB-NXT.png";
 import styles from "./header.module.css";
 import { NavLink, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const [isDropdownVisible, setDropdownVisible] = useState(false);
   const [userType, setUserType] = useState(null);
   // const navigate  = useNavigate();
 
-  useEffect (()=>{
+  useEffect(() => {
     const userTypeFromStorage = localStorage.getItem("user_type");
     setUserType(userTypeFromStorage);
   }, []);
@@ -29,7 +30,10 @@ const Header = () => {
       <div className={styles.container}>
         {/* Logo on the left */}
         <div className={styles.headerLeft}>
-          <img src={jobLogo} alt="JobNext Logo" />
+          <Link to="/">
+            <img src={jobLogo} alt="JobNext Logo" />
+          </Link>
+
         </div>
 
         {/* Navigation in the center */}
@@ -73,10 +77,10 @@ const Header = () => {
           <img src={search} alt="Search Icon" className={styles.icon} />
           <img src={bell} alt="Notifications Icon" className={styles.icon} />
           <img src={user} alt="User Profile Icon" className={styles.icon} />
-          
+
           {userType === "Employer" && (
             <a className={styles.addJobButton} href="/create-jobs">
-             Add Job
+              Add Job
             </a>
           )}
           <a href="/logout" className={styles.logout}>
@@ -91,9 +95,8 @@ const Header = () => {
           </div>
 
           <div
-            className={`${styles.dropdownMenu} ${
-              isDropdownVisible ? styles.show : ""
-            }`}
+            className={`${styles.dropdownMenu} ${isDropdownVisible ? styles.show : ""
+              }`}
           >
             <a href="/dashboard">User Dashboard</a>
             <a href="/profile">My Profile</a>

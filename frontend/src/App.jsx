@@ -16,17 +16,19 @@ import UserDashBoard from "./pages/userDash";
 import FormikHome from "./pages/formikHome";
 import JobList from "./pages/JobList";
 import JobDetail from "./pages/JobDetail";
-
 import TrySkillsInput from "./pages/try_SkillsInput";
 import TrySkillsInput_1 from "./pages/try_SkillsInput_1";
 // import Formik from "./pages/tut_formik";
 
+import ChatBot from "./components/ChatBot/ChatBot.jsx"
 // import DashBoard from "./pages/user_dashBoard_try";
 // import UserTestJson from "./pages/TestFileJson";
 // import UserTestUpload from "./pages/TestFileUpload";
-
+import LandingPage from  "./pages/LandingPage.jsx"
+import NotFoundPage from "./pages/404"
 const App = () => {
   return (
+    <>
     <Router>
       <Routes>
         <Route
@@ -37,14 +39,13 @@ const App = () => {
           path="/login"
           element={<PublicRoute element={<AuthForm isRegister={false} />} />}
         />
-        {/* <Route
-          path="/register"
-          element={<PublicRoute element={<Register />} />}
-        />
-        <Route path="/login" element={<PublicRoute element={<Login />} />} /> */}
-
+       
         <Route path="/logout" element={<Logout />} />
 
+        <Route path="*" element={<NotFoundPage />} />
+
+        <Route path="/" element={<LandingPage />} />
+        
         <Route
           path="/home"
           element={
@@ -58,8 +59,6 @@ const App = () => {
           }
         />
 
-        {/* <Route path="/dashboard" element={<ProtectedRoute element={<DashBoard />} />} /> */}
-        {/* <Route path="/dashboard" element={<DashBoard />} /> */}
         <Route
           path="/dashboard"
           element={
@@ -101,6 +100,8 @@ const App = () => {
         {/* <Route path="/verify" element={<VerifyOTP />} /> */}
       </Routes>
     </Router>
+    <ChatBot/>
+    </>
   );
 };
 
