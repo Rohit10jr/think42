@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "./Chatbot.css";
 import options from '../../assets/images/option.png'
 import close from '../../assets/images/close.png'
@@ -9,6 +9,8 @@ const Chatbot = () => {
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false); // Simulate bot typing
   const [showDropdown, setShowDropdown] = useState(false); // For three dots dropdown
+
+  const chatBodyRef = useRef(null);
 
   // Function to send a message
   const sendMessage = async () => {
@@ -53,6 +55,12 @@ const Chatbot = () => {
     setMessages([]);
     setShowDropdown(false); // Close the dropdown
   };
+  
+  useEffect(() => {
+    if (chatBodyRef.current) {
+      chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
+    }
+  }, [messages]);
 
   return (
     <div className="chatbot-container">
@@ -91,13 +99,14 @@ const Chatbot = () => {
           </div>
 
           {/* Body */}
-          <div className="chatbot-body">
+          <div className="chatbot-body"  ref={chatBodyRef}>
             {messages.map((msg, index) => (
               <div key={index} className={`message ${msg.sender}`}>
                 {msg.text}
               </div>
             ))}
-            {isTyping && <div className="typing-indicator">Bot is typing...</div>}
+            {/* {isTyping && <div className="typing-indicator">Bot is typing...</div>} */}
+            {isTyping && <div className="typing-indicator">Generating answer...</div>}
           </div>
 
           {/* Footer */}

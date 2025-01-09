@@ -5,7 +5,7 @@ from django.utils.timezone import now
 from .models import User, OTP, WorkExperience, Education, PortfolioLink, PersonalInformation, AddressInformation, ResumeParse, SkillSet,UserDocuments, UserDocumentsTest, PortfolioTest, JobPost
 import random
 from .utils import generate_otp, send_otp_via_email, extract_text 
-from .serializers import SignupSerializer, VerifyOTPSerializer, UserDetailSerializer, ResumeParseSerializer, UserTestSerializer,UserDocumentsSerializer, JobPostSerializer
+from .serializers import SignupSerializer, VerifyOTPSerializer, UserDetailSerializer, ResumeParseSerializer, UserTestSerializer,UserDocumentsSerializer, JobPostSerializer, ChatBotSerailzier
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from rest_framework.permissions import IsAuthenticated
@@ -642,6 +642,19 @@ class JobPostDetailView(generics.RetrieveUpdateDestroyAPIView):
         else:
             raise serializers.ValidationError("You do not have permission to delete this job post.")
 
+
+################ chatbot text api #################
+
+
+class ChatBotApiview(APIView):
+    # authentication_classes = [Allow]
+    # permission_classes = [Allowany]
+
+    def get (self, request, *args, **kwargs):
+        last_two_posts = JobPost.objects.order_by('-created_at')[:2]
+        serializer = ChatBotSerailzier(last_two_posts, many=True)
+        return Response(serializer.data)
+        
 
 
 #################################################

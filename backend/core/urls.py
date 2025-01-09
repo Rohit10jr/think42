@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import RegisterView, LoginView, VerifyOTPView, UserDetailView, ResumeUploadView, CheckEmailExistsView, UserTestJsonView,UserTestFileUpload, UserDocumentsView
+from .views import RegisterView, LoginView, VerifyOTPView, UserDetailView, ResumeUploadView, CheckEmailExistsView, UserTestJsonView,UserTestFileUpload, UserDocumentsView, ChatBotApiview
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -32,4 +32,7 @@ urlpatterns = [
     # Testing
     path("user/test-upload/", UserTestFileUpload.as_view(), name="user-test"),
     path("user/test-json/", UserTestJsonView.as_view(), name="user-test"),
+
+    # chatbot api
+    path('last-two-jobs/', ChatBotApiview.as_view(), name='last-two-jobs'),
 ]

@@ -334,3 +334,11 @@ class UserTestSerializer(serializers.Serializer):
         if not valid:
             print("Validation errors:", self.errors)
         return valid 
+    
+
+class ChatBotSerailzier(serializers.ModelSerializer):
+    class Meta:
+        model = JobPost
+        fields = ['title', 'company', 'salary']
+
+        
