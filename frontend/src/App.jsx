@@ -21,11 +21,23 @@ import TrySkillsInput_1 from "./pages/try_SkillsInput_1";
 // import Formik from "./pages/tut_formik";
 
 import ChatBot from "./components/ChatBot/ChatBot.jsx"
+import ChatWindow from "./components/ChatBot/ChatWindow.jsx"
+import ChatWindow2 from "./components/ChatBot/ChatWindow2.jsx"
 // import DashBoard from "./pages/user_dashBoard_try";
 // import UserTestJson from "./pages/TestFileJson";
 // import UserTestUpload from "./pages/TestFileUpload";
 import LandingPage from  "./pages/LandingPage.jsx"
 import NotFoundPage from "./pages/404"
+
+
+
+// Helper component to conditionally render the ChatBot
+const ChatBotWrapper = () => {
+  const { pathname } = useLocation();
+  // return pathname !== "/chatbot" ? <ChatBot /> : null;
+  return !["/chatbot", "/login", "/register", "/chatbot2"].includes(pathname) ? <ChatBot /> : null;
+};
+
 const App = () => {
   // const location = useLocation();
   const hideChatBotRoutes = ['/login', '/register'];
@@ -96,12 +108,18 @@ const App = () => {
               <TrySkillsInput />
             </ErrorBoundary>
           } />
+          <Route path="/chatbot" element={<ChatWindow />} /> {/* Add this route */}
+          
+          <Route path="/chatbot2" element={<ChatWindow2 />} />
           
         <Route path="/skillsInput_1" element={<TrySkillsInput_1 />} />
 
         {/* <Route path="/verify" element={<VerifyOTP />} /> */}
       </Routes>
-    <ChatBot/>
+
+      
+    {/* <ChatBot/> */}
+    <ChatBotWrapper />
         {/* Conditionally render ChatBot based on the current route */}
         {/* {!hideChatBotRoutes.includes(location.pathname) && <ChatBot />} */}
     </Router>
